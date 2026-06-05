@@ -1,0 +1,29 @@
+name: Deploy theme farmacia_queiles to AgenciaSP
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta solo al hacer push en main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up SSH with RSA key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_RSA }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H labagenciasp.es >> ~/.ssh/known_hosts
+
+    - name: Deploy theme via rsync
+      run: |
+        rsync -az --delete \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='/*.html' \
+          ./ labagenciasp@labagenciasp.es:~/apps/farmaciasqueiles/wp-content/themes/farmacia_queiles

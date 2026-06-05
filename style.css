@@ -1,0 +1,110 @@
+/*
+Theme Name: Farmacia Queiles
+Theme URI: https://agenciasp.com/
+Author: AgenciaSP
+Author URI: https://agenciasp.com/
+Description: Tema para Farmacias Queiles
+Version: 1.0.0
+Requires at least: 7.0
+Requires PHP: 8.2
+Text Domain: farmacia-queiles
+Tags: custom-menu, featured-images, translation-ready, e-commerce
+*/
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+	line-height: 1.5;
+	color: #111;
+	background: #fff;
+}
+
+a {
+	color: inherit;
+}
+
+.site-header,
+.site-footer {
+	padding: 16px;
+	border-bottom: 1px solid #eee;
+}
+
+.site-footer {
+	border-top: 1px solid #eee;
+	border-bottom: 0;
+}
+
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 16px;
+}
+
+.site-header__inner,
+.site-footer__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.site-title {
+	font-size: 18px;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.primary-menu {
+	display: flex;
+	gap: 12px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.primary-menu a {
+	text-decoration: none;
+	padding: 6px 10px;
+	border-radius: 6px;
+}
+
+.primary-menu a:hover,
+.primary-menu a:focus {
+	background: #f3f4f6;
+}
+
+.content {
+	padding: 24px 0;
+}
+
+.entry-title {
+	margin: 0 0 10px;
+}
+
+.entry-content > :first-child {
+	margin-top: 0;
+}
+
+.entry-content > :last-child {
+	margin-bottom: 0;
+}
+
+.woocommerce .products {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+}
+
+.woocommerce ul.products li.product {
+	margin: 0;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+	padding-left: 0;
+}
