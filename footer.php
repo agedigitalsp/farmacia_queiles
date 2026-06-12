@@ -4,25 +4,155 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+$newsletter_title = get_theme_mod('farmacia_queiles_footer_newsletter_title', __('Únete a nuestra comunidad', 'farmacia-queiles'));
+$newsletter_text = get_theme_mod('farmacia_queiles_footer_newsletter_text', __('Recibe consejos farmacéuticos exclusivos y descubre antes que nadie nuestras novedades botánicas.', 'farmacia-queiles'));
+$newsletter_placeholder = get_theme_mod('farmacia_queiles_footer_newsletter_placeholder', __('Tu correo electrónico', 'farmacia-queiles'));
+$newsletter_button = get_theme_mod('farmacia_queiles_footer_newsletter_button', __('Suscribirme', 'farmacia-queiles'));
+$brand_text = get_theme_mod('farmacia_queiles_footer_brand_text', '');
+$footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
+$footer_address_text = get_theme_mod('farmacia_queiles_footer_address_text', '');
+$footer_address_url = get_theme_mod('farmacia_queiles_footer_address_url', '');
+$footer_phone_text = get_theme_mod('farmacia_queiles_footer_phone_text', '');
+$footer_phone_url = get_theme_mod('farmacia_queiles_footer_phone_url', '');
+$footer_whatsapp_text = get_theme_mod('farmacia_queiles_footer_whatsapp_text', '');
+$footer_whatsapp_url = get_theme_mod('farmacia_queiles_footer_whatsapp_url', '');
+$footer_schedule_title = get_theme_mod('farmacia_queiles_footer_schedule_title', __('Nuestra Botica:', 'farmacia-queiles'));
+$footer_schedule_text = get_theme_mod('farmacia_queiles_footer_schedule_text', '');
+$footer_copyright = get_theme_mod('farmacia_queiles_footer_copyright', '© {year} {site}. ELEVATING PHARMACEUTICAL CARE.');
+$footer_copyright = str_replace(
+	['{year}', '{site}'],
+	[wp_date('Y'), get_bloginfo('name')],
+	(string) $footer_copyright
+);
+
 ?>
-	<footer class="site-footer">
-		<div class="container site-footer__inner">
-			<div class="site-footer__left">
-				<?php echo esc_html(get_bloginfo('name')); ?>
+	<footer class="site-footer site-footer--luxury">
+		<div class="container container--wide">
+			<div class="footer-newsletter">
+				<div class="footer-newsletter__text">
+					<h3 class="footer-newsletter__title"><?php echo esc_html($newsletter_title); ?></h3>
+					<p class="footer-newsletter__description"><?php echo esc_html($newsletter_text); ?></p>
+				</div>
+				<form class="footer-newsletter__form" action="<?php echo esc_url(home_url('/')); ?>" method="post">
+					<label class="screen-reader-text" for="footer-newsletter-email"><?php echo esc_html__('Email', 'farmacia-queiles'); ?></label>
+					<input id="footer-newsletter-email" class="footer-newsletter__input" type="email" name="email" placeholder="<?php echo esc_attr($newsletter_placeholder); ?>">
+					<button class="footer-newsletter__button" type="submit"><?php echo esc_html($newsletter_button); ?></button>
+				</form>
 			</div>
 
-			<nav class="site-footer__nav" aria-label="<?php echo esc_attr__('Menú pie', 'farmacia-queiles'); ?>">
-				<?php
-				wp_nav_menu(
-					[
-						'theme_location' => 'footer',
-						'container' => false,
-						'menu_class' => 'primary-menu',
-						'fallback_cb' => false,
-					]
-				);
-				?>
-			</nav>
+			<div class="footer-main">
+				<div class="footer-col footer-col--brand">
+					<a class="footer-brand" href="<?php echo esc_url(home_url('/')); ?>">
+						<?php if ($footer_logo_id > 0) : ?>
+							<?php echo wp_get_attachment_image($footer_logo_id, 'full', false, ['class' => 'footer-brand__image']); ?>
+						<?php elseif (function_exists('the_custom_logo') && has_custom_logo()) : ?>
+							<?php the_custom_logo(); ?>
+						<?php else : ?>
+							<span class="footer-brand__name"><?php bloginfo('name'); ?></span>
+						<?php endif; ?>
+					</a>
+					<?php if (!empty($brand_text)) : ?>
+						<p class="footer-brand__description"><?php echo esc_html($brand_text); ?></p>
+					<?php endif; ?>
+				</div>
+
+				<div class="footer-col">
+					<h4 class="footer-heading"><?php echo esc_html__('Explorar', 'farmacia-queiles'); ?></h4>
+					<?php
+					wp_nav_menu(
+						[
+							'theme_location' => 'footer_explore',
+							'container' => false,
+							'menu_class' => 'footer-menu',
+							'fallback_cb' => false,
+						]
+					);
+					?>
+				</div>
+
+				<div class="footer-col">
+					<h4 class="footer-heading"><?php echo esc_html__('Soporte', 'farmacia-queiles'); ?></h4>
+					<?php
+					wp_nav_menu(
+						[
+							'theme_location' => 'footer_support',
+							'container' => false,
+							'menu_class' => 'footer-menu',
+							'fallback_cb' => false,
+						]
+					);
+					?>
+				</div>
+
+				<div class="footer-col footer-col--contact">
+					<h4 class="footer-heading"><?php echo esc_html__('Contacto', 'farmacia-queiles'); ?></h4>
+					<div class="footer-contact">
+						<?php if (!empty($footer_address_text)) : ?>
+							<div class="footer-contact__item">
+								<span class="material-symbols-outlined footer-contact__icon">location_on</span>
+								<?php if (!empty($footer_address_url)) : ?>
+									<a class="footer-contact__link" href="<?php echo esc_url($footer_address_url); ?>"><?php echo esc_html($footer_address_text); ?></a>
+								<?php else : ?>
+									<span><?php echo esc_html($footer_address_text); ?></span>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if (!empty($footer_phone_text)) : ?>
+							<div class="footer-contact__item">
+								<span class="material-symbols-outlined footer-contact__icon">call</span>
+								<?php if (!empty($footer_phone_url)) : ?>
+									<a class="footer-contact__link" href="<?php echo esc_url($footer_phone_url); ?>"><?php echo esc_html($footer_phone_text); ?></a>
+								<?php else : ?>
+									<span><?php echo esc_html($footer_phone_text); ?></span>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if (!empty($footer_whatsapp_text)) : ?>
+							<div class="footer-contact__item">
+								<span class="material-symbols-outlined footer-contact__icon footer-contact__icon--whatsapp">chat</span>
+								<?php if (!empty($footer_whatsapp_url)) : ?>
+									<a class="footer-contact__link" href="<?php echo esc_url($footer_whatsapp_url); ?>"><?php echo esc_html($footer_whatsapp_text); ?></a>
+								<?php else : ?>
+									<span class="footer-contact__strong"><?php echo esc_html($footer_whatsapp_text); ?></span>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if (!empty($footer_schedule_text)) : ?>
+							<div class="footer-contact__schedule">
+								<p class="footer-contact__schedule-title"><?php echo esc_html($footer_schedule_title); ?></p>
+								<p class="footer-contact__schedule-text"><?php echo wp_kses_post(nl2br(esc_html($footer_schedule_text))); ?></p>
+							</div>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer-sub">
+				<nav class="footer-legal" aria-label="<?php echo esc_attr__('Legal', 'farmacia-queiles'); ?>">
+					<?php
+					wp_nav_menu(
+						[
+							'theme_location' => 'footer',
+							'container' => false,
+							'menu_class' => 'footer-legal__menu',
+							'fallback_cb' => false,
+						]
+					);
+					?>
+				</nav>
+
+				<p class="footer-copy"><?php echo esc_html($footer_copyright); ?></p>
+
+				<div class="footer-payments" aria-label="<?php echo esc_attr__('Métodos de pago', 'farmacia-queiles'); ?>">
+					<span class="footer-payment">VISA</span>
+					<span class="footer-payment">MASTERCARD</span>
+					<span class="footer-payment">BIZUM</span>
+					<span class="footer-payment">PAYPAL</span>
+				</div>
+			</div>
 		</div>
 	</footer>
 </div>
