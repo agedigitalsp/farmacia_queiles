@@ -8,22 +8,79 @@ $newsletter_title = get_theme_mod('farmacia_queiles_footer_newsletter_title', __
 $newsletter_text = get_theme_mod('farmacia_queiles_footer_newsletter_text', __('Recibe consejos farmacéuticos exclusivos y descubre antes que nadie nuestras novedades botánicas.', 'farmacia-queiles'));
 $newsletter_placeholder = get_theme_mod('farmacia_queiles_footer_newsletter_placeholder', __('Tu correo electrónico', 'farmacia-queiles'));
 $newsletter_button = get_theme_mod('farmacia_queiles_footer_newsletter_button', __('Suscribirme', 'farmacia-queiles'));
-$brand_text = get_theme_mod('farmacia_queiles_footer_brand_text', '');
+$brand_text = get_theme_mod(
+	'farmacia_queiles_footer_brand_text',
+	__('Donde la ciencia farmacéutica se encuentra con el bienestar profundo. Cuidamos tu piel y tu salud con el rigor de un boticario y la sensibilidad de quien valora la vida.', 'farmacia-queiles')
+);
 $footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
-$footer_address_text = get_theme_mod('farmacia_queiles_footer_address_text', '');
-$footer_address_url = get_theme_mod('farmacia_queiles_footer_address_url', '');
-$footer_phone_text = get_theme_mod('farmacia_queiles_footer_phone_text', '');
-$footer_phone_url = get_theme_mod('farmacia_queiles_footer_phone_url', '');
-$footer_whatsapp_text = get_theme_mod('farmacia_queiles_footer_whatsapp_text', '');
+$footer_address_text = get_theme_mod('farmacia_queiles_footer_address_text', get_theme_mod('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, 50500 Tarazona'));
+$footer_address_url = get_theme_mod('farmacia_queiles_footer_address_url', get_theme_mod('farmacia_queiles_address_url', ''));
+$footer_phone_text = get_theme_mod('farmacia_queiles_footer_phone_text', get_theme_mod('farmacia_queiles_phone_text', '976 642 685'));
+$footer_phone_url = get_theme_mod('farmacia_queiles_footer_phone_url', get_theme_mod('farmacia_queiles_phone_url', 'tel:+34976642685'));
+$footer_whatsapp_text = get_theme_mod('farmacia_queiles_footer_whatsapp_text', 'WhatsApp: 689 123 456');
 $footer_whatsapp_url = get_theme_mod('farmacia_queiles_footer_whatsapp_url', '');
 $footer_schedule_title = get_theme_mod('farmacia_queiles_footer_schedule_title', __('Nuestra Botica:', 'farmacia-queiles'));
-$footer_schedule_text = get_theme_mod('farmacia_queiles_footer_schedule_text', '');
+$footer_schedule_text = get_theme_mod('farmacia_queiles_footer_schedule_text', "L-V: 9:00 - 13:45 | 16:30 - 20:00\nSábados: 9:00 - 13:45");
 $footer_copyright = get_theme_mod('farmacia_queiles_footer_copyright', '© {year} {site}. ELEVATING PHARMACEUTICAL CARE.');
 $footer_copyright = str_replace(
 	['{year}', '{site}'],
 	[wp_date('Y'), get_bloginfo('name')],
 	(string) $footer_copyright
 );
+$footer_explore_fallback = [
+	[
+		'label' => __('Dermocosmética', 'farmacia-queiles'),
+		'url' => home_url('/categoria-producto/dermocosmetica'),
+	],
+	[
+		'label' => __('Protección Solar', 'farmacia-queiles'),
+		'url' => home_url('/categoria-producto/solar'),
+	],
+	[
+		'label' => __('Cuidado Facial', 'farmacia-queiles'),
+		'url' => home_url('/categoria-producto/facial'),
+	],
+	[
+		'label' => __('Bienestar Infantil', 'farmacia-queiles'),
+		'url' => home_url('/categoria-producto/infantil'),
+	],
+	[
+		'label' => __('Cuidado Corporal', 'farmacia-queiles'),
+		'url' => home_url('/categoria-producto/corporal'),
+	],
+];
+$footer_support_fallback = [
+	[
+		'label' => __('Envíos y Entregas', 'farmacia-queiles'),
+		'url' => home_url('/envios-y-entregas'),
+	],
+	[
+		'label' => __('Gestión de Devoluciones', 'farmacia-queiles'),
+		'url' => home_url('/devoluciones'),
+	],
+	[
+		'label' => __('Seguimiento de Pedido', 'farmacia-queiles'),
+		'url' => home_url('/seguimiento-pedido'),
+	],
+	[
+		'label' => __('Preguntas Frecuentes', 'farmacia-queiles'),
+		'url' => home_url('/preguntas-frecuentes'),
+	],
+];
+$footer_legal_fallback = [
+	[
+		'label' => __('Aviso legal', 'farmacia-queiles'),
+		'url' => home_url('/aviso-legal'),
+	],
+	[
+		'label' => __('Privacidad', 'farmacia-queiles'),
+		'url' => home_url('/privacidad'),
+	],
+	[
+		'label' => __('Cookies', 'farmacia-queiles'),
+		'url' => home_url('/cookies'),
+	],
+];
 
 ?>
 	<footer class="site-footer site-footer--luxury">
@@ -58,30 +115,46 @@ $footer_copyright = str_replace(
 
 				<div class="footer-col">
 					<h4 class="footer-heading"><?php echo esc_html__('Explorar', 'farmacia-queiles'); ?></h4>
-					<?php
-					wp_nav_menu(
-						[
-							'theme_location' => 'footer_explore',
-							'container' => false,
-							'menu_class' => 'footer-menu',
-							'fallback_cb' => false,
-						]
-					);
-					?>
+					<?php if (has_nav_menu('footer_explore')) : ?>
+						<?php
+						wp_nav_menu(
+							[
+								'theme_location' => 'footer_explore',
+								'container' => false,
+								'menu_class' => 'footer-menu',
+								'fallback_cb' => false,
+							]
+						);
+						?>
+					<?php else : ?>
+						<ul class="footer-menu">
+							<?php foreach ($footer_explore_fallback as $item) : ?>
+								<li><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['label']); ?></a></li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
 				</div>
 
 				<div class="footer-col">
 					<h4 class="footer-heading"><?php echo esc_html__('Soporte', 'farmacia-queiles'); ?></h4>
-					<?php
-					wp_nav_menu(
-						[
-							'theme_location' => 'footer_support',
-							'container' => false,
-							'menu_class' => 'footer-menu',
-							'fallback_cb' => false,
-						]
-					);
-					?>
+					<?php if (has_nav_menu('footer_support')) : ?>
+						<?php
+						wp_nav_menu(
+							[
+								'theme_location' => 'footer_support',
+								'container' => false,
+								'menu_class' => 'footer-menu',
+								'fallback_cb' => false,
+							]
+						);
+						?>
+					<?php else : ?>
+						<ul class="footer-menu">
+							<?php foreach ($footer_support_fallback as $item) : ?>
+								<li><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['label']); ?></a></li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
 				</div>
 
 				<div class="footer-col footer-col--contact">
@@ -132,16 +205,24 @@ $footer_copyright = str_replace(
 
 			<div class="footer-sub">
 				<nav class="footer-legal" aria-label="<?php echo esc_attr__('Legal', 'farmacia-queiles'); ?>">
-					<?php
-					wp_nav_menu(
-						[
-							'theme_location' => 'footer',
-							'container' => false,
-							'menu_class' => 'footer-legal__menu',
-							'fallback_cb' => false,
-						]
-					);
-					?>
+					<?php if (has_nav_menu('footer')) : ?>
+						<?php
+						wp_nav_menu(
+							[
+								'theme_location' => 'footer',
+								'container' => false,
+								'menu_class' => 'footer-legal__menu',
+								'fallback_cb' => false,
+							]
+						);
+						?>
+					<?php else : ?>
+						<ul class="footer-legal__menu">
+							<?php foreach ($footer_legal_fallback as $item) : ?>
+								<li><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['label']); ?></a></li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
 				</nav>
 
 				<p class="footer-copy"><?php echo esc_html($footer_copyright); ?></p>

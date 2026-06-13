@@ -16,9 +16,18 @@ $my_account_url = get_theme_mod(
 );
 $favorites_url = get_theme_mod('farmacia_queiles_favorites_url', home_url('/favoritos'));
 $cart_count = 0;
+$header_categories = class_exists('WooCommerce') ? Farmacia_Queiles_Theme::get_header_product_categories(5) : ['featured' => [], 'more' => []];
+$current_category_id = 0;
 
 if (class_exists('WooCommerce') && WC()->cart) {
 	$cart_count = (int) WC()->cart->get_cart_contents_count();
+}
+
+if (is_tax('product_cat')) {
+	$current_term = get_queried_object();
+	if ($current_term instanceof WP_Term) {
+		$current_category_id = (int) $current_term->term_id;
+	}
 }
 
 ?><!doctype html>
@@ -130,16 +139,50 @@ if (class_exists('WooCommerce') && WC()->cart) {
 		<nav class="site-header__nav" aria-label="<?php echo esc_attr__('Navegación', 'farmacia-queiles'); ?>">
 			<div class="container container--wide site-header__nav-inner">
 				<div class="site-header__nav-left">
-					<?php
-					wp_nav_menu(
-						[
-							'theme_location' => 'primary',
-							'container' => false,
-							'menu_class' => 'primary-menu primary-menu--luxury',
-							'fallback_cb' => false,
-						]
-					);
-					?>
+					<?php if (!empty($header_categories['featured']) || !empty($header_categories['more'])) : ?>
+						<ul class="header-categories" role="list">
+							<?php foreach ($header_categories['featured'] as $category) : ?>
+								<li class="header-categories__item<?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>">
+									<a class="header-categories__link" href="<?php echo esc_url(get_term_link($category)); ?>">
+										<?php echo esc_html($category->name); ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+
+							<?php if (!empty($header_categories['more'])) : ?>
+								<li class="header-categories__item header-categories__item--dropdown">
+									<details class="header-categories__dropdown">
+										<summary class="header-categories__toggle">
+											<span class="material-symbols-outlined header-categories__toggle-icon">grid_view</span>
+											<span><?php echo esc_html__('Más categorías', 'farmacia-queiles'); ?></span>
+											<span class="material-symbols-outlined header-categories__toggle-arrow">expand_more</span>
+										</summary>
+
+										<ul class="header-categories__menu" role="list">
+											<?php foreach ($header_categories['more'] as $category) : ?>
+												<li class="header-categories__menu-item<?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>">
+													<a class="header-categories__menu-link" href="<?php echo esc_url(get_term_link($category)); ?>">
+														<?php echo esc_html($category->name); ?>
+													</a>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									</details>
+								</li>
+							<?php endif; ?>
+						</ul>
+					<?php else : ?>
+						<?php
+						wp_nav_menu(
+							[
+								'theme_location' => 'primary',
+								'container' => false,
+								'menu_class' => 'primary-menu primary-menu--luxury',
+								'fallback_cb' => false,
+							]
+						);
+						?>
+					<?php endif; ?>
 				</div>
 
 				<div class="site-header__nav-right">
