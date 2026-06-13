@@ -20,8 +20,18 @@ final class Farmacia_Queiles_Theme
 		add_action('wp_footer', [$this, 'render_cart_drawer']);
 		add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']);
 		add_action('init', [$this, 'register_promociones_cpt']);
+		add_action('init', [$this, 'customize_brand_taxonomy'], 99);
+		add_action('rest_api_init', [$this, 'register_promociones_rest_routes']);
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_promociones_admin_assets']);
 		add_action('add_meta_boxes', [$this, 'register_promociones_meta_boxes']);
 		add_action('save_post_promociones', [$this, 'save_promociones_meta'], 10, 2);
+		add_filter('manage_promociones_posts_columns', [$this, 'add_promociones_admin_columns']);
+		add_action('manage_promociones_posts_custom_column', [$this, 'render_promociones_admin_columns'], 10, 2);
+		add_action('after_switch_theme', [$this, 'schedule_rewrite_flush']);
+		add_action('admin_init', [$this, 'maybe_flush_rewrite_rules']);
+		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
+		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
+		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
 	}
 
 	public function setup(): void
@@ -83,6 +93,22 @@ final class Farmacia_Queiles_Theme
 			null
 		);
 		wp_enqueue_style('farmacia-queiles-style', get_stylesheet_uri(), [], $this->version);
+
+		if (is_front_page()) {
+			wp_enqueue_style(
+				'farmacia-queiles-home-hero',
+				get_template_directory_uri() . '/assets/css/home-hero-promotions.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-home-hero',
+				get_template_directory_uri() . '/assets/js/home-hero-promotions.min.js',
+				[],
+				$this->version,
+				true
+			);
+		}
 
 		if (class_exists('WooCommerce')) {
 			wp_enqueue_script('wc-cart-fragments');
@@ -381,6 +407,98 @@ final class Farmacia_Queiles_Theme
 		return esc_url_raw($value);
 	}
 
+	public static function get_header_product_categories(int $limit = 5): array
+	{
+		if (!taxonomy_exists('product_cat')) {
+			return [
+				'featured' => [],
+				'more' => [],
+			];
+		}
+
+		$exclude = [];
+		$default_product_cat = (int) get_option('default_product_cat');
+
+		if ($default_product_cat > 0) {
+			$exclude[] = $default_product_cat;
+		}
+
+		$terms = get_terms(
+			[
+				'taxonomy' => 'product_cat',
+				'hide_empty' => false,
+				'parent' => 0,
+				'exclude' => $exclude,
+				'orderby' => 'name',
+				'order' => 'ASC',
+			]
+		);
+
+		if (is_wp_error($terms) || empty($terms)) {
+			return [
+				'featured' => [],
+				'more' => [],
+			];
+		}
+
+		return [
+			'featured' => array_slice($terms, 0, $limit),
+			'more' => array_slice($terms, $limit),
+		];
+	}
+
+	public function customize_brand_taxonomy(): void
+	{
+		global $wp_taxonomies;
+
+		if (!isset($wp_taxonomies['product_brand'])) {
+			return;
+		}
+
+		$taxonomy = $wp_taxonomies['product_brand'];
+
+		$taxonomy->labels->name = __('Laboratorios', 'farmacia-queiles');
+		$taxonomy->labels->singular_name = __('Laboratorio', 'farmacia-queiles');
+		$taxonomy->labels->menu_name = __('Laboratorios', 'farmacia-queiles');
+		$taxonomy->labels->all_items = __('Todos los laboratorios', 'farmacia-queiles');
+		$taxonomy->labels->edit_item = __('Editar laboratorio', 'farmacia-queiles');
+		$taxonomy->labels->view_item = __('Ver laboratorio', 'farmacia-queiles');
+		$taxonomy->labels->update_item = __('Actualizar laboratorio', 'farmacia-queiles');
+		$taxonomy->labels->add_new_item = __('Añadir nuevo laboratorio', 'farmacia-queiles');
+		$taxonomy->labels->new_item_name = __('Nuevo laboratorio', 'farmacia-queiles');
+		$taxonomy->labels->parent_item = __('Laboratorio superior', 'farmacia-queiles');
+		$taxonomy->labels->parent_item_colon = __('Laboratorio superior:', 'farmacia-queiles');
+		$taxonomy->labels->search_items = __('Buscar laboratorios', 'farmacia-queiles');
+		$taxonomy->labels->popular_items = __('Laboratorios populares', 'farmacia-queiles');
+		$taxonomy->labels->separate_items_with_commas = __('Separa laboratorios con comas', 'farmacia-queiles');
+		$taxonomy->labels->add_or_remove_items = __('Añadir o quitar laboratorios', 'farmacia-queiles');
+		$taxonomy->labels->choose_from_most_used = __('Elegir entre los laboratorios más usados', 'farmacia-queiles');
+		$taxonomy->labels->not_found = __('No se han encontrado laboratorios.', 'farmacia-queiles');
+		$taxonomy->labels->back_to_items = __('Volver a laboratorios', 'farmacia-queiles');
+
+		$taxonomy->label = __('Laboratorios', 'farmacia-queiles');
+		$taxonomy->rewrite = [
+			'slug' => 'laboratorio',
+			'with_front' => false,
+			'hierarchical' => true,
+		];
+	}
+
+	public function schedule_rewrite_flush(): void
+	{
+		update_option('farmacia_queiles_flush_rewrite_rules', '1');
+	}
+
+	public function maybe_flush_rewrite_rules(): void
+	{
+		if ('1' !== get_option('farmacia_queiles_flush_rewrite_rules')) {
+			return;
+		}
+
+		delete_option('farmacia_queiles_flush_rewrite_rules');
+		flush_rewrite_rules();
+	}
+
 	public function register_promociones_cpt(): void
 	{
 		$labels = [
@@ -423,6 +541,75 @@ final class Farmacia_Queiles_Theme
 		);
 	}
 
+	public function register_promociones_rest_routes(): void
+	{
+		register_rest_route(
+			'farmacia-queiles/v1',
+			'/products-search',
+			[
+				'methods' => WP_REST_Server::READABLE,
+				'callback' => [$this, 'rest_search_products'],
+				'permission_callback' => static function (): bool {
+					return current_user_can('edit_posts');
+				},
+				'args' => [
+					'search' => [
+						'type' => 'string',
+						'required' => false,
+					],
+					'include' => [
+						'type' => 'array',
+						'required' => false,
+					],
+					'page' => [
+						'type' => 'integer',
+						'required' => false,
+						'default' => 1,
+					],
+				],
+			]
+		);
+	}
+
+	public function enqueue_promociones_admin_assets(string $hook_suffix): void
+	{
+		if (!in_array($hook_suffix, ['post.php', 'post-new.php'], true)) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if (!$screen || 'promociones' !== $screen->post_type) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'farmacia-queiles-select2',
+			get_template_directory_uri() . '/assets/vendor/select2/css/select2.min.css',
+			[],
+			'4.1.0-rc.0'
+		);
+		wp_enqueue_style(
+			'farmacia-queiles-promociones-admin',
+			get_template_directory_uri() . '/assets/css/admin/promociones-select2.min.css',
+			['farmacia-queiles-select2'],
+			$this->version
+		);
+		wp_enqueue_script(
+			'farmacia-queiles-select2',
+			get_template_directory_uri() . '/assets/vendor/select2/js/select2.min.js',
+			['jquery'],
+			'4.1.0-rc.0',
+			true
+		);
+		wp_enqueue_script(
+			'farmacia-queiles-promociones-admin',
+			get_template_directory_uri() . '/assets/js/admin/promociones-select2.min.js',
+			['jquery', 'farmacia-queiles-select2'],
+			$this->version,
+			true
+		);
+	}
+
 	public function render_promociones_meta_box(WP_Post $post): void
 	{
 		wp_nonce_field('farmacia_queiles_promociones_save', 'farmacia_queiles_promociones_nonce');
@@ -430,17 +617,32 @@ final class Farmacia_Queiles_Theme
 		$subtitle = (string) get_post_meta($post->ID, '_fq_promo_subtitle', true);
 		$description = (string) get_post_meta($post->ID, '_fq_promo_description', true);
 		$selected_cat = (string) get_post_meta($post->ID, '_fq_promo_product_cat', true);
+		$selected_brand = (string) get_post_meta($post->ID, '_fq_promo_product_brand', true);
 		$selected_products = get_post_meta($post->ID, '_fq_promo_products', true);
 		$selected_products = is_array($selected_products) ? array_map('intval', $selected_products) : [];
+		$featured_1 = (bool) get_post_meta($post->ID, '_fq_promo_featured_1', true);
+		$featured_2 = (bool) get_post_meta($post->ID, '_fq_promo_featured_2', true);
 
 		?>
 		<p>
 			<label for="fq_promo_subtitle"><strong><?php echo esc_html__('Subtítulo', 'farmacia-queiles'); ?></strong></label><br>
-			<input id="fq_promo_subtitle" name="fq_promo_subtitle" type="text" value="<?php echo esc_attr($subtitle); ?>" class="widefat">
+			<input id="fq_promo_subtitle" name="fq_promo_subtitle" type="text" value="<?php echo esc_attr($subtitle); ?>" class="widefat" required>
+			<span class="description"><?php echo esc_html__('Este campo es obligatorio.', 'farmacia-queiles'); ?></span>
 		</p>
 		<p>
 			<label for="fq_promo_description"><strong><?php echo esc_html__('Descripción', 'farmacia-queiles'); ?></strong></label><br>
 			<textarea id="fq_promo_description" name="fq_promo_description" rows="5" class="widefat"><?php echo esc_textarea($description); ?></textarea>
+		</p>
+		<p>
+			<label>
+				<input type="checkbox" name="fq_promo_featured_1" value="1" <?php checked($featured_1); ?>>
+				<?php echo esc_html__('Promo destacada 1', 'farmacia-queiles'); ?>
+			</label>
+			<br>
+			<label>
+				<input type="checkbox" name="fq_promo_featured_2" value="1" <?php checked($featured_2); ?>>
+				<?php echo esc_html__('Promo destacada 2', 'farmacia-queiles'); ?>
+			</label>
 		</p>
 		<hr>
 		<?php if (taxonomy_exists('product_cat')) : ?>
@@ -465,27 +667,52 @@ final class Farmacia_Queiles_Theme
 			<p><?php echo esc_html__('WooCommerce no está activo o la taxonomía de productos no está disponible.', 'farmacia-queiles'); ?></p>
 		<?php endif; ?>
 
+		<?php if (taxonomy_exists('product_brand')) : ?>
+			<p>
+				<label for="fq_promo_product_brand"><strong><?php echo esc_html__('Laboratorio (WooCommerce)', 'farmacia-queiles'); ?></strong></label><br>
+				<?php
+				wp_dropdown_categories(
+					[
+						'taxonomy' => 'product_brand',
+						'hide_empty' => false,
+						'name' => 'fq_promo_product_brand',
+						'id' => 'fq_promo_product_brand',
+						'class' => 'widefat',
+						'show_option_none' => __('— Sin laboratorio —', 'farmacia-queiles'),
+						'option_none_value' => '',
+						'selected' => $selected_brand,
+					]
+				);
+				?>
+			</p>
+		<?php else : ?>
+			<p><?php echo esc_html__('La taxonomía de laboratorios no está disponible.', 'farmacia-queiles'); ?></p>
+		<?php endif; ?>
+
 		<?php if (post_type_exists('product')) : ?>
 			<?php
-			$products = get_posts(
-				[
-					'post_type' => 'product',
-					'numberposts' => 200,
-					'post_status' => 'publish',
-					'orderby' => 'title',
-					'order' => 'ASC',
-				]
-			);
+			$products = $this->get_promociones_initial_products($selected_products);
 			?>
 			<p>
 				<label for="fq_promo_products"><strong><?php echo esc_html__('Productos (WooCommerce)', 'farmacia-queiles'); ?></strong></label><br>
-				<select id="fq_promo_products" name="fq_promo_products[]" class="widefat" multiple size="10">
+				<select
+					id="fq_promo_products"
+					name="fq_promo_products[]"
+					class="widefat fq-promo-products-select"
+					multiple
+					data-rest-url="<?php echo esc_url(rest_url('farmacia-queiles/v1/products-search')); ?>"
+					data-rest-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>"
+					data-placeholder="<?php echo esc_attr__('Busca productos...', 'farmacia-queiles'); ?>"
+				>
 					<?php foreach ($products as $product) : ?>
 						<option value="<?php echo esc_attr((string) $product->ID); ?>"<?php selected(in_array((int) $product->ID, $selected_products, true)); ?>>
 							<?php echo esc_html(get_the_title($product)); ?>
 						</option>
 					<?php endforeach; ?>
 				</select>
+				<span class="fq-promo-help">
+					<?php echo esc_html__('Se cargan los primeros 20 productos y luego puedes buscar más por AJAX.', 'farmacia-queiles'); ?>
+				</span>
 			</p>
 		<?php else : ?>
 			<p><?php echo esc_html__('WooCommerce no está activo o el tipo de contenido "product" no está disponible.', 'farmacia-queiles'); ?></p>
@@ -510,13 +737,155 @@ final class Farmacia_Queiles_Theme
 		$subtitle = isset($_POST['fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['fq_promo_subtitle']) : '';
 		$description = isset($_POST['fq_promo_description']) ? sanitize_textarea_field((string) $_POST['fq_promo_description']) : '';
 		$product_cat = isset($_POST['fq_promo_product_cat']) ? sanitize_text_field((string) $_POST['fq_promo_product_cat']) : '';
+		$product_brand = isset($_POST['fq_promo_product_brand']) ? sanitize_text_field((string) $_POST['fq_promo_product_brand']) : '';
+		$featured_1 = isset($_POST['fq_promo_featured_1']) ? '1' : '';
+		$featured_2 = isset($_POST['fq_promo_featured_2']) ? '1' : '';
 		$products = isset($_POST['fq_promo_products']) && is_array($_POST['fq_promo_products']) ? array_map('intval', (array) $_POST['fq_promo_products']) : [];
 		$products = array_values(array_filter($products, static fn($id) => $id > 0));
 
 		update_post_meta($post_id, '_fq_promo_subtitle', $subtitle);
 		update_post_meta($post_id, '_fq_promo_description', $description);
 		update_post_meta($post_id, '_fq_promo_product_cat', $product_cat);
+		update_post_meta($post_id, '_fq_promo_product_brand', $product_brand);
+		update_post_meta($post_id, '_fq_promo_featured_1', $featured_1);
+		update_post_meta($post_id, '_fq_promo_featured_2', $featured_2);
 		update_post_meta($post_id, '_fq_promo_products', $products);
+	}
+
+	public function validate_promociones_subtitle(array $data, array $postarr): array
+	{
+		if (($data['post_type'] ?? '') !== 'promociones') {
+			return $data;
+		}
+
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return $data;
+		}
+
+		$subtitle = isset($_POST['fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['fq_promo_subtitle']) : '';
+		$status = $data['post_status'] ?? '';
+
+		if ($subtitle !== '' || in_array($status, ['auto-draft', 'trash'], true)) {
+			return $data;
+		}
+
+		if (in_array($status, ['publish', 'future', 'pending'], true)) {
+			$data['post_status'] = 'draft';
+		}
+
+		return $data;
+	}
+
+	public function add_promociones_subtitle_notice(string $location): string
+	{
+		$post_type = isset($_POST['post_type']) ? sanitize_key((string) $_POST['post_type']) : '';
+		$subtitle = isset($_POST['fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['fq_promo_subtitle']) : '';
+
+		if ('promociones' !== $post_type || '' !== $subtitle) {
+			return $location;
+		}
+
+		return add_query_arg('fq_promo_subtitle_required', '1', $location);
+	}
+
+	public function render_promociones_subtitle_notice(): void
+	{
+		if (!is_admin() || !isset($_GET['fq_promo_subtitle_required'])) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if (!$screen || 'promociones' !== $screen->post_type) {
+			return;
+		}
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php echo esc_html__('El subtítulo es obligatorio para guardar o publicar una promoción.', 'farmacia-queiles'); ?></p>
+		</div>
+		<?php
+	}
+
+	public function add_promociones_admin_columns(array $columns): array
+	{
+		$updated_columns = [];
+
+		foreach ($columns as $key => $label) {
+			$updated_columns[$key] = $label;
+
+			if ('title' === $key) {
+				$updated_columns['fq_promo_tipo'] = __('Tipo', 'farmacia-queiles');
+			}
+		}
+
+		return $updated_columns;
+	}
+
+	public function render_promociones_admin_columns(string $column, int $post_id): void
+	{
+		if ('fq_promo_tipo' !== $column) {
+			return;
+		}
+
+		$is_featured_1 = '1' === (string) get_post_meta($post_id, '_fq_promo_featured_1', true);
+		$is_featured_2 = '1' === (string) get_post_meta($post_id, '_fq_promo_featured_2', true);
+
+		if ($is_featured_1) {
+			echo esc_html__('Destacada 1', 'farmacia-queiles');
+			return;
+		}
+
+		if ($is_featured_2) {
+			echo esc_html__('Destacada 2', 'farmacia-queiles');
+			return;
+		}
+
+		echo esc_html__('General', 'farmacia-queiles');
+	}
+
+	public function rest_search_products(WP_REST_Request $request): WP_REST_Response
+	{
+		$search = sanitize_text_field((string) $request->get_param('search'));
+		$page = max(1, (int) $request->get_param('page'));
+		$include = $request->get_param('include');
+		$include = is_array($include) ? array_values(array_filter(array_map('intval', $include))) : [];
+
+		$args = [
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'posts_per_page' => 20,
+			'paged' => $page,
+			'orderby' => 'title',
+			'order' => 'ASC',
+			'fields' => 'ids',
+		];
+
+		if ('' !== $search) {
+			$args['s'] = $search;
+		}
+
+		if (!empty($include) && '' === $search) {
+			$args['post__in'] = $include;
+			$args['orderby'] = 'post__in';
+		}
+
+		$query = new WP_Query($args);
+		$results = [];
+
+		foreach ($query->posts as $product_id) {
+			$results[] = [
+				'id' => (int) $product_id,
+				'text' => get_the_title((int) $product_id),
+			];
+		}
+
+		return new WP_REST_Response(
+			[
+				'results' => $results,
+				'pagination' => [
+					'more' => $query->max_num_pages > $page,
+				],
+			]
+		);
 	}
 
 	private function get_cart_count_markup(): string
@@ -637,6 +1006,42 @@ final class Farmacia_Queiles_Theme
 })();
 JS;
 	}
+
+	private function get_promociones_initial_products(array $selected_products): array
+	{
+		$initial_products = get_posts(
+			[
+				'post_type' => 'product',
+				'numberposts' => 20,
+				'post_status' => 'publish',
+				'orderby' => 'title',
+				'order' => 'ASC',
+			]
+		);
+
+		if (empty($selected_products)) {
+			return $initial_products;
+		}
+
+		$selected_posts = get_posts(
+			[
+				'post_type' => 'product',
+				'post__in' => $selected_products,
+				'numberposts' => -1,
+				'post_status' => 'publish',
+				'orderby' => 'post__in',
+			]
+		);
+
+		$merged = [];
+
+		foreach (array_merge($selected_posts, $initial_products) as $product) {
+			$merged[$product->ID] = $product;
+		}
+
+		return array_values($merged);
+	}
+
 }
 
 new Farmacia_Queiles_Theme();
