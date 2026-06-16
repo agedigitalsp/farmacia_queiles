@@ -17,12 +17,28 @@ final class Farmacia_Queiles_Theme
 		add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
 		add_action('widgets_init', [$this, 'widgets_init']);
 		add_action('customize_register', [$this, 'customize_register']);
+		add_action('wp_head', [$this, 'render_schema_markup'], 20);
 		add_action('wp_footer', [$this, 'render_cart_drawer']);
 		add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']);
+		add_filter('nav_menu_link_attributes', [$this, 'filter_nav_menu_link_attributes'], 10, 4);
+		add_action('product_cat_add_form_fields', [$this, 'render_featured_product_cat_add_field']);
+		add_action('product_cat_edit_form_fields', [$this, 'render_featured_product_cat_edit_field']);
+		add_action('created_product_cat', [$this, 'save_featured_product_cat_meta']);
+		add_action('edited_product_cat', [$this, 'save_featured_product_cat_meta']);
+		add_action('product_brand_add_form_fields', [$this, 'render_featured_product_brand_add_field']);
+		add_action('product_brand_edit_form_fields', [$this, 'render_featured_product_brand_edit_field']);
+		add_action('created_product_brand', [$this, 'save_featured_product_brand_meta']);
+		add_action('edited_product_brand', [$this, 'save_featured_product_brand_meta']);
+		add_filter('manage_edit-product_cat_columns', [$this, 'add_featured_product_cat_column']);
+		add_filter('manage_edit-product_brand_columns', [$this, 'add_featured_product_brand_column']);
+		add_filter('manage_product_cat_custom_column', [$this, 'render_featured_product_cat_column'], 10, 3);
+		add_filter('manage_product_brand_custom_column', [$this, 'render_featured_product_brand_column'], 10, 3);
+		add_action('wp_ajax_fq_toggle_featured_term', [$this, 'ajax_toggle_featured_term']);
 		add_action('init', [$this, 'register_promociones_cpt']);
 		add_action('init', [$this, 'customize_brand_taxonomy'], 99);
 		add_action('rest_api_init', [$this, 'register_promociones_rest_routes']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_promociones_admin_assets']);
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_term_featured_admin_assets']);
 		add_action('add_meta_boxes', [$this, 'register_promociones_meta_boxes']);
 		add_action('save_post_promociones', [$this, 'save_promociones_meta'], 10, 2);
 		add_filter('manage_promociones_posts_columns', [$this, 'add_promociones_admin_columns']);
@@ -93,6 +109,13 @@ final class Farmacia_Queiles_Theme
 			null
 		);
 		wp_enqueue_style('farmacia-queiles-style', get_stylesheet_uri(), [], $this->version);
+		wp_enqueue_script(
+			'farmacia-queiles-header-mobile',
+			get_template_directory_uri() . '/assets/js/header-mobile.min.js',
+			[],
+			$this->version,
+			true
+		);
 
 		if (is_front_page()) {
 			wp_enqueue_style(
@@ -101,9 +124,22 @@ final class Farmacia_Queiles_Theme
 				['farmacia-queiles-style'],
 				$this->version
 			);
+			wp_enqueue_style(
+				'farmacia-queiles-home-labs',
+				get_template_directory_uri() . '/assets/css/home-labs-stories.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-hero',
 				get_template_directory_uri() . '/assets/js/home-hero-promotions.min.js',
+				[],
+				$this->version,
+				true
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-home-labs',
+				get_template_directory_uri() . '/assets/js/home-labs-stories.min.js',
 				[],
 				$this->version,
 				true
@@ -174,6 +210,14 @@ final class Farmacia_Queiles_Theme
 			[
 				'title' => __('Footer', 'farmacia-queiles'),
 				'priority' => 32,
+			]
+		);
+		$wp_customize->add_section(
+			'farmacia_queiles_home_labs',
+			[
+				'title' => __('Home - Laboratorios de confianza', 'farmacia-queiles'),
+				'priority' => 33,
+				'active_callback' => [$this, 'is_front_page_customizer'],
 			]
 		);
 
@@ -355,6 +399,68 @@ final class Farmacia_Queiles_Theme
 				]
 			);
 		}
+
+		$home_labs_settings = [
+			'farmacia_queiles_home_labs_kicker' => [
+				'label' => __('Home Labs - Texto superior', 'farmacia-queiles'),
+				'default' => __('Nuestros laboratorios', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+			],
+			'farmacia_queiles_home_labs_title_html' => [
+				'label' => __('Home Labs - Título HTML', 'farmacia-queiles'),
+				'default' => 'Laboratorios de <span class="home-labs-stories__title-accent">Confianza</span>',
+				'sanitize_callback' => [$this, 'sanitize_basic_html'],
+				'type' => 'textarea',
+			],
+		];
+
+		foreach ($home_labs_settings as $setting_id => $args) {
+			$wp_customize->add_setting(
+				$setting_id,
+				[
+					'default' => $args['default'],
+					'sanitize_callback' => $args['sanitize_callback'],
+				]
+			);
+
+			$wp_customize->add_control(
+				$setting_id,
+				[
+					'label' => $args['label'],
+					'section' => 'farmacia_queiles_home_labs',
+					'type' => 'text',
+				]
+			);
+		}
+	}
+
+	public function is_front_page_customizer($control = null): bool
+	{
+		unset($control);
+
+		if (is_front_page()) {
+			return true;
+		}
+
+		$front_page_id = (int) get_option('page_on_front');
+
+		if ($front_page_id < 1 || !is_customize_preview()) {
+			return false;
+		}
+
+		global $wp_customize;
+
+		if (!isset($wp_customize) || !($wp_customize instanceof WP_Customize_Manager)) {
+			return false;
+		}
+
+		$previewed_url = $wp_customize->get_preview_url();
+
+		if (!is_string($previewed_url) || '' === $previewed_url) {
+			return false;
+		}
+
+		return untrailingslashit($previewed_url) === untrailingslashit(get_permalink($front_page_id));
 	}
 
 	public function render_cart_drawer(): void
@@ -402,9 +508,403 @@ final class Farmacia_Queiles_Theme
 		return sanitize_textarea_field($value);
 	}
 
+	public function sanitize_basic_html(string $value): string
+	{
+		return wp_kses(
+			$value,
+			[
+				'span' => [
+					'class' => true,
+				],
+				'em' => [],
+				'strong' => [],
+				'b' => [],
+				'i' => [],
+				'br' => [],
+			]
+		);
+	}
+
 	public function sanitize_url(string $value): string
 	{
 		return esc_url_raw($value);
+	}
+
+	public function render_featured_product_cat_add_field(string $taxonomy): void
+	{
+		unset($taxonomy);
+		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
+		?>
+		<div class="form-field">
+			<label for="fq_featured_product_cat">
+				<input type="checkbox" name="fq_featured_product_cat" id="fq_featured_product_cat" value="1">
+				<?php echo esc_html__('Categoría destacada', 'farmacia-queiles'); ?>
+			</label>
+		</div>
+		<?php
+	}
+
+	public function render_featured_product_cat_edit_field(WP_Term $term): void
+	{
+		$is_featured = '1' === (string) get_term_meta($term->term_id, '_fq_featured_product_cat', true);
+		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
+		?>
+		<tr class="form-field">
+			<th scope="row">
+				<label for="fq_featured_product_cat"><?php echo esc_html__('Categoría destacada', 'farmacia-queiles'); ?></label>
+			</th>
+			<td>
+				<label>
+					<input type="checkbox" name="fq_featured_product_cat" id="fq_featured_product_cat" value="1" <?php checked($is_featured); ?>>
+					<?php echo esc_html__('Mostrar como destacada', 'farmacia-queiles'); ?>
+				</label>
+			</td>
+		</tr>
+		<?php
+	}
+
+	public function save_featured_product_cat_meta(int $term_id): void
+	{
+		$this->save_featured_term_meta($term_id, 'product_cat', '_fq_featured_product_cat', 'fq_featured_product_cat');
+	}
+
+	public function render_featured_product_brand_add_field(string $taxonomy): void
+	{
+		unset($taxonomy);
+		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
+		?>
+		<div class="form-field">
+			<label for="fq_featured_product_brand">
+				<input type="checkbox" name="fq_featured_product_brand" id="fq_featured_product_brand" value="1">
+				<?php echo esc_html__('Laboratorio destacado', 'farmacia-queiles'); ?>
+			</label>
+		</div>
+		<?php
+	}
+
+	public function render_featured_product_brand_edit_field(WP_Term $term): void
+	{
+		$is_featured = '1' === (string) get_term_meta($term->term_id, '_fq_featured_product_brand', true);
+		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
+		?>
+		<tr class="form-field">
+			<th scope="row">
+				<label for="fq_featured_product_brand"><?php echo esc_html__('Laboratorio destacado', 'farmacia-queiles'); ?></label>
+			</th>
+			<td>
+				<label>
+					<input type="checkbox" name="fq_featured_product_brand" id="fq_featured_product_brand" value="1" <?php checked($is_featured); ?>>
+					<?php echo esc_html__('Mostrar como destacado', 'farmacia-queiles'); ?>
+				</label>
+			</td>
+		</tr>
+		<?php
+	}
+
+	public function save_featured_product_brand_meta(int $term_id): void
+	{
+		$this->save_featured_term_meta($term_id, 'product_brand', '_fq_featured_product_brand', 'fq_featured_product_brand');
+	}
+
+	public function add_featured_product_cat_column(array $columns): array
+	{
+		return $this->add_featured_term_column($columns, __('Destacada', 'farmacia-queiles'));
+	}
+
+	public function add_featured_product_brand_column(array $columns): array
+	{
+		return $this->add_featured_term_column($columns, __('Destacado', 'farmacia-queiles'));
+	}
+
+	public function render_featured_product_cat_column(string $content, string $column_name, int $term_id): string
+	{
+		return $this->render_featured_term_column($content, $column_name, $term_id, 'product_cat', '_fq_featured_product_cat');
+	}
+
+	public function render_featured_product_brand_column(string $content, string $column_name, int $term_id): string
+	{
+		return $this->render_featured_term_column($content, $column_name, $term_id, 'product_brand', '_fq_featured_product_brand');
+	}
+
+	public function enqueue_term_featured_admin_assets(string $hook): void
+	{
+		if ('edit-tags.php' !== $hook) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if (!$screen || !in_array($screen->taxonomy, ['product_cat', 'product_brand'], true)) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'farmacia-queiles-term-featured-toggle',
+			get_template_directory_uri() . '/assets/js/admin/term-featured-toggle.min.js',
+			[],
+			$this->version,
+			true
+		);
+		wp_localize_script(
+			'farmacia-queiles-term-featured-toggle',
+			'FQTermFeatured',
+			[
+				'ajaxUrl' => admin_url('admin-ajax.php'),
+				'nonce' => wp_create_nonce('fq_term_featured_toggle'),
+			]
+		);
+	}
+
+	public function ajax_toggle_featured_term(): void
+	{
+		check_ajax_referer('fq_term_featured_toggle', 'nonce');
+
+		$term_id = isset($_POST['term_id']) ? absint((string) $_POST['term_id']) : 0;
+		$taxonomy = isset($_POST['taxonomy']) ? sanitize_key((string) $_POST['taxonomy']) : '';
+		$value = isset($_POST['value']) ? sanitize_text_field((string) $_POST['value']) : '';
+
+		$meta_key = match ($taxonomy) {
+			'product_cat' => '_fq_featured_product_cat',
+			'product_brand' => '_fq_featured_product_brand',
+			default => '',
+		};
+
+		if ($term_id < 1 || '' === $meta_key || !taxonomy_exists($taxonomy)) {
+			wp_send_json_error(['message' => 'invalid_request']);
+		}
+
+		$taxonomy_object = get_taxonomy($taxonomy);
+
+		if (!$taxonomy_object || !isset($taxonomy_object->cap->manage_terms) || !current_user_can($taxonomy_object->cap->manage_terms)) {
+			wp_send_json_error(['message' => 'forbidden']);
+		}
+
+		if ('1' === $value) {
+			update_term_meta($term_id, $meta_key, '1');
+			wp_send_json_success(['value' => '1']);
+		}
+
+		delete_term_meta($term_id, $meta_key);
+		wp_send_json_success(['value' => '']);
+	}
+
+	private function add_featured_term_column(array $columns, string $label): array
+	{
+		$updated_columns = [];
+
+		foreach ($columns as $key => $value) {
+			$updated_columns[$key] = $value;
+
+			if ('name' === $key) {
+				$updated_columns['fq_featured'] = $label;
+			}
+		}
+
+		if (!isset($updated_columns['fq_featured'])) {
+			$updated_columns['fq_featured'] = $label;
+		}
+
+		return $updated_columns;
+	}
+
+	private function render_featured_term_column(string $content, string $column_name, int $term_id, string $taxonomy, string $meta_key): string
+	{
+		if ('fq_featured' !== $column_name) {
+			return $content;
+		}
+
+		$is_featured = '1' === (string) get_term_meta($term_id, $meta_key, true);
+
+		return sprintf(
+			'<input type="checkbox" class="fq-term-featured-toggle" data-term-id="%1$s" data-taxonomy="%2$s" %3$s>',
+			esc_attr((string) $term_id),
+			esc_attr($taxonomy),
+			checked($is_featured, true, false)
+		);
+	}
+
+	private function save_featured_term_meta(int $term_id, string $taxonomy, string $meta_key, string $post_key): void
+	{
+		$nonce = isset($_POST['fq_featured_term_meta_nonce']) ? (string) $_POST['fq_featured_term_meta_nonce'] : '';
+
+		if ('' === $nonce || !wp_verify_nonce($nonce, 'fq_featured_term_meta')) {
+			return;
+		}
+
+		$taxonomy_object = get_taxonomy($taxonomy);
+
+		if (!$taxonomy_object || !isset($taxonomy_object->cap->manage_terms)) {
+			return;
+		}
+
+		if (!current_user_can($taxonomy_object->cap->manage_terms)) {
+			return;
+		}
+
+		$value = isset($_POST[$post_key]) ? '1' : '';
+
+		if ('' === $value) {
+			delete_term_meta($term_id, $meta_key);
+			return;
+		}
+
+		update_term_meta($term_id, $meta_key, '1');
+	}
+
+	public static function is_external_http_url(string $url): bool
+	{
+		if ('' === $url) {
+			return false;
+		}
+
+		$parsed_url = wp_parse_url($url);
+		$scheme = isset($parsed_url['scheme']) ? strtolower((string) $parsed_url['scheme']) : '';
+
+		if (!in_array($scheme, ['http', 'https'], true)) {
+			return false;
+		}
+
+		$link_host = isset($parsed_url['host']) ? strtolower((string) $parsed_url['host']) : '';
+		$home_host = strtolower((string) wp_parse_url(home_url('/'), PHP_URL_HOST));
+
+		if ('' === $link_host || '' === $home_host) {
+			return false;
+		}
+
+		return $link_host !== $home_host;
+	}
+
+	public static function get_seo_link_attributes(string $url): string
+	{
+		if (!self::is_external_http_url($url)) {
+			return '';
+		}
+
+		return ' target="_blank" rel="noopener noreferrer nofollow"';
+	}
+
+	public function filter_nav_menu_link_attributes(array $atts, WP_Post $item, stdClass $args, int $depth): array
+	{
+		unset($item, $args, $depth);
+
+		$url = isset($atts['href']) ? (string) $atts['href'] : '';
+
+		if (!self::is_external_http_url($url)) {
+			return $atts;
+		}
+
+		$atts['target'] = '_blank';
+		$atts['rel'] = 'noopener noreferrer nofollow';
+
+		return $atts;
+	}
+
+	public function render_schema_markup(): void
+	{
+		if (is_admin() || wp_doing_ajax() || is_feed()) {
+			return;
+		}
+
+		$home_url = trailingslashit(home_url('/'));
+		$site_name = get_bloginfo('name');
+		$logo_url = $this->get_schema_logo_url();
+		$phone_text = (string) get_theme_mod('farmacia_queiles_phone_text', '976 642 685');
+		$address_text = (string) get_theme_mod('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, Tarazona');
+		$address_url = (string) get_theme_mod('farmacia_queiles_address_url', '');
+		$schedule_text = (string) get_theme_mod('farmacia_queiles_schedule_text', 'L-V 9:00-13:45 · 16:30-20:00');
+		$brand_text = (string) get_theme_mod('farmacia_queiles_footer_brand_text', '');
+		$current_url = $this->get_schema_current_url();
+
+		$graph = [];
+
+		$organization = [
+			'@type' => 'Pharmacy',
+			'@id' => $home_url . '#organization',
+			'name' => $site_name,
+			'url' => $home_url,
+		];
+
+		if ('' !== $brand_text) {
+			$organization['description'] = wp_strip_all_tags($brand_text);
+		}
+
+		if ('' !== $logo_url) {
+			$organization['logo'] = $logo_url;
+			$organization['image'] = $logo_url;
+		}
+
+		if ('' !== $phone_text) {
+			$organization['telephone'] = wp_strip_all_tags($phone_text);
+			$organization['contactPoint'] = [
+				[
+					'@type' => 'ContactPoint',
+					'telephone' => wp_strip_all_tags($phone_text),
+					'contactType' => 'customer service',
+					'availableLanguage' => ['es'],
+				],
+			];
+		}
+
+		if ('' !== $address_text) {
+			$organization['address'] = [
+				'@type' => 'PostalAddress',
+				'streetAddress' => wp_strip_all_tags($address_text),
+			];
+		}
+
+		if ('' !== $address_url) {
+			$organization['hasMap'] = esc_url_raw($address_url);
+		}
+
+		if ('' !== $schedule_text) {
+			$organization['openingHours'] = [wp_strip_all_tags($schedule_text)];
+		}
+
+		$graph[] = $organization;
+
+		$website = [
+			'@type' => 'WebSite',
+			'@id' => $home_url . '#website',
+			'url' => $home_url,
+			'name' => $site_name,
+			'inLanguage' => get_bloginfo('language'),
+			'publisher' => [
+				'@id' => $home_url . '#organization',
+			],
+			'potentialAction' => [
+				'@type' => 'SearchAction',
+				'target' => [
+					'@type' => 'EntryPoint',
+					'urlTemplate' => esc_url_raw(add_query_arg('s', '{search_term_string}', $home_url)),
+				],
+				'query-input' => 'required name=search_term_string',
+			],
+		];
+
+		$graph[] = $website;
+
+		$webpage = [
+			'@type' => 'WebPage',
+			'@id' => $current_url . '#webpage',
+			'url' => $current_url,
+			'name' => wp_get_document_title(),
+			'isPartOf' => [
+				'@id' => $home_url . '#website',
+			],
+			'about' => [
+				'@id' => $home_url . '#organization',
+			],
+			'inLanguage' => get_bloginfo('language'),
+		];
+
+		$graph[] = $webpage;
+
+		$schema = [
+			'@context' => 'https://schema.org',
+			'@graph' => $graph,
+		];
+
+		echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
 	}
 
 	public static function get_header_product_categories(int $limit = 5): array
@@ -441,9 +941,32 @@ final class Farmacia_Queiles_Theme
 			];
 		}
 
+		$featured_terms = [];
+		$other_terms = [];
+
+		foreach ($terms as $term) {
+			$is_featured = '1' === (string) get_term_meta((int) $term->term_id, '_fq_featured_product_cat', true);
+
+			if ($is_featured) {
+				$featured_terms[] = $term;
+				continue;
+			}
+
+			$other_terms[] = $term;
+		}
+
+		$featured_terms = array_slice($featured_terms, 0, max(0, $limit));
+		$featured_ids = array_map(static fn($term) => (int) $term->term_id, $featured_terms);
+		$remaining_terms = array_values(
+			array_filter(
+				$terms,
+				static fn($term) => !in_array((int) $term->term_id, $featured_ids, true)
+			)
+		);
+
 		return [
-			'featured' => array_slice($terms, 0, $limit),
-			'more' => array_slice($terms, $limit),
+			'featured' => $featured_terms,
+			'more' => $remaining_terms,
 		];
 	}
 
@@ -1040,6 +1563,56 @@ JS;
 		}
 
 		return array_values($merged);
+	}
+
+	private function get_schema_logo_url(): string
+	{
+		$custom_logo_id = (int) get_theme_mod('custom_logo', 0);
+
+		if ($custom_logo_id > 0) {
+			$logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+
+			if (is_string($logo_url) && '' !== $logo_url) {
+				return $logo_url;
+			}
+		}
+
+		$footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
+
+		if ($footer_logo_id > 0) {
+			$logo_url = wp_get_attachment_image_url($footer_logo_id, 'full');
+
+			if (is_string($logo_url) && '' !== $logo_url) {
+				return $logo_url;
+			}
+		}
+
+		return '';
+	}
+
+	private function get_schema_current_url(): string
+	{
+		if (is_singular()) {
+			$canonical_url = wp_get_canonical_url();
+
+			if (is_string($canonical_url) && '' !== $canonical_url) {
+				return $canonical_url;
+			}
+
+			$permalink = get_permalink();
+
+			if (is_string($permalink) && '' !== $permalink) {
+				return $permalink;
+			}
+		}
+
+		global $wp;
+
+		if (isset($wp->request) && '' !== $wp->request) {
+			return home_url(user_trailingslashit($wp->request));
+		}
+
+		return trailingslashit(home_url('/'));
 	}
 
 }
