@@ -148,19 +148,7 @@ if (is_tax('product_cat')) {
 					</button>
 
 					<?php if (class_exists('WooCommerce')) : ?>
-						<a
-							class="util-link util-link--cart"
-							href="<?php echo esc_url(wc_get_cart_url()); ?>"
-							data-open-site-cart="true"
-							aria-controls="site-cart-drawer"
-							aria-expanded="false"
-						>
-							<span class="material-symbols-outlined util-link__icon">shopping_bag</span>
-							<span class="util-link__badge cart-count-fragment<?php echo $cart_count < 1 ? ' is-empty' : ''; ?>">
-								<?php echo esc_html((string) $cart_count); ?>
-							</span>
-							<span class="util-link__label"><?php echo esc_html__('Carrito', 'farmacia-queiles'); ?></span>
-						</a>
+						<?php echo do_shortcode('[sp_minicart]'); ?>
 					<?php endif; ?>
 				</div>
 			</div>
