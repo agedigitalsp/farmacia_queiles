@@ -12,6 +12,7 @@ $brand_text = get_theme_mod(
 	'farmacia_queiles_footer_brand_text',
 	__('Donde la ciencia farmacéutica se encuentra con el bienestar profundo. Cuidamos tu piel y tu salud con el rigor de un boticario y la sensibilidad de quien valora la vida.', 'farmacia-queiles')
 );
+$custom_logo_id = get_theme_mod('custom_logo');
 $footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
 $footer_address_text = get_theme_mod('farmacia_queiles_footer_address_text', get_theme_mod('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, 50500 Tarazona'));
 $footer_address_url = get_theme_mod('farmacia_queiles_footer_address_url', get_theme_mod('farmacia_queiles_address_url', ''));
@@ -102,8 +103,8 @@ $footer_legal_fallback = [
 					<a class="footer-brand" href="<?php echo esc_url(home_url('/')); ?>">
 						<?php if ($footer_logo_id > 0) : ?>
 							<?php echo wp_get_attachment_image($footer_logo_id, 'full', false, ['class' => 'footer-brand__image']); ?>
-						<?php elseif (function_exists('the_custom_logo') && has_custom_logo()) : ?>
-							<?php the_custom_logo(); ?>
+						<?php elseif ($custom_logo_id > 0) : ?>
+							<?php echo wp_get_attachment_image($custom_logo_id, 'full', false, ['class' => 'footer-brand__image']); ?>
 						<?php else : ?>
 							<span class="footer-brand__name"><?php bloginfo('name'); ?></span>
 						<?php endif; ?>
@@ -114,92 +115,113 @@ $footer_legal_fallback = [
 				</div>
 
 				<div class="footer-col">
-					<h4 class="footer-heading"><?php echo esc_html__('Explorar', 'farmacia-queiles'); ?></h4>
-					<?php if (has_nav_menu('footer_explore')) : ?>
-						<?php
-						wp_nav_menu(
-							[
-								'theme_location' => 'footer_explore',
-								'container' => false,
-								'menu_class' => 'footer-menu',
-								'fallback_cb' => false,
-							]
-						);
-						?>
-					<?php else : ?>
-						<ul class="footer-menu">
-							<?php foreach ($footer_explore_fallback as $item) : ?>
-								<li><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['label']); ?></a></li>
-							<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
+					<details class="footer-toggle" data-footer-toggle open>
+						<summary class="footer-toggle__summary">
+							<span class="footer-heading"><?php echo esc_html__('Categorías principales', 'farmacia-queiles'); ?></span>
+							<span class="material-symbols-outlined footer-toggle__icon">chevron_right</span>
+						</summary>
+						<div class="footer-toggle__content">
+							<?php if (has_nav_menu('footer_explore')) : ?>
+								<?php
+								wp_nav_menu(
+									[
+										'theme_location' => 'footer_explore',
+										'container' => false,
+										'menu_class' => 'footer-menu',
+										'fallback_cb' => false,
+									]
+								);
+								?>
+							<?php else : ?>
+								<ul class="footer-menu">
+									<?php foreach ($footer_explore_fallback as $item) : ?>
+										<li><a href="<?php echo esc_url($item['url']); ?>"<?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($item['url']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html($item['label']); ?></a></li>
+									<?php endforeach; ?>
+								</ul>
+							<?php endif; ?>
+						</div>
+					</details>
 				</div>
 
 				<div class="footer-col">
-					<h4 class="footer-heading"><?php echo esc_html__('Soporte', 'farmacia-queiles'); ?></h4>
-					<?php if (has_nav_menu('footer_support')) : ?>
-						<?php
-						wp_nav_menu(
-							[
-								'theme_location' => 'footer_support',
-								'container' => false,
-								'menu_class' => 'footer-menu',
-								'fallback_cb' => false,
-							]
-						);
-						?>
-					<?php else : ?>
-						<ul class="footer-menu">
-							<?php foreach ($footer_support_fallback as $item) : ?>
-								<li><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['label']); ?></a></li>
-							<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
+					<details class="footer-toggle" data-footer-toggle open>
+						<summary class="footer-toggle__summary">
+							<span class="footer-heading"><?php echo esc_html__('Soporte', 'farmacia-queiles'); ?></span>
+							<span class="material-symbols-outlined footer-toggle__icon">chevron_right</span>
+						</summary>
+						<div class="footer-toggle__content">
+							<?php if (has_nav_menu('footer_support')) : ?>
+								<?php
+								wp_nav_menu(
+									[
+										'theme_location' => 'footer_support',
+										'container' => false,
+										'menu_class' => 'footer-menu',
+										'fallback_cb' => false,
+									]
+								);
+								?>
+							<?php else : ?>
+								<ul class="footer-menu">
+									<?php foreach ($footer_support_fallback as $item) : ?>
+										<li><a href="<?php echo esc_url($item['url']); ?>"<?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($item['url']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html($item['label']); ?></a></li>
+									<?php endforeach; ?>
+								</ul>
+							<?php endif; ?>
+						</div>
+					</details>
 				</div>
 
 				<div class="footer-col footer-col--contact">
-					<h4 class="footer-heading"><?php echo esc_html__('Contacto', 'farmacia-queiles'); ?></h4>
-					<div class="footer-contact">
-						<?php if (!empty($footer_address_text)) : ?>
-							<div class="footer-contact__item">
-								<span class="material-symbols-outlined footer-contact__icon">location_on</span>
-								<?php if (!empty($footer_address_url)) : ?>
-									<a class="footer-contact__link" href="<?php echo esc_url($footer_address_url); ?>"><?php echo esc_html($footer_address_text); ?></a>
-								<?php else : ?>
-									<span><?php echo esc_html($footer_address_text); ?></span>
+					<details class="footer-toggle" data-footer-toggle open>
+						<summary class="footer-toggle__summary">
+							<span class="footer-heading"><?php echo esc_html__('Contacto', 'farmacia-queiles'); ?></span>
+							<span class="material-symbols-outlined footer-toggle__icon">chevron_right</span>
+						</summary>
+						<div class="footer-toggle__content">
+							<div class="footer-contact">
+								<?php if (!empty($footer_address_text)) : ?>
+									<div class="footer-contact__item">
+										<span class="material-symbols-outlined footer-contact__icon">location_on</span>
+										<?php if (!empty($footer_address_url)) : ?>
+											<a class="footer-contact__link" href="<?php echo esc_url($footer_address_url); ?>"<?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($footer_address_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html($footer_address_text); ?></a>
+										<?php else : ?>
+											<span><?php echo esc_html($footer_address_text); ?></span>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if (!empty($footer_phone_text)) : ?>
+									<div class="footer-contact__item">
+										<span class="material-symbols-outlined footer-contact__icon">call</span>
+										<?php if (!empty($footer_phone_url)) : ?>
+											<a class="footer-contact__link" href="<?php echo esc_url($footer_phone_url); ?>"<?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($footer_phone_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html($footer_phone_text); ?></a>
+										<?php else : ?>
+											<span><?php echo esc_html($footer_phone_text); ?></span>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if (!empty($footer_whatsapp_text)) : ?>
+									<div class="footer-contact__item">
+										<img class="footer-contact__icon footer-contact__icon--image" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/whatsapp.svg'); ?>" alt="<?php echo esc_attr__('WhatsApp', 'farmacia-queiles'); ?>">
+										<?php if (!empty($footer_whatsapp_url)) : ?>
+											<a class="footer-contact__link" href="<?php echo esc_url($footer_whatsapp_url); ?>"<?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($footer_whatsapp_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html($footer_whatsapp_text); ?></a>
+										<?php else : ?>
+											<span class="footer-contact__strong"><?php echo esc_html($footer_whatsapp_text); ?></span>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if (!empty($footer_schedule_text)) : ?>
+									<div class="footer-contact__schedule">
+										<p class="footer-contact__schedule-title"><?php echo esc_html($footer_schedule_title); ?></p>
+										<p class="footer-contact__schedule-text"><?php echo wp_kses_post(nl2br(esc_html($footer_schedule_text))); ?></p>
+									</div>
 								<?php endif; ?>
 							</div>
-						<?php endif; ?>
-
-						<?php if (!empty($footer_phone_text)) : ?>
-							<div class="footer-contact__item">
-								<span class="material-symbols-outlined footer-contact__icon">call</span>
-								<?php if (!empty($footer_phone_url)) : ?>
-									<a class="footer-contact__link" href="<?php echo esc_url($footer_phone_url); ?>"><?php echo esc_html($footer_phone_text); ?></a>
-								<?php else : ?>
-									<span><?php echo esc_html($footer_phone_text); ?></span>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
-
-						<?php if (!empty($footer_whatsapp_text)) : ?>
-							<div class="footer-contact__item">
-								<span class="material-symbols-outlined footer-contact__icon footer-contact__icon--whatsapp">chat</span>
-								<?php if (!empty($footer_whatsapp_url)) : ?>
-									<a class="footer-contact__link" href="<?php echo esc_url($footer_whatsapp_url); ?>"><?php echo esc_html($footer_whatsapp_text); ?></a>
-								<?php else : ?>
-									<span class="footer-contact__strong"><?php echo esc_html($footer_whatsapp_text); ?></span>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
-
-						<?php if (!empty($footer_schedule_text)) : ?>
-							<div class="footer-contact__schedule">
-								<p class="footer-contact__schedule-title"><?php echo esc_html($footer_schedule_title); ?></p>
-								<p class="footer-contact__schedule-text"><?php echo wp_kses_post(nl2br(esc_html($footer_schedule_text))); ?></p>
-							</div>
-						<?php endif; ?>
-					</div>
+						</div>
+					</details>
 				</div>
 			</div>
 
@@ -219,7 +241,7 @@ $footer_legal_fallback = [
 					<?php else : ?>
 						<ul class="footer-legal__menu">
 							<?php foreach ($footer_legal_fallback as $item) : ?>
-								<li><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['label']); ?></a></li>
+								<li><a href="<?php echo esc_url($item['url']); ?>"<?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($item['url']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html($item['label']); ?></a></li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
@@ -237,6 +259,31 @@ $footer_legal_fallback = [
 		</div>
 	</footer>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	const footerToggles = document.querySelectorAll('[data-footer-toggle]');
+
+	if (!footerToggles.length) {
+		return;
+	}
+
+	const syncFooterToggles = function () {
+		const isMobile = window.innerWidth <= 640;
+
+		footerToggles.forEach(function (toggle) {
+			if (isMobile) {
+				toggle.removeAttribute('open');
+				return;
+			}
+
+			toggle.setAttribute('open', 'open');
+		});
+	};
+
+	syncFooterToggles();
+	window.addEventListener('resize', syncFooterToggles);
+});
+</script>
 <?php wp_footer(); ?>
 </body>
 </html>
