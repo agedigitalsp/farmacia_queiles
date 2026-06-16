@@ -26,7 +26,7 @@ get_header();
 						</a>
 					</div>
 
-					<div class="error-404__search">
+					<div class="error-404__search header-search__input">
 						<?php get_search_form(); ?>
 					</div>
 				</div>
