@@ -18,8 +18,8 @@ final class Farmacia_Queiles_Theme
 		add_action('widgets_init', [$this, 'widgets_init']);
 		add_action('customize_register', [$this, 'customize_register']);
 		add_action('wp_head', [$this, 'render_schema_markup'], 20);
-		add_action('wp_footer', [$this, 'render_cart_drawer']);
-		add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']);
+		// add_action('wp_footer', [$this, 'render_cart_drawer']); // Deshabilitado: usamos el mini cart de Superplus
+		// add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']); // Deshabilitado: Superplus maneja esto
 		add_filter('nav_menu_link_attributes', [$this, 'filter_nav_menu_link_attributes'], 10, 4);
 		add_action('product_cat_add_form_fields', [$this, 'render_featured_product_cat_add_field']);
 		add_action('product_cat_edit_form_fields', [$this, 'render_featured_product_cat_edit_field']);
@@ -146,10 +146,11 @@ final class Farmacia_Queiles_Theme
 			);
 		}
 
-		if (class_exists('WooCommerce')) {
-			wp_enqueue_script('wc-cart-fragments');
-			wp_add_inline_script('wc-cart-fragments', $this->get_cart_drawer_script());
-		}
+		// Deshabilitado: Superplus maneja todo el carrito
+		// if (class_exists('WooCommerce')) {
+		//	wp_enqueue_script('wc-cart-fragments');
+		//	wp_add_inline_script('wc-cart-fragments', $this->get_cart_drawer_script());
+		// }
 	}
 
 	public function widgets_init(): void
