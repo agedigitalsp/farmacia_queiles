@@ -119,14 +119,14 @@ if (is_tax('product_cat')) {
 						<form class="header-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
 							<span class="material-symbols-outlined header-search__icon">search</span>
 							<label class="screen-reader-text" for="header-search-field"><?php echo esc_html__('Buscar productos', 'farmacia-queiles'); ?></label>
-							<input id="header-search-field" class="header-search__input" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
+							<input id="header-search-field" class="header-search__input trigger-search" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
 							<input type="hidden" name="post_type" value="product">
 						</form>
 					<?php else : ?>
 						<form class="header-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
 							<span class="material-symbols-outlined header-search__icon">search</span>
 							<label class="screen-reader-text" for="header-search-field"><?php echo esc_html__('Buscar', 'farmacia-queiles'); ?></label>
-							<input id="header-search-field" class="header-search__input" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
+							<input id="header-search-field" class="header-search__input trigger-search" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
 						</form>
 					<?php endif; ?>
 				</div>
@@ -256,14 +256,14 @@ if (is_tax('product_cat')) {
 				<form class="header-search header-search--mobile" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
 					<span class="material-symbols-outlined header-search__icon">search</span>
 					<label class="screen-reader-text" for="mobile-header-search-field"><?php echo esc_html__('Buscar productos', 'farmacia-queiles'); ?></label>
-					<input id="mobile-header-search-field" class="header-search__input" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
+					<input id="mobile-header-search-field" class="header-search__input trigger-search" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
 					<input type="hidden" name="post_type" value="product">
 				</form>
 			<?php else : ?>
 				<form class="header-search header-search--mobile" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
 					<span class="material-symbols-outlined header-search__icon">search</span>
 					<label class="screen-reader-text" for="mobile-header-search-field"><?php echo esc_html__('Buscar', 'farmacia-queiles'); ?></label>
-					<input id="mobile-header-search-field" class="header-search__input" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
+					<input id="mobile-header-search-field" class="header-search__input trigger-search" type="search" name="s" placeholder="<?php echo esc_attr($search_placeholder); ?>">
 				</form>
 			<?php endif; ?>
 		</div>
