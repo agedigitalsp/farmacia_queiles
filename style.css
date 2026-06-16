@@ -1614,7 +1614,7 @@ body.site-mobile-panel-open {
 
 .site-header__utils .header-cart-icon:hover .material-symbols-outlined,
 .site-header__utils .header-cart-icon:focus .material-symbols-outlined {
-	transform: translateY(-1px) !important;
+	transform: translateY(-6px) !important;
 	color: var(--primary) !important;
 }
 
