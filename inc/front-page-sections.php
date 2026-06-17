@@ -8,5 +8,7 @@ do_action('farmacia_queiles_before_home_sections');
 require get_template_directory() . '/inc/front-page/section-hero-promotions.php';
 ///Aqui van las seciones 2/3/4
 require get_template_directory() . '/inc/front-page/section-labs-stories.php';
+require get_template_directory() . '/inc/front-page/section-health-commitment.php';
+require get_template_directory() . '/inc/front-page/section-consulting-cta.php';
 do_action('farmacia_queiles_home_sections');
 do_action('farmacia_queiles_after_home_sections');

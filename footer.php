@@ -4,25 +4,25 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-$newsletter_title = get_theme_mod('farmacia_queiles_footer_newsletter_title', __('Únete a nuestra comunidad', 'farmacia-queiles'));
-$newsletter_text = get_theme_mod('farmacia_queiles_footer_newsletter_text', __('Recibe consejos farmacéuticos exclusivos y descubre antes que nadie nuestras novedades botánicas.', 'farmacia-queiles'));
-$newsletter_placeholder = get_theme_mod('farmacia_queiles_footer_newsletter_placeholder', __('Tu correo electrónico', 'farmacia-queiles'));
-$newsletter_button = get_theme_mod('farmacia_queiles_footer_newsletter_button', __('Suscribirme', 'farmacia-queiles'));
-$brand_text = get_theme_mod(
+$newsletter_title = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_newsletter_title', __('Únete a nuestra comunidad', 'farmacia-queiles'));
+$newsletter_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_newsletter_text', __('Recibe consejos farmacéuticos exclusivos y descubre antes que nadie nuestras novedades botánicas.', 'farmacia-queiles'));
+$newsletter_placeholder = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_newsletter_placeholder', __('Tu correo electrónico', 'farmacia-queiles'));
+$newsletter_button = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_newsletter_button', __('Suscribirme', 'farmacia-queiles'));
+$brand_text = Farmacia_Queiles_Theme::get_setting(
 	'farmacia_queiles_footer_brand_text',
 	__('Donde la ciencia farmacéutica se encuentra con el bienestar profundo. Cuidamos tu piel y tu salud con el rigor de un boticario y la sensibilidad de quien valora la vida.', 'farmacia-queiles')
 );
 $custom_logo_id = get_theme_mod('custom_logo');
 $footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
-$footer_address_text = get_theme_mod('farmacia_queiles_footer_address_text', get_theme_mod('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, 50500 Tarazona'));
-$footer_address_url = get_theme_mod('farmacia_queiles_footer_address_url', get_theme_mod('farmacia_queiles_address_url', ''));
-$footer_phone_text = get_theme_mod('farmacia_queiles_footer_phone_text', get_theme_mod('farmacia_queiles_phone_text', '976 642 685'));
-$footer_phone_url = get_theme_mod('farmacia_queiles_footer_phone_url', get_theme_mod('farmacia_queiles_phone_url', 'tel:+34976642685'));
-$footer_whatsapp_text = get_theme_mod('farmacia_queiles_footer_whatsapp_text', 'WhatsApp: 689 123 456');
-$footer_whatsapp_url = get_theme_mod('farmacia_queiles_footer_whatsapp_url', '');
-$footer_schedule_title = get_theme_mod('farmacia_queiles_footer_schedule_title', __('Nuestra Botica:', 'farmacia-queiles'));
-$footer_schedule_text = get_theme_mod('farmacia_queiles_footer_schedule_text', "L-V: 9:00 - 13:45 | 16:30 - 20:00\nSábados: 9:00 - 13:45");
-$footer_copyright = get_theme_mod('farmacia_queiles_footer_copyright', '© {year} {site}. ELEVATING PHARMACEUTICAL CARE.');
+$footer_address_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_address_text', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, 50500 Tarazona'));
+$footer_address_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_address_url', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_url', ''));
+$footer_phone_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_phone_text', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_phone_text', '976 642 685'));
+$footer_phone_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_phone_url', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_phone_url', 'tel:+34976642685'));
+$footer_whatsapp_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_text', 'WhatsApp: 689 123 456');
+$footer_whatsapp_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_url', '');
+$footer_schedule_title = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_schedule_title', __('Nuestra Botica:', 'farmacia-queiles'));
+$footer_schedule_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_schedule_text', "L-V: 9:00 - 13:45 | 16:30 - 20:00\nSábados: 9:00 - 13:45");
+$footer_copyright = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_copyright', '© {year} {site}. ELEVATING PHARMACEUTICAL CARE.');
 $footer_copyright = str_replace(
 	['{year}', '{site}'],
 	[wp_date('Y'), get_bloginfo('name')],
@@ -250,10 +250,18 @@ $footer_legal_fallback = [
 				<p class="footer-copy"><?php echo esc_html($footer_copyright); ?></p>
 
 				<div class="footer-payments" aria-label="<?php echo esc_attr__('Métodos de pago', 'farmacia-queiles'); ?>">
-					<span class="footer-payment">VISA</span>
-					<span class="footer-payment">MASTERCARD</span>
-					<span class="footer-payment">BIZUM</span>
-					<span class="footer-payment">PAYPAL</span>
+					<span class="footer-payment">
+						<img class="footer-payment__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/payments/visa.svg'); ?>" alt="<?php echo esc_attr__('Visa', 'farmacia-queiles'); ?>">
+					</span>
+					<span class="footer-payment">
+						<img class="footer-payment__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/payments/mastercard.svg'); ?>" alt="<?php echo esc_attr__('Mastercard', 'farmacia-queiles'); ?>">
+					</span>
+					<span class="footer-payment">
+						<img class="footer-payment__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/payments/apple-pay.svg'); ?>" alt="<?php echo esc_attr__('Apple Pay', 'farmacia-queiles'); ?>">
+					</span>
+					<span class="footer-payment">
+						<img class="footer-payment__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/payments/google-pay.svg'); ?>" alt="<?php echo esc_attr__('Google Pay', 'farmacia-queiles'); ?>">
+					</span>
 				</div>
 			</div>
 		</div>

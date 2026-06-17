@@ -8,56 +8,68 @@ if (!taxonomy_exists('product_brand')) {
 	return;
 }
 
-$terms = get_terms(
-	[
-		'taxonomy' => 'product_brand',
-		'hide_empty' => false,
-		'meta_query' => [
-			[
-				'key' => '_fq_featured_product_brand',
-				'value' => '1',
+$cached_payload = class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Theme::get_home_labs_cached_payload() : null;
+$labs = is_array($cached_payload['labs'] ?? null) ? $cached_payload['labs'] : [];
+
+if (empty($labs)) {
+	$terms = get_terms(
+		[
+			'taxonomy' => 'product_brand',
+			'hide_empty' => false,
+			'meta_query' => [
+				[
+					'key' => '_fq_featured_product_brand',
+					'value' => '1',
+				],
 			],
-		],
-		'orderby' => 'name',
-		'order' => 'ASC',
-	]
-);
+			'orderby' => 'name',
+			'order' => 'ASC',
+		]
+	);
 
-if (is_wp_error($terms) || empty($terms)) {
-	return;
-}
-
-$labs = [];
-
-foreach ($terms as $term) {
-	$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'thumbnail_id', true);
-	if ($thumbnail_id < 1) {
-		$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'image_id', true);
+	if (is_wp_error($terms) || empty($terms)) {
+		return;
 	}
 
-	$image_url = $thumbnail_id > 0 ? wp_get_attachment_image_url($thumbnail_id, 'full') : '';
-	$image_url = is_string($image_url) ? $image_url : '';
+	foreach ($terms as $term) {
+		$home_image = (string) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image', true);
 
-	if ('' === $image_url) {
-		continue;
+		if ('' === $home_image) {
+			$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'thumbnail_id', true);
+			if ($thumbnail_id < 1) {
+				$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'image_id', true);
+			}
+
+			$fallback_image = $thumbnail_id > 0 ? wp_get_attachment_image_url($thumbnail_id, 'full') : '';
+			$home_image = is_string($fallback_image) ? $fallback_image : '';
+		}
+
+		if ('' === $home_image) {
+			continue;
+		}
+
+		$url = get_term_link($term);
+		if (is_wp_error($url)) {
+			continue;
+		}
+
+		$labs[] = [
+			'id' => (int) $term->term_id,
+			'name' => $term->name,
+			'url' => $url,
+			'home_image' => $home_image,
+		];
 	}
-
-	$labs[] = [
-		'id' => (int) $term->term_id,
-		'name' => $term->name,
-		'url' => get_term_link($term),
-		'image' => $image_url,
-	];
 }
 
 if (empty($labs)) {
 	return;
 }
 
-$is_slider = count($labs) > 6;
-$render_labs = $is_slider ? $labs : array_slice($labs, 0, 6);
-$section_kicker = (string) get_theme_mod('farmacia_queiles_home_labs_kicker', __('Nuestros laboratorios', 'farmacia-queiles'));
-$section_title_html = (string) get_theme_mod('farmacia_queiles_home_labs_title_html', 'Laboratorios de <span class="home-labs-stories__title-accent">Confianza</span>');
+$is_slider = count($labs) > 5;
+$render_labs = $is_slider ? $labs : array_slice($labs, 0, 5);
+$section_kicker = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_labs_kicker', __('Nuestros laboratorios', 'farmacia-queiles'));
+$section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_labs_title_html', 'Laboratorios de <span class="home-labs-stories__title-accent">Confianza</span>');
 ?>
 <section class="home-labs-stories">
 	<div class="container container--wide">
@@ -77,7 +89,7 @@ $section_title_html = (string) get_theme_mod('farmacia_queiles_home_labs_title_h
 				<div class="home-labs-stories__track" data-labs-track>
 					<?php foreach ($render_labs as $lab) : ?>
 						<a class="lab-story" href="<?php echo esc_url($lab['url']); ?>" aria-label="<?php echo esc_attr($lab['name']); ?>">
-							<span class="lab-story__media" style="background-image:url('<?php echo esc_url($lab['image']); ?>');"></span>
+							<span class="lab-story__media" style="background-image:url('<?php echo esc_url($lab['home_image']); ?>');"></span>
 							<span class="lab-story__label"><?php echo esc_html($lab['name']); ?></span>
 						</a>
 					<?php endforeach; ?>

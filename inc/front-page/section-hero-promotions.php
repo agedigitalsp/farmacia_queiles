@@ -4,72 +4,85 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-$featured_promo_1 = get_posts(
-	[
-		'post_type' => 'promociones',
-		'post_status' => 'publish',
-		'posts_per_page' => 1,
-		'meta_key' => '_fq_promo_featured_1',
-		'meta_value' => '1',
-	]
-);
-$featured_promo_2 = get_posts(
-	[
-		'post_type' => 'promociones',
-		'post_status' => 'publish',
-		'posts_per_page' => 1,
-		'meta_key' => '_fq_promo_featured_2',
-		'meta_value' => '1',
-	]
-);
+$cached_payload = class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Theme::get_home_promotions_cached_payload() : null;
 
-$excluded_ids = array_filter(
-	[
-		isset($featured_promo_1[0]) ? (int) $featured_promo_1[0]->ID : 0,
-		isset($featured_promo_2[0]) ? (int) $featured_promo_2[0]->ID : 0,
-	]
-);
+if (is_array($cached_payload)) {
+	$hero_slides = is_array($cached_payload['hero_slides'] ?? null) ? $cached_payload['hero_slides'] : [];
+	$side_promotions = is_array($cached_payload['side_promotions'] ?? null) ? $cached_payload['side_promotions'] : [null, null];
+} else {
+	$featured_promo_1 = get_posts(
+		[
+			'post_type' => 'promociones',
+			'post_status' => 'publish',
+			'posts_per_page' => 1,
+			'meta_key' => '_fq_promo_featured_1',
+			'meta_value' => '1',
+			'no_found_rows' => true,
+			'ignore_sticky_posts' => true,
+		]
+	);
+	$featured_promo_2 = get_posts(
+		[
+			'post_type' => 'promociones',
+			'post_status' => 'publish',
+			'posts_per_page' => 1,
+			'meta_key' => '_fq_promo_featured_2',
+			'meta_value' => '1',
+			'no_found_rows' => true,
+			'ignore_sticky_posts' => true,
+		]
+	);
 
-$hero_promotions = get_posts(
-	[
-		'post_type' => 'promociones',
-		'post_status' => 'publish',
-		'posts_per_page' => 8,
-		'post__not_in' => $excluded_ids,
-	]
-);
+	$excluded_ids = array_filter(
+		[
+			isset($featured_promo_1[0]) ? (int) $featured_promo_1[0]->ID : 0,
+			isset($featured_promo_2[0]) ? (int) $featured_promo_2[0]->ID : 0,
+		]
+	);
 
-if (empty($hero_promotions) && empty($featured_promo_1) && empty($featured_promo_2)) {
-	return;
-}
+	$hero_promotions = get_posts(
+		[
+			'post_type' => 'promociones',
+			'post_status' => 'publish',
+			'posts_per_page' => 8,
+			'post__not_in' => $excluded_ids,
+			'no_found_rows' => true,
+			'ignore_sticky_posts' => true,
+		]
+	);
 
-$hero_slides = [];
-foreach ($hero_promotions as $promotion) {
-	$hero_slides[] = [
-		'id' => (int) $promotion->ID,
-		'title' => get_the_title($promotion),
-		'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
-		'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
-		'url' => get_permalink($promotion),
-		'image' => get_the_post_thumbnail_url($promotion, 'full'),
-	];
-}
-
-$side_promotions = [];
-foreach ([$featured_promo_1[0] ?? null, $featured_promo_2[0] ?? null] as $promotion) {
-	if (!$promotion instanceof WP_Post) {
-		$side_promotions[] = null;
-		continue;
+	$hero_slides = [];
+	foreach ($hero_promotions as $promotion) {
+		$hero_slides[] = [
+			'id' => (int) $promotion->ID,
+			'title' => get_the_title($promotion),
+			'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
+			'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
+			'url' => get_permalink($promotion),
+			'image' => get_the_post_thumbnail_url($promotion, 'full'),
+		];
 	}
 
-	$side_promotions[] = [
-		'id' => (int) $promotion->ID,
-		'title' => get_the_title($promotion),
-		'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
-		'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
-		'url' => get_permalink($promotion),
-		'image' => get_the_post_thumbnail_url($promotion, 'full'),
-	];
+	$side_promotions = [];
+	foreach ([$featured_promo_1[0] ?? null, $featured_promo_2[0] ?? null] as $promotion) {
+		if (!$promotion instanceof WP_Post) {
+			$side_promotions[] = null;
+			continue;
+		}
+
+		$side_promotions[] = [
+			'id' => (int) $promotion->ID,
+			'title' => get_the_title($promotion),
+			'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
+			'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
+			'url' => get_permalink($promotion),
+			'image' => get_the_post_thumbnail_url($promotion, 'full'),
+		];
+	}
+}
+
+if (empty($hero_slides) && empty(array_filter($side_promotions))) {
+	return;
 }
 ?>
 <section class="home-hero-promotions">

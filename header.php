@@ -4,17 +4,18 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-$phone_text = get_theme_mod('farmacia_queiles_phone_text', '976 642 685');
-$phone_url = get_theme_mod('farmacia_queiles_phone_url', 'tel:+34976642685');
-$address_text = get_theme_mod('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, Tarazona');
-$address_url = get_theme_mod('farmacia_queiles_address_url', '');
-$schedule_text = get_theme_mod('farmacia_queiles_schedule_text', 'L-V 9:00-13:45 · 16:30-20:00');
-$contact_url = get_theme_mod('farmacia_queiles_contact_url', home_url('/contacto'));
-$my_account_url = get_theme_mod(
+$phone_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_phone_text', '976 642 685');
+$phone_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_phone_url', 'tel:+34976642685');
+$address_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, Tarazona');
+$address_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_url', '');
+$schedule_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_schedule_text', 'L-V 9:00-13:45 · 16:30-20:00');
+$contact_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_contact_url', home_url('/contacto'));
+$my_account_url = Farmacia_Queiles_Theme::get_setting(
 	'farmacia_queiles_my_account_url',
 	class_exists('WooCommerce') ? wc_get_page_permalink('myaccount') : wp_login_url()
 );
-$favorites_url = get_theme_mod('farmacia_queiles_favorites_url', home_url('/favoritos'));
+$favorites_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_favorites_url', home_url('/favoritos'));
+$footer_whatsapp_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_url', '');
 $cart_count = 0;
 $header_categories = class_exists('WooCommerce') ? Farmacia_Queiles_Theme::get_header_product_categories(5) : ['featured' => [], 'more' => []];
 $current_category_id = 0;
@@ -339,19 +340,31 @@ if (is_tax('product_cat')) {
 		</div>
 
 		<nav class="mobile-bottom-bar" aria-label="<?php echo esc_attr__('Accesos móviles', 'farmacia-queiles'); ?>">
-			<button class="mobile-bottom-bar__item" type="button" data-open-mobile-search="true" aria-controls="site-mobile-search" aria-expanded="false">
-				<span class="material-symbols-outlined mobile-bottom-bar__icon">search</span>
-				<span class="screen-reader-text"><?php echo esc_html__('Abrir buscador', 'farmacia-queiles'); ?></span>
-			</button>
 			<a class="mobile-bottom-bar__item" href="<?php echo esc_url(home_url('/')); ?>">
 				<span class="material-symbols-outlined mobile-bottom-bar__icon">home</span>
-				<span class="screen-reader-text"><?php echo esc_html__('Ir al inicio', 'farmacia-queiles'); ?></span>
+				<span class="mobile-bottom-bar__label"><?php echo esc_html__('Inicio', 'farmacia-queiles'); ?></span>
 			</a>
+			<button class="mobile-bottom-bar__item" type="button" data-open-mobile-search="true" aria-controls="site-mobile-search" aria-expanded="false">
+				<span class="material-symbols-outlined mobile-bottom-bar__icon">search</span>
+				<span class="mobile-bottom-bar__label"><?php echo esc_html__('Buscar', 'farmacia-queiles'); ?></span>
+			</button>
+			<?php if (!empty($footer_whatsapp_url)) : ?>
+				<a class="mobile-bottom-bar__item mobile-bottom-bar__item--whatsapp" href="<?php echo esc_url($footer_whatsapp_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($footer_whatsapp_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+																																	?>>
+					<img class="mobile-bottom-bar__icon-image" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/whatsapp.svg'); ?>" alt="" aria-hidden="true">
+					<span class="mobile-bottom-bar__label"><?php echo esc_html__('WhatsApp', 'farmacia-queiles'); ?></span>
+				</a>
+			<?php else : ?>
+				<span class="mobile-bottom-bar__item mobile-bottom-bar__item--whatsapp mobile-bottom-bar__item--disabled" aria-hidden="true">
+					<img class="mobile-bottom-bar__icon-image" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/whatsapp.svg'); ?>" alt="">
+					<span class="mobile-bottom-bar__label"><?php echo esc_html__('WhatsApp', 'farmacia-queiles'); ?></span>
+				</span>
+			<?php endif; ?>
 			<?php if (class_exists('WooCommerce')) : ?>
 				<button class="mobile-bottom-bar__item mobile-bottom-bar__item--cart header-cart-icon" type="button" data-open-site-cart="false" aria-controls="site-cart-drawer" aria-expanded="false">
 					<span class="material-symbols-outlined mobile-bottom-bar__icon">shopping_bag</span>
 					<span class="mobile-bottom-bar__badge cart-count-fragment<?php echo $cart_count < 1 ? ' is-empty' : ''; ?>"><?php echo esc_html((string) $cart_count); ?></span>
-					<span class="screen-reader-text"><?php echo esc_html__('Abrir carrito', 'farmacia-queiles'); ?></span>
+					<span class="mobile-bottom-bar__label"><?php echo esc_html__('Carrito', 'farmacia-queiles'); ?></span>
 				</button>
 			<?php endif; ?>
 		</nav>
