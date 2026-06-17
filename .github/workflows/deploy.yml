@@ -3,28 +3,56 @@ name: Deploy theme farmacia_queiles to AgenciaSP
 on:
   push:
     branches:
-      - main  # Se ejecuta solo al hacer push en main
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up SSH with RSA key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY_RSA }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -T 30 -H labagenciasp.es >> ~/.ssh/known_hosts
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no labagenciasp@labagenciasp.es "echo SSH OK"
+      - name: Set up SSH with RSA key
+        run: |
+          mkdir -p ~/.ssh
 
-    - name: Deploy theme via rsync
-      run: |
-        rsync -az --delete \
-          --exclude='.git' \
-          --exclude='.github' \
-          --exclude='/*.html' \
-          ./ labagenciasp@labagenciasp.es:~/apps/farmaciasqueiles/wp-content/themes/farmacia_queiles/
+          echo "${{ secrets.SSH_PRIVATE_KEY_RSA }}" > ~/.ssh/id_rsa
+
+          chmod 600 ~/.ssh/id_rsa
+
+          for i in 1 2 3; do
+            ssh-keyscan -T 30 -H labagenciasp.es >> ~/.ssh/known_hosts && break
+            echo "Intento $i de ssh-keyscan fallido. Reintentando..."
+            sleep 10
+          done
+
+          for i in 1 2 3; do
+            ssh -i ~/.ssh/id_rsa \
+              -o StrictHostKeyChecking=no \
+              -o ConnectTimeout=30 \
+              labagenciasp@labagenciasp.es "echo SSH OK" && break
+
+            echo "Intento $i de conexión SSH fallido. Reintentando..."
+            sleep 10
+          done
+
+      - name: Deploy theme via rsync
+        run: |
+          for i in 1 2 3; do
+
+            rsync -az --delete \
+              --exclude='.git' \
+              --exclude='.github' \
+              --exclude='/*.html' \
+              ./ \
+              labagenciasp@labagenciasp.es:~/apps/farmaciasqueiles/wp-content/themes/farmacia_queiles/ && break
+
+            echo "Intento $i de rsync fallido. Reintentando..."
+            sleep 10
+
+          done
+
+      - name: Post Checkout repository
+        run: |
+          echo "Deploy completado correctamente"
