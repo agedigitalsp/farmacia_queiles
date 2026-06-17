@@ -158,6 +158,7 @@ final class Farmacia_Queiles_Theme
 				'footer_explore' => __('Footer - Explorar', 'farmacia-queiles'),
 				'footer_support' => __('Footer - Soporte', 'farmacia-queiles'),
 				'footer' => __('Menú pie', 'farmacia-queiles'),
+				'footer_legal' => __('Menú legal', 'farmacia-queiles'),
 			]
 		);
 

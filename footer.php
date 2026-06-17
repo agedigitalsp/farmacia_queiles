@@ -227,7 +227,18 @@ $footer_legal_fallback = [
 
 			<div class="footer-sub">
 				<nav class="footer-legal" aria-label="<?php echo esc_attr__('Legal', 'farmacia-queiles'); ?>">
-					<?php if (has_nav_menu('footer')) : ?>
+					<?php if (has_nav_menu('footer_legal')) : ?>
+						<?php
+						wp_nav_menu(
+							[
+								'theme_location' => 'footer_legal',
+								'container' => false,
+								'menu_class' => 'footer-legal__menu',
+								'fallback_cb' => false,
+							]
+						);
+						?>
+					<?php elseif (has_nav_menu('footer')) : ?>
 						<?php
 						wp_nav_menu(
 							[
