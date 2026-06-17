@@ -138,6 +138,7 @@ get_header();
 						} else {
 							echo do_shortcode('[contact-form-7 id="1ced5b6" title="Formulario de contacto 1"]');
 						}
+						
 						?>
 					</div>
 
