@@ -1750,6 +1750,27 @@ body.site-mobile-panel-open {
 	color: var(--primary) !important;
 }
 
-/* ===== FIN: Superplus Custom Login - Colores del Tema ==== */
+/* ===== FIN: Superplus Custom Login - Colores del Tema ===== */
 
+/* ===== INICIO: Mini Cart - Color Primario ===== */
+/* Sobrescribimos todas las variables CSS del theme light de Superplus */
+.sp-wsv-theme-light {
+	--sp-c-bg: var(--surface) !important;
+	--sp-c-bg-item: var(--bg-ref) !important;
+	--sp-c-bg-item-hover: rgba(82, 178, 225, 0.08) !important;
+	--sp-c-surface: var(--bg-ref) !important;
+	--sp-c-border: #e5e7eb !important;
+	--sp-c-text: var(--text-dark) !important;
+	--sp-c-text-muted: var(--text-muted) !important;
+	--sp-c-accent: var(--primary) !important;
+	--sp-c-accent-hover: #4a9ec9 !important;
+	--sp-c-price: var(--text-dark) !important;
+	--sp-c-remove: var(--text-muted) !important;
+	--sp-c-remove-hover: #ef4444 !important;
+	--sp-c-overlay: rgba(0, 0, 0, 0.4) !important;
+	--sp-c-shadow: rgba(0, 0, 0, 0.06) !important;
+	--sp-c-btn-text: #ffffff !important;
+}
+
+/* ===== FIN: Superplus Mini Cart - Botones Azules ===== */
 
