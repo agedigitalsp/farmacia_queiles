@@ -140,11 +140,7 @@ if (is_tax('product_cat')) {
 					</div>
 
 					<div class="site-header__utils">
-						<a class="util-link" href="<?php echo esc_url($my_account_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($my_account_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-																							?>>
-							<span class="material-symbols-outlined util-link__icon">person</span>
-							<span class="util-link__label"><?php echo esc_html__('Mi cuenta', 'farmacia-queiles'); ?></span>
-						</a>
+						<?php echo do_shortcode('[sp_mi_cuenta_icono]'); ?>
 
 						<a class="util-link" href="<?php echo esc_url($favorites_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($favorites_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 																							?>>
