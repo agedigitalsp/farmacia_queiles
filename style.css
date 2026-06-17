@@ -1821,3 +1821,15 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 }
 
 /* ===== FIN: Superplus Checkout - Colores del Tema ===== */
+
+/* ===== INICIO: Contact Page - WhatsApp SVG ===== */
+.contact-info-card__img {
+	width: 28px;
+	height: 28px;
+	object-fit: contain;
+	filter: brightness(0) saturate(100%) invert(36%) sepia(95%) saturate(1282%) hue-rotate(88deg) brightness(101%) contrast(101%);
+}
+
+/* ===== FIN: Contact Page - WhatsApp SVG ===== */
+
+

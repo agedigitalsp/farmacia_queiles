@@ -237,6 +237,15 @@ final class Farmacia_Queiles_Theme
 			);
 		}
 
+		if (is_page_template('contacto.php')) {
+			wp_enqueue_style(
+				'farmacia-queiles-contact',
+				get_template_directory_uri() . '/assets/css/contact-page.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+		}
+
 		// Deshabilitado: Superplus maneja todo el carrito
 		// if (class_exists('WooCommerce')) {
 		//	wp_enqueue_script('wc-cart-fragments');
