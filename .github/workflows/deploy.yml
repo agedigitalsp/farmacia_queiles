@@ -18,7 +18,8 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY_RSA }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H labagenciasp.es >> ~/.ssh/known_hosts
+        ssh-keyscan -T 30 -H labagenciasp.es >> ~/.ssh/known_hosts
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no labagenciasp@labagenciasp.es "echo SSH OK"
 
     - name: Deploy theme via rsync
       run: |
@@ -26,4 +27,4 @@ jobs:
           --exclude='.git' \
           --exclude='.github' \
           --exclude='/*.html' \
-          ./ labagenciasp@labagenciasp.es:~/apps/farmaciasqueiles/wp-content/themes/farmacia_queiles
+          ./ labagenciasp@labagenciasp.es:~/apps/farmaciasqueiles/wp-content/themes/farmacia_queiles/
