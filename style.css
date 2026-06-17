@@ -1720,14 +1720,14 @@ body.site-mobile-panel-open {
 /* ===== INICIO: Superplus Custom Login - Colores del Tema =====  */
 /* Sobrescribimos las variables CSS de Superplus Light theme para usar los colores del tema */
 .sp-wsv-theme-light {
-	--sp-black: var(--text-dark);          
-	--sp-white: var(--surface);              
-	--sp-bg-main: var(--surface);            
-	--sp-bg-input: var(--bg-ref);            
-	--sp-text-primary: var(--text-dark);    
-	--sp-text-secondary: var(--text-muted); 
+	--sp-black: var(--text-dark);           /* #383e42 */
+	--sp-white: var(--surface);              /* #ffffff */
+	--sp-bg-main: var(--surface);            /* #ffffff */
+	--sp-bg-input: var(--bg-ref);            /* #f4f6f8 */
+	--sp-text-primary: var(--text-dark);    /* #383e42 */
+	--sp-text-secondary: var(--text-muted); /* #6b7280 */
 	--sp-border-color: #e4e4e7;
-	--sp-border-focus: var(--primary);     
+	--sp-border-focus: var(--primary);      /* #52b2e1 */
 	--sp-error-bg: #fef2f2;
 	--sp-error-text: #b91c1c;
 	--sp-error-border: #fecaca;
@@ -1773,4 +1773,52 @@ body.site-mobile-panel-open {
 }
 
 /* ===== FIN: Superplus Mini Cart - Botones Azules ===== */
+
+/* ===== INICIO: Superplus Checkout - Colores del Tema ===== */
+/* Sobrescribimos todas las variables CSS del checkout de Superplus */
+body.sp-wsv-simple {
+	--spwsv-font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+	--spwsv-font-size: 14px;
+	--spwsv-line-height: 1.4;
+
+	--spwsv-accent: var(--primary) !important;
+	--spwsv-accent-2: var(--primary) !important;
+	--spwsv-on-accent: #ffffff !important;
+	--spwsv-danger: #ef4444 !important;
+	--spwsv-danger-border: rgba(239, 68, 68, .55) !important;
+	--spwsv-notice-success-border: rgba(34, 197, 94, .55) !important;
+	--spwsv-notice-info-border: rgba(59, 130, 246, .55) !important;
+	--spwsv-notice-warning-border: rgba(245, 158, 11, .55) !important;
+	--spwsv-focus-ring: rgba(82, 178, 225, .18) !important;
+
+	--spwsv-text: var(--text-dark) !important;
+	--spwsv-muted: var(--text-muted) !important;
+
+	--spwsv-page-bg: var(--surface) !important;
+	--spwsv-panel-bg: var(--surface) !important;
+	--spwsv-sidebar-bg: var(--bg-ref) !important;
+	--spwsv-split-bg: var(--bg-ref) !important;
+
+	--spwsv-page-bg-split-main: var(--surface) !important;
+	--spwsv-page-bg-split-side: var(--bg-ref) !important;
+
+	--spwsv-border: #e5e7eb !important;
+	--spwsv-border-soft: #eef0f3 !important;
+
+	background: var(--spwsv-page-bg) !important;
+	color: var(--spwsv-text) !important;
+}
+
+body.sp-wsv-simple.sp-wsv-theme-light .blockUI.blockOverlay {
+	background: rgba(255, 255, 255, .72) !important;
+	opacity: 1 !important;
+}
+
+body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) :where(.blockUI.blockOverlay, .woocommerce .blockUI.blockOverlay)::before,
+body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .loader::before {
+	border-color: rgba(82, 178, 225, .18) !important;
+	border-top-color: rgba(82, 178, 225, .55) !important;
+}
+
+/* ===== FIN: Superplus Checkout - Colores del Tema ===== */
 
