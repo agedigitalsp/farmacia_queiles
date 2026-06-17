@@ -1716,3 +1716,40 @@ body.site-mobile-panel-open {
 .mobile-bottom-bar .header-cart-icon .cart-count-fragment {
 	color: #fff !important;
 }
+
+/* ===== INICIO: Superplus Custom Login - Colores del Tema =====  */
+/* Sobrescribimos las variables CSS de Superplus Light theme para usar los colores del tema */
+.sp-wsv-theme-light {
+	--sp-black: var(--text-dark);           /* #383e42 */
+	--sp-white: var(--surface);              /* #ffffff */
+	--sp-bg-main: var(--surface);            /* #ffffff */
+	--sp-bg-input: var(--bg-ref);            /* #f4f6f8 */
+	--sp-text-primary: var(--text-dark);    /* #383e42 */
+	--sp-text-secondary: var(--text-muted); /* #6b7280 */
+	--sp-border-color: #e4e4e7;
+	--sp-border-focus: var(--primary);      /* #52b2e1 */
+	--sp-error-bg: #fef2f2;
+	--sp-error-text: #b91c1c;
+	--sp-error-border: #fecaca;
+}
+
+/* Botones con color primario del tema */
+.sp-wsv-theme-light button.sp_btn,
+.sp-wsv-theme-light .woocommerce-Button.button {
+	background-color: var(--primary) !important;
+}
+
+.sp-wsv-theme-light button.sp_btn:hover,
+.sp-wsv-theme-light .woocommerce-Button.button:hover {
+	background-color: #4a9ec9 !important;
+}
+
+/* Links con el color primario */
+.sp-wsv-theme-light .auth_footer a,
+.sp-wsv-theme-light .lost_password a {
+	color: var(--primary) !important;
+}
+
+/* ===== FIN: Superplus Custom Login - Colores del Tema ===== */
+
+

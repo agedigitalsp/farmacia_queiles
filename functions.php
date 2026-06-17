@@ -102,6 +102,11 @@ final class Farmacia_Queiles_Theme
 		add_action('deleted_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('trashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('untrashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
+
+		// ===== INICIO: Deshabilitar Coming Soon de WooCommerce =====
+		// add_filter('pre_option_woocommerce_coming_soon', '__return_zero');
+		// add_filter('pre_option_woocommerce_store_pages_only', '__return_zero');
+		// ===== FIN: Deshabilitar Coming Soon de WooCommerce =====
 	}
 
 	public static function get_setting(string $key, $default = '')
