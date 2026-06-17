@@ -131,14 +131,14 @@ get_header();
 							$current_lang = pll_current_language();
 
 							if ('en' === $current_lang) {
-								echo do_shortcode('[contact-form-7 id="d37c565" title="Formulario de Contacto"]');
+								echo do_shortcode('[contact-form-7 id="1ced5b6" title="Formulario de contacto 1"]');
 							} else {
-								echo do_shortcode('[contact-form-7 id="860d28f" title="Formulario de Contacto"]');
+								echo do_shortcode('[contact-form-7 id="1ced5b6" title="Formulario de contacto 1"]');
 							}
 						} else {
 							echo do_shortcode('[contact-form-7 id="1ced5b6" title="Formulario de contacto 1"]');
 						}
-						
+
 						?>
 					</div>
 
