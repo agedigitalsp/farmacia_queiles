@@ -21,7 +21,6 @@ get_header();
         ?>
     </div>
 </div>
-
 <div class="secondary-page-banner">
     <div class="title-secondary-page-banner">
         <h1><?php echo get_the_title(); ?></h1>
