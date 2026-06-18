@@ -50,6 +50,7 @@ final class Farmacia_Queiles_Theme
 {
 	private const CMB2_THEME_OPTIONS_KEY = 'farmacia_queiles_theme_options';
 	private const CMB2_HOME_OPTIONS_KEY = 'farmacia_queiles_home_options';
+	private const HOME_LABS_CACHE_VERSION = 2;
 	private string $version;
 	private ?array $material_symbols_icon_choices = null;
 
@@ -315,26 +316,6 @@ final class Farmacia_Queiles_Theme
 
 	public function customize_register(WP_Customize_Manager $wp_customize): void
 	{
-		$wp_customize->add_setting(
-			'farmacia_queiles_footer_logo',
-			[
-				'default' => 0,
-				'sanitize_callback' => 'absint',
-			]
-		);
-
-		$wp_customize->add_control(
-			new WP_Customize_Media_Control(
-				$wp_customize,
-				'farmacia_queiles_footer_logo',
-				[
-					'label' => __('Imagen del footer', 'farmacia-queiles'),
-					'section' => 'title_tagline',
-					'mime_type' => 'image',
-				]
-			)
-		);
-
 		$wp_customize->add_section(
 			'farmacia_queiles_header_contact',
 			[
@@ -596,6 +577,12 @@ final class Farmacia_Queiles_Theme
 		}
 
 		$home_commitment_settings = [
+			'farmacia_queiles_home_commitment_kicker' => [
+				'label' => __('Texto superior', 'farmacia-queiles'),
+				'default' => __('Compromiso farmacéutico', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+				'type' => 'text',
+			],
 			'farmacia_queiles_home_commitment_title' => [
 				'label' => __('Título de la sección', 'farmacia-queiles'),
 				'default' => __('Nuestro Compromiso Sanitario', 'farmacia-queiles'),
@@ -750,13 +737,13 @@ final class Farmacia_Queiles_Theme
 			],
 			'farmacia_queiles_home_consulting_status_enabled' => [
 				'label' => __('Mostrar estado', 'farmacia-queiles'),
-				'default' => 1,
+				'default' => 0,
 				'sanitize_callback' => 'absint',
 				'type' => 'checkbox',
 			],
 			'farmacia_queiles_home_consulting_status_text' => [
 				'label' => __('Estado - Texto', 'farmacia-queiles'),
-				'default' => __('Respuesta inmediata', 'farmacia-queiles'),
+				'default' => '',
 				'sanitize_callback' => [$this, 'sanitize_text'],
 				'type' => 'text',
 			],
@@ -989,6 +976,13 @@ final class Farmacia_Queiles_Theme
 				'title' => __('Home - Compromiso sanitario', 'farmacia-queiles'),
 				'fields' => [
 					[
+						'name' => __('Texto superior', 'farmacia-queiles'),
+						'id' => 'farmacia_queiles_home_commitment_kicker',
+						'type' => 'text',
+						'default' => __('Compromiso farmacéutico', 'farmacia-queiles'),
+						'sanitization_cb' => 'sanitize_text_field',
+					],
+					[
 						'name' => __('Título de la sección', 'farmacia-queiles'),
 						'id' => 'farmacia_queiles_home_commitment_title',
 						'type' => 'text',
@@ -1060,7 +1054,7 @@ final class Farmacia_Queiles_Theme
 						'name' => __('Estado - Texto', 'farmacia-queiles'),
 						'id' => 'farmacia_queiles_home_consulting_status_text',
 						'type' => 'text',
-						'default' => __('Respuesta inmediata', 'farmacia-queiles'),
+						'default' => '',
 						'sanitization_cb' => 'sanitize_text_field',
 					],
 				],
@@ -1312,13 +1306,29 @@ final class Farmacia_Queiles_Theme
 			</label>
 		</div>
 		<div class="form-field">
-			<label for="fq_product_brand_home_image"><?php echo esc_html__('Imagen Home', 'farmacia-queiles'); ?></label>
-			<input type="url" name="fq_product_brand_home_image" id="fq_product_brand_home_image" value="" class="regular-text">
-			<p class="description"><?php echo esc_html__('Recomendada para Home. Max. 1200x1200 px. Proporción 1:1.', 'farmacia-queiles'); ?></p>
+			<label><?php echo esc_html__('Imagen Home', 'farmacia-queiles'); ?></label>
+			<div class="fq-brand-image" data-fq-brand-image="home">
+				<input type="hidden" name="fq_product_brand_home_image_id" value="">
+				<input type="hidden" name="fq_product_brand_home_image" value="">
+				<div class="fq-brand-image__preview" aria-hidden="true"></div>
+				<div class="fq-brand-image__actions">
+					<button type="button" class="button fq-brand-image__upload"><?php echo esc_html__('Subir/Añadir imagen', 'farmacia-queiles'); ?></button>
+					<button type="button" class="button fq-brand-image__remove fq-brand-image__remove--hidden"><?php echo esc_html__('Quitar', 'farmacia-queiles'); ?></button>
+				</div>
+			</div>
+			<p class="description"><?php echo esc_html__('Recomendada para Home. Max. 180x180 px. Proporción 1:1.', 'farmacia-queiles'); ?></p>
 		</div>
 		<div class="form-field">
-			<label for="fq_product_brand_hero_image"><?php echo esc_html__('Imagen Hero', 'farmacia-queiles'); ?></label>
-			<input type="url" name="fq_product_brand_hero_image" id="fq_product_brand_hero_image" value="" class="regular-text">
+			<label><?php echo esc_html__('Imagen Hero', 'farmacia-queiles'); ?></label>
+			<div class="fq-brand-image" data-fq-brand-image="hero">
+				<input type="hidden" name="fq_product_brand_hero_image_id" value="">
+				<input type="hidden" name="fq_product_brand_hero_image" value="">
+				<div class="fq-brand-image__preview" aria-hidden="true"></div>
+				<div class="fq-brand-image__actions">
+					<button type="button" class="button fq-brand-image__upload"><?php echo esc_html__('Subir/Añadir imagen', 'farmacia-queiles'); ?></button>
+					<button type="button" class="button fq-brand-image__remove fq-brand-image__remove--hidden"><?php echo esc_html__('Quitar', 'farmacia-queiles'); ?></button>
+				</div>
+			</div>
 			<p class="description"><?php echo esc_html__('Recomendada para hero o banners. Max. 1920x1080 px. Proporción 16:9.', 'farmacia-queiles'); ?></p>
 		</div>
 		<?php
@@ -1329,6 +1339,8 @@ final class Farmacia_Queiles_Theme
 		$is_featured = '1' === (string) get_term_meta($term->term_id, '_fq_featured_product_brand', true);
 		$home_image = (string) get_term_meta($term->term_id, '_fq_product_brand_home_image', true);
 		$hero_image = (string) get_term_meta($term->term_id, '_fq_product_brand_hero_image', true);
+		$home_image_id = (int) get_term_meta($term->term_id, '_fq_product_brand_home_image_id', true);
+		$hero_image_id = (int) get_term_meta($term->term_id, '_fq_product_brand_hero_image_id', true);
 		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
 		?>
 		<tr class="form-field">
@@ -1344,19 +1356,35 @@ final class Farmacia_Queiles_Theme
 		</tr>
 		<tr class="form-field">
 			<th scope="row">
-				<label for="fq_product_brand_home_image"><?php echo esc_html__('Imagen Home', 'farmacia-queiles'); ?></label>
+				<label><?php echo esc_html__('Imagen Home', 'farmacia-queiles'); ?></label>
 			</th>
 			<td>
-				<input type="url" name="fq_product_brand_home_image" id="fq_product_brand_home_image" value="<?php echo esc_attr($home_image); ?>" class="regular-text">
-				<p class="description"><?php echo esc_html__('Recomendada para Home. Max. 1200x1200 px. Proporción 1:1.', 'farmacia-queiles'); ?></p>
+				<div class="fq-brand-image" data-fq-brand-image="home">
+					<input type="hidden" name="fq_product_brand_home_image_id" value="<?php echo esc_attr((string) $home_image_id); ?>">
+					<input type="hidden" name="fq_product_brand_home_image" value="<?php echo esc_attr($home_image); ?>">
+					<div class="fq-brand-image__preview" aria-hidden="true"<?php echo $home_image !== '' ? ' data-fq-src="' . esc_attr($home_image) . '"' : ''; ?>></div>
+					<div class="fq-brand-image__actions">
+						<button type="button" class="button fq-brand-image__upload"><?php echo esc_html__('Subir/Añadir imagen', 'farmacia-queiles'); ?></button>
+						<button type="button" class="button fq-brand-image__remove<?php echo ($home_image === '' && $home_image_id < 1) ? ' fq-brand-image__remove--hidden' : ''; ?>"><?php echo esc_html__('Quitar', 'farmacia-queiles'); ?></button>
+					</div>
+				</div>
+				<p class="description"><?php echo esc_html__('Recomendada para Home. Max. 180x180 px. Proporción 1:1.', 'farmacia-queiles'); ?></p>
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row">
-				<label for="fq_product_brand_hero_image"><?php echo esc_html__('Imagen Hero', 'farmacia-queiles'); ?></label>
+				<label><?php echo esc_html__('Imagen Hero', 'farmacia-queiles'); ?></label>
 			</th>
 			<td>
-				<input type="url" name="fq_product_brand_hero_image" id="fq_product_brand_hero_image" value="<?php echo esc_attr($hero_image); ?>" class="regular-text">
+				<div class="fq-brand-image" data-fq-brand-image="hero">
+					<input type="hidden" name="fq_product_brand_hero_image_id" value="<?php echo esc_attr((string) $hero_image_id); ?>">
+					<input type="hidden" name="fq_product_brand_hero_image" value="<?php echo esc_attr($hero_image); ?>">
+					<div class="fq-brand-image__preview" aria-hidden="true"<?php echo $hero_image !== '' ? ' data-fq-src="' . esc_attr($hero_image) . '"' : ''; ?>></div>
+					<div class="fq-brand-image__actions">
+						<button type="button" class="button fq-brand-image__upload"><?php echo esc_html__('Subir/Añadir imagen', 'farmacia-queiles'); ?></button>
+						<button type="button" class="button fq-brand-image__remove<?php echo ($hero_image === '' && $hero_image_id < 1) ? ' fq-brand-image__remove--hidden' : ''; ?>"><?php echo esc_html__('Quitar', 'farmacia-queiles'); ?></button>
+					</div>
+				</div>
 				<p class="description"><?php echo esc_html__('Recomendada para hero o banners. Max. 1920x1080 px. Proporción 16:9.', 'farmacia-queiles'); ?></p>
 			</td>
 		</tr>
@@ -1390,7 +1418,7 @@ final class Farmacia_Queiles_Theme
 
 	public function enqueue_term_featured_admin_assets(string $hook): void
 	{
-		if ('edit-tags.php' !== $hook) {
+		if (!in_array($hook, ['edit-tags.php', 'term.php'], true)) {
 			return;
 		}
 
@@ -1415,6 +1443,25 @@ final class Farmacia_Queiles_Theme
 				'nonce' => wp_create_nonce('fq_term_featured_toggle'),
 			]
 		);
+
+		if ('product_brand' === $screen->taxonomy) {
+			wp_enqueue_media();
+
+			wp_enqueue_style(
+				'farmacia-queiles-term-brand-images',
+				get_template_directory_uri() . '/assets/css/admin/term-brand-images.min.css',
+				[],
+				$this->version
+			);
+
+			wp_enqueue_script(
+				'farmacia-queiles-term-brand-images',
+				get_template_directory_uri() . '/assets/js/admin/term-brand-images.min.js',
+				['jquery', 'media-editor'],
+				$this->version,
+				true
+			);
+		}
 	}
 
 	public function ajax_toggle_featured_term(): void
@@ -1518,8 +1565,22 @@ final class Farmacia_Queiles_Theme
 		}
 
 		if ('product_brand' === $taxonomy) {
+			$home_image_id = isset($_POST['fq_product_brand_home_image_id']) ? absint((string) $_POST['fq_product_brand_home_image_id']) : 0;
+			$hero_image_id = isset($_POST['fq_product_brand_hero_image_id']) ? absint((string) $_POST['fq_product_brand_hero_image_id']) : 0;
 			$home_image = isset($_POST['fq_product_brand_home_image']) ? $this->sanitize_url((string) $_POST['fq_product_brand_home_image']) : '';
 			$hero_image = isset($_POST['fq_product_brand_hero_image']) ? $this->sanitize_url((string) $_POST['fq_product_brand_hero_image']) : '';
+
+			if ($home_image_id < 1) {
+				delete_term_meta($term_id, '_fq_product_brand_home_image_id');
+			} else {
+				update_term_meta($term_id, '_fq_product_brand_home_image_id', $home_image_id);
+			}
+
+			if ($hero_image_id < 1) {
+				delete_term_meta($term_id, '_fq_product_brand_hero_image_id');
+			} else {
+				update_term_meta($term_id, '_fq_product_brand_hero_image_id', $hero_image_id);
+			}
 
 			if ('' === $home_image) {
 				delete_term_meta($term_id, '_fq_product_brand_home_image');
@@ -2044,12 +2105,18 @@ final class Farmacia_Queiles_Theme
 			return null;
 		}
 
+		$cache_version = isset($data['version']) ? (int) $data['version'] : 0;
+		if ($cache_version !== self::HOME_LABS_CACHE_VERSION) {
+			return null;
+		}
+
 		$generated_at = isset($data['generated_at']) ? (int) $data['generated_at'] : 0;
 		if ($generated_at < 1 && empty($labs)) {
 			return null;
 		}
 
 		return [
+			'version' => $cache_version,
 			'generated_at' => $generated_at,
 			'labs' => $labs,
 		];
@@ -2103,6 +2170,7 @@ final class Farmacia_Queiles_Theme
 	{
 		if (!taxonomy_exists('product_brand')) {
 			return [
+				'version' => self::HOME_LABS_CACHE_VERSION,
 				'generated_at' => time(),
 				'labs' => [],
 			];
@@ -2125,6 +2193,7 @@ final class Farmacia_Queiles_Theme
 
 		if (is_wp_error($terms) || empty($terms)) {
 			return [
+				'version' => self::HOME_LABS_CACHE_VERSION,
 				'generated_at' => time(),
 				'labs' => [],
 			];
@@ -2139,6 +2208,7 @@ final class Farmacia_Queiles_Theme
 		}
 
 		return [
+			'version' => self::HOME_LABS_CACHE_VERSION,
 			'generated_at' => time(),
 			'labs' => $labs,
 		];
@@ -2146,17 +2216,19 @@ final class Farmacia_Queiles_Theme
 
 	private function format_lab_payload(WP_Term $term): ?array
 	{
+		$home_image_id = (int) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image_id', true);
+		$hero_image_id = (int) get_term_meta((int) $term->term_id, '_fq_product_brand_hero_image_id', true);
 		$home_image = (string) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image', true);
 		$hero_image = (string) get_term_meta((int) $term->term_id, '_fq_product_brand_hero_image', true);
 
-		if ('' === $home_image) {
-			$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'thumbnail_id', true);
-			if ($thumbnail_id < 1) {
-				$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'image_id', true);
-			}
+		if ($home_image_id > 0) {
+			$from_id = wp_get_attachment_image_url($home_image_id, 'full');
+			$home_image = is_string($from_id) ? $from_id : $home_image;
+		}
 
-			$fallback_image = $thumbnail_id > 0 ? wp_get_attachment_image_url($thumbnail_id, 'full') : '';
-			$home_image = is_string($fallback_image) ? $fallback_image : '';
+		if ($hero_image_id > 0) {
+			$from_id = wp_get_attachment_image_url($hero_image_id, 'full');
+			$hero_image = is_string($from_id) ? $from_id : $hero_image;
 		}
 
 		if ('' === $hero_image) {
@@ -2923,14 +2995,8 @@ JS;
 			}
 		}
 
-		$footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
-
-		if ($footer_logo_id > 0) {
-			$logo_url = wp_get_attachment_image_url($footer_logo_id, 'full');
-
-			if (is_string($logo_url) && '' !== $logo_url) {
-				return $logo_url;
-			}
+		if (file_exists(get_template_directory() . '/assets/img/logo.svg')) {
+			return get_template_directory_uri() . '/assets/img/logo.svg';
 		}
 
 		return '';

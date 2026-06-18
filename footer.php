@@ -13,12 +13,11 @@ $brand_text = Farmacia_Queiles_Theme::get_setting(
 	__('Donde la ciencia farmacéutica se encuentra con el bienestar profundo. Cuidamos tu piel y tu salud con el rigor de un boticario y la sensibilidad de quien valora la vida.', 'farmacia-queiles')
 );
 $custom_logo_id = get_theme_mod('custom_logo');
-$footer_logo_id = (int) get_theme_mod('farmacia_queiles_footer_logo', 0);
 $footer_address_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_address_text', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_text', 'Av. Reino de Aragón 3, 50500 Tarazona'));
 $footer_address_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_address_url', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_url', ''));
 $footer_phone_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_phone_text', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_phone_text', '976 642 685'));
 $footer_phone_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_phone_url', Farmacia_Queiles_Theme::get_setting('farmacia_queiles_phone_url', 'tel:+34976642685'));
-$footer_whatsapp_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_text', 'WhatsApp: 689 123 456');
+$footer_whatsapp_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_text', '689 123 456');
 $footer_whatsapp_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_url', '');
 $footer_schedule_title = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_schedule_title', __('Nuestra Botica:', 'farmacia-queiles'));
 $footer_schedule_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_schedule_text', "L-V: 9:00 - 13:45 | 16:30 - 20:00\nSábados: 9:00 - 13:45");
@@ -101,7 +100,9 @@ $footer_legal_fallback = [
 			<div class="footer-main">
 				<div class="footer-col footer-col--brand">
 					<a class="footer-brand" href="<?php echo esc_url(home_url('/')); ?>">
-						<?php if ($footer_logo_id > 0) : ?>
+						<?php if (file_exists(get_template_directory() . '/assets/img/logo.svg')) : ?>
+							<img class="footer-brand__image" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+						<?php elseif ($footer_logo_id > 0) : ?>
 							<?php echo wp_get_attachment_image($footer_logo_id, 'full', false, ['class' => 'footer-brand__image']); ?>
 						<?php elseif ($custom_logo_id > 0) : ?>
 							<?php echo wp_get_attachment_image($custom_logo_id, 'full', false, ['class' => 'footer-brand__image']); ?>

@@ -30,8 +30,8 @@ $cta_url_default = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queile
 $cta_url = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_consulting_cta_url', $cta_url_default);
 $cta_icon = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_consulting_cta_icon', 'chat');
 
-$status_enabled = (int) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_consulting_status_enabled', 1) === 1;
-$status_text = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_consulting_status_text', __('Respuesta inmediata', 'farmacia-queiles'));
+$status_enabled = (int) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_consulting_status_enabled', 0) === 1;
+$status_text = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_consulting_status_text', '');
 
 $has_image = $image_id > 0 || '' !== trim($image_url);
 $has_cta = '' !== trim($cta_url);

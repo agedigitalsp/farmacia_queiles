@@ -32,16 +32,12 @@ if (empty($labs)) {
 	}
 
 	foreach ($terms as $term) {
+		$home_image_id = (int) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image_id', true);
 		$home_image = (string) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image', true);
 
-		if ('' === $home_image) {
-			$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'thumbnail_id', true);
-			if ($thumbnail_id < 1) {
-				$thumbnail_id = (int) get_term_meta((int) $term->term_id, 'image_id', true);
-			}
-
-			$fallback_image = $thumbnail_id > 0 ? wp_get_attachment_image_url($thumbnail_id, 'full') : '';
-			$home_image = is_string($fallback_image) ? $fallback_image : '';
+		if ($home_image_id > 0) {
+			$from_id = wp_get_attachment_image_url($home_image_id, 'full');
+			$home_image = is_string($from_id) ? $from_id : $home_image;
 		}
 
 		if ('' === $home_image) {

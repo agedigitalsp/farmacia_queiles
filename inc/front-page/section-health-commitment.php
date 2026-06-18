@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+$section_kicker = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_commitment_kicker', __('Compromiso farmacéutico', 'farmacia-queiles'));
 $section_title = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_commitment_title', __('Nuestro Compromiso Sanitario', 'farmacia-queiles'));
 $items = [];
 
@@ -51,6 +52,9 @@ for ($index = 1; $index <= 4; $index++) {
 <section class="home-health-commitment">
 	<div class="container container--wide">
 		<header class="home-health-commitment__header">
+			<?php if ('' !== trim($section_kicker)) : ?>
+				<span class="home-health-commitment__kicker"><?php echo esc_html($section_kicker); ?></span>
+			<?php endif; ?>
 			<h2 class="home-health-commitment__title"><?php echo esc_html($section_title); ?></h2>
 		</header>
 
