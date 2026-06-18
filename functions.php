@@ -18,7 +18,7 @@ if (class_exists('WP_Customize_Control') && !class_exists('Farmacia_Queiles_Mate
 		{
 			$value = (string) $this->value();
 			$current_label = '' !== $value ? ucwords(str_replace('_', ' ', $value)) : '';
-			?>
+?>
 			<div class="fq-material-icon-control">
 				<?php if (!empty($this->label)) : ?>
 					<span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
@@ -41,7 +41,7 @@ if (class_exists('WP_Customize_Control') && !class_exists('Farmacia_Queiles_Mate
 					<p class="description customize-control-description"><?php echo esc_html($this->description); ?></p>
 				<?php endif; ?>
 			</div>
-			<?php
+		<?php
 		}
 	}
 }
@@ -84,6 +84,7 @@ final class Farmacia_Queiles_Theme
 		add_filter('manage_product_cat_custom_column', [$this, 'render_featured_product_cat_column'], 10, 3);
 		add_filter('manage_product_brand_custom_column', [$this, 'render_featured_product_brand_column'], 10, 3);
 		add_action('wp_ajax_fq_toggle_featured_term', [$this, 'ajax_toggle_featured_term']);
+		add_action('init', [$this, 'register_opiniones_cpt']); // cpt opiniones
 		add_action('init', [$this, 'register_promociones_cpt']);
 		add_action('init', [$this, 'customize_brand_taxonomy'], 99);
 		add_action('cmb2_admin_init', [$this, 'register_cmb2_boxes']);
@@ -1204,11 +1205,13 @@ final class Farmacia_Queiles_Theme
 						<span class="material-symbols-outlined">close</span>
 					</button>
 				</div>
-				<?php echo $this->get_cart_drawer_content_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php echo $this->get_cart_drawer_footer_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo $this->get_cart_drawer_content_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?>
+				<?php echo $this->get_cart_drawer_footer_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?>
 			</aside>
 		</div>
-		<?php
+	<?php
 	}
 
 	public function update_cart_fragments(array $fragments): array
@@ -1260,21 +1263,21 @@ final class Farmacia_Queiles_Theme
 	{
 		unset($taxonomy);
 		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
-		?>
+	?>
 		<div class="form-field">
 			<label for="fq_featured_product_cat">
 				<input type="checkbox" name="fq_featured_product_cat" id="fq_featured_product_cat" value="1">
 				<?php echo esc_html__('Categoría destacada', 'farmacia-queiles'); ?>
 			</label>
 		</div>
-		<?php
+	<?php
 	}
 
 	public function render_featured_product_cat_edit_field(WP_Term $term): void
 	{
 		$is_featured = '1' === (string) get_term_meta($term->term_id, '_fq_featured_product_cat', true);
 		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
-		?>
+	?>
 		<tr class="form-field">
 			<th scope="row">
 				<label for="fq_featured_product_cat"><?php echo esc_html__('Categoría destacada', 'farmacia-queiles'); ?></label>
@@ -1286,7 +1289,7 @@ final class Farmacia_Queiles_Theme
 				</label>
 			</td>
 		</tr>
-		<?php
+	<?php
 	}
 
 	public function save_featured_product_cat_meta(int $term_id): void
@@ -1298,7 +1301,7 @@ final class Farmacia_Queiles_Theme
 	{
 		unset($taxonomy);
 		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
-		?>
+	?>
 		<div class="form-field">
 			<label for="fq_featured_product_brand">
 				<input type="checkbox" name="fq_featured_product_brand" id="fq_featured_product_brand" value="1">
@@ -1331,7 +1334,7 @@ final class Farmacia_Queiles_Theme
 			</div>
 			<p class="description"><?php echo esc_html__('Recomendada para hero o banners. Max. 1920x1080 px. Proporción 16:9.', 'farmacia-queiles'); ?></p>
 		</div>
-		<?php
+	<?php
 	}
 
 	public function render_featured_product_brand_edit_field(WP_Term $term): void
@@ -1342,7 +1345,7 @@ final class Farmacia_Queiles_Theme
 		$home_image_id = (int) get_term_meta($term->term_id, '_fq_product_brand_home_image_id', true);
 		$hero_image_id = (int) get_term_meta($term->term_id, '_fq_product_brand_hero_image_id', true);
 		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
-		?>
+	?>
 		<tr class="form-field">
 			<th scope="row">
 				<label for="fq_featured_product_brand"><?php echo esc_html__('Laboratorio destacado', 'farmacia-queiles'); ?></label>
@@ -1362,7 +1365,7 @@ final class Farmacia_Queiles_Theme
 				<div class="fq-brand-image" data-fq-brand-image="home">
 					<input type="hidden" name="fq_product_brand_home_image_id" value="<?php echo esc_attr((string) $home_image_id); ?>">
 					<input type="hidden" name="fq_product_brand_home_image" value="<?php echo esc_attr($home_image); ?>">
-					<div class="fq-brand-image__preview" aria-hidden="true"<?php echo $home_image !== '' ? ' data-fq-src="' . esc_attr($home_image) . '"' : ''; ?>></div>
+					<div class="fq-brand-image__preview" aria-hidden="true" <?php echo $home_image !== '' ? ' data-fq-src="' . esc_attr($home_image) . '"' : ''; ?>></div>
 					<div class="fq-brand-image__actions">
 						<button type="button" class="button fq-brand-image__upload"><?php echo esc_html__('Subir/Añadir imagen', 'farmacia-queiles'); ?></button>
 						<button type="button" class="button fq-brand-image__remove<?php echo ($home_image === '' && $home_image_id < 1) ? ' fq-brand-image__remove--hidden' : ''; ?>"><?php echo esc_html__('Quitar', 'farmacia-queiles'); ?></button>
@@ -1379,7 +1382,7 @@ final class Farmacia_Queiles_Theme
 				<div class="fq-brand-image" data-fq-brand-image="hero">
 					<input type="hidden" name="fq_product_brand_hero_image_id" value="<?php echo esc_attr((string) $hero_image_id); ?>">
 					<input type="hidden" name="fq_product_brand_hero_image" value="<?php echo esc_attr($hero_image); ?>">
-					<div class="fq-brand-image__preview" aria-hidden="true"<?php echo $hero_image !== '' ? ' data-fq-src="' . esc_attr($hero_image) . '"' : ''; ?>></div>
+					<div class="fq-brand-image__preview" aria-hidden="true" <?php echo $hero_image !== '' ? ' data-fq-src="' . esc_attr($hero_image) . '"' : ''; ?>></div>
 					<div class="fq-brand-image__actions">
 						<button type="button" class="button fq-brand-image__upload"><?php echo esc_html__('Subir/Añadir imagen', 'farmacia-queiles'); ?></button>
 						<button type="button" class="button fq-brand-image__remove<?php echo ($hero_image === '' && $hero_image_id < 1) ? ' fq-brand-image__remove--hidden' : ''; ?>"><?php echo esc_html__('Quitar', 'farmacia-queiles'); ?></button>
@@ -1388,7 +1391,7 @@ final class Farmacia_Queiles_Theme
 				<p class="description"><?php echo esc_html__('Recomendada para hero o banners. Max. 1920x1080 px. Proporción 16:9.', 'farmacia-queiles'); ?></p>
 			</td>
 		</tr>
-		<?php
+	<?php
 	}
 
 	public function save_featured_product_brand_meta(int $term_id): void
@@ -1866,7 +1869,45 @@ final class Farmacia_Queiles_Theme
 		delete_option('farmacia_queiles_flush_rewrite_rules');
 		flush_rewrite_rules();
 	}
+	/* ==========================================================================
+   INICIO CPT OPINIONES
+   ========================================================================== */
 
+	public function register_opiniones_cpt(): void
+	{
+		$labels = [
+			'name' 					=> __('Opiniones', 'farmacia-queiles'),
+			'singular_name' 		=> __('Opinión', 'farmacia-queiles'),
+			'menu_name' 			=> __('Opiniones', 'farmacia-queiles'),
+			'add_new' 				=> __('Añadir nueva', 'farmacia-queiles'),
+			'add_new_item' 			=> __('Añadir nueva opinión', 'farmacia-queiles'),
+			'edit_item' 			=> __('Editar opinión', 'farmacia-queiles'),
+			'new_item' 				=> __('Nueva opinión', 'farmacia-queiles'),
+			'view_item' 			=> __('Ver opinión', 'farmacia-queiles'),
+			'search_items' 			=> __('Buscar opiniones', 'farmacia-queiles'),
+			'not_found' 			=> __('No se encontraron opiniones.', 'farmacia-queiles'),
+			'not_found_in_trash' 	=> __('No se encontraron opiniones en la papelera.', 'farmacia-queiles'),
+
+		];
+
+		$args = [
+			'labels' 				=> $labels,
+			'public' 				=> true,
+			'publicly_queryable' 	=> false,
+			'has_archive' 			=> false,
+			'query_var'          	=> false,
+			'show_in_rest' 			=> true,
+			'supports' 				=> ['title', 'editor', 'thumbnail'],
+			'menu_icon' 			=> 'dashicons-editor-quote',
+
+		];
+
+		register_post_type('opiniones', $args);
+	}
+
+	/* ==========================================================================
+   FIN CPT OPINIONES
+   ========================================================================== */
 	public function register_promociones_cpt(): void
 	{
 		$labels = [
@@ -2420,12 +2461,12 @@ final class Farmacia_Queiles_Theme
 
 	public function render_cmb2_options_page(CMB2_Options_Hookup $options_page): void
 	{
-		?>
+	?>
 		<div class="wrap cmb2-options-page <?php echo esc_attr($options_page->option_key); ?>">
 			<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 			<?php cmb2_metabox_form($options_page->cmb->cmb_id, $options_page->option_key); ?>
 		</div>
-		<?php
+	<?php
 	}
 
 	public function get_promociones_cmb2_product_options($field = null): array
@@ -2554,7 +2595,7 @@ final class Farmacia_Queiles_Theme
 		$featured_1 = (bool) get_post_meta($post->ID, '_fq_promo_featured_1', true);
 		$featured_2 = (bool) get_post_meta($post->ID, '_fq_promo_featured_2', true);
 
-		?>
+	?>
 		<p>
 			<label for="fq_promo_subtitle"><strong><?php echo esc_html__('Subtítulo', 'farmacia-queiles'); ?></strong></label><br>
 			<input id="fq_promo_subtitle" name="fq_promo_subtitle" type="text" value="<?php echo esc_attr($subtitle); ?>" class="widefat" required>
@@ -2633,10 +2674,9 @@ final class Farmacia_Queiles_Theme
 					multiple
 					data-rest-url="<?php echo esc_url(rest_url('farmacia-queiles/v1/products-search')); ?>"
 					data-rest-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>"
-					data-placeholder="<?php echo esc_attr__('Busca productos...', 'farmacia-queiles'); ?>"
-				>
+					data-placeholder="<?php echo esc_attr__('Busca productos...', 'farmacia-queiles'); ?>">
 					<?php foreach ($products as $product) : ?>
-						<option value="<?php echo esc_attr((string) $product->ID); ?>"<?php selected(in_array((int) $product->ID, $selected_products, true)); ?>>
+						<option value="<?php echo esc_attr((string) $product->ID); ?>" <?php selected(in_array((int) $product->ID, $selected_products, true)); ?>>
 							<?php echo esc_html(get_the_title($product)); ?>
 						</option>
 					<?php endforeach; ?>
@@ -2648,7 +2688,7 @@ final class Farmacia_Queiles_Theme
 		<?php else : ?>
 			<p><?php echo esc_html__('WooCommerce no está activo o el tipo de contenido "product" no está disponible.', 'farmacia-queiles'); ?></p>
 		<?php endif; ?>
-		<?php
+	<?php
 	}
 
 	public function save_promociones_meta(int $post_id, WP_Post $post): void
@@ -2739,11 +2779,11 @@ final class Farmacia_Queiles_Theme
 		if (!$screen || 'promociones' !== $screen->post_type) {
 			return;
 		}
-		?>
+	?>
 		<div class="notice notice-error is-dismissible">
 			<p><?php echo esc_html__('El subtítulo es obligatorio para guardar o publicar una promoción.', 'farmacia-queiles'); ?></p>
 		</div>
-		<?php
+	<?php
 	}
 
 	public function add_promociones_admin_columns(array $columns): array
@@ -2853,11 +2893,11 @@ final class Farmacia_Queiles_Theme
 	private function get_cart_drawer_content_markup(): string
 	{
 		ob_start();
-		?>
+	?>
 		<div class="site-cart-drawer__content">
 			<?php woocommerce_mini_cart(); ?>
 		</div>
-		<?php
+	<?php
 
 		return (string) ob_get_clean();
 	}
@@ -2865,7 +2905,7 @@ final class Farmacia_Queiles_Theme
 	private function get_cart_drawer_footer_markup(): string
 	{
 		ob_start();
-		?>
+	?>
 		<div class="site-cart-drawer__footer">
 			<?php if (function_exists('WC') && WC()->cart && !WC()->cart->is_empty()) : ?>
 				<div class="site-cart-drawer__subtotal">
@@ -2882,7 +2922,7 @@ final class Farmacia_Queiles_Theme
 				</div>
 			<?php endif; ?>
 		</div>
-		<?php
+<?php
 
 		return (string) ob_get_clean();
 	}
@@ -3026,7 +3066,6 @@ JS;
 
 		return trailingslashit(home_url('/'));
 	}
-
 }
 
 new Farmacia_Queiles_Theme();
