@@ -1832,4 +1832,65 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 
 /* ===== FIN: Contact Page - WhatsApp SVG ===== */
 
+/* ==========================================================================
+   BANNER PARA PÁGINAS SECUNDARIAS
+   ========================================================================== */
 
+/* Banner */
+.secondary-page-banner {
+    background-color: #383e42;
+    padding: 60px 20px;
+    text-align: center;        
+    width: 100%;
+}
+
+/* Título dentro del banner */
+.title-secondary-page-banner h1 {
+    color: #ffffff !important;
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Texto de la página */
+.content-secondary-page {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+	line-height: 1.8em;
+}
+
+/* ==========================================================================
+   BREADCRUMBS PARA PÁGINAS SECUNDARIAS
+   ========================================================================== */
+
+.breadcrumbs-secondary-page {
+    background-color: #f8f9fa; /* Fondo gris muy limpio */
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.85rem;
+}
+
+.breadcrumbs-container {
+    max-width: 1200px; /* Alineado exactamente al ancho de tu contenido de abajo */
+    margin: 0 auto;
+    padding: 0 20px;
+    color: #6c757d;
+}
+
+.breadcrumbs-container a {
+    color: #007bff; /* Color del enlace */
+    text-decoration: none;
+}
+
+.breadcrumbs-container a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumbs-container .current-crumb {
+    font-weight: 500;
+    color: #495057;
+}
+/* ==========================================================================
+   BREADCRUMBS PARA PÁGINAS SECUNDARIAS - FIN
+   ========================================================================== */
