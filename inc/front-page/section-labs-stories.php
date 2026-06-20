@@ -62,8 +62,8 @@ if (empty($labs)) {
 	return;
 }
 
-$is_slider = count($labs) > 5;
-$render_labs = $is_slider ? $labs : array_slice($labs, 0, 5);
+$is_slider = count($labs) > 8;
+$render_labs = $is_slider ? $labs : array_slice($labs, 0, 8);
 $section_kicker = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_labs_kicker', __('Nuestros laboratorios', 'farmacia-queiles'));
 $section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_labs_title_html', 'Laboratorios de <span class="home-labs-stories__title-accent">Confianza</span>');
 ?>
@@ -85,7 +85,9 @@ $section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_que
 				<div class="home-labs-stories__track" data-labs-track>
 					<?php foreach ($render_labs as $lab) : ?>
 						<a class="lab-story" href="<?php echo esc_url($lab['url']); ?>" aria-label="<?php echo esc_attr($lab['name']); ?>">
-							<span class="lab-story__media" style="background-image:url('<?php echo esc_url($lab['home_image']); ?>');"></span>
+							<span class="lab-story__media">
+								<span class="lab-story__image" style="background-image:url('<?php echo esc_url($lab['home_image']); ?>');"></span>
+							</span>
 							<span class="lab-story__label"><?php echo esc_html($lab['name']); ?></span>
 						</a>
 					<?php endforeach; ?>
