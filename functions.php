@@ -18,7 +18,7 @@ if (class_exists('WP_Customize_Control') && !class_exists('Farmacia_Queiles_Mate
 		{
 			$value = (string) $this->value();
 			$current_label = '' !== $value ? ucwords(str_replace('_', ' ', $value)) : '';
-?>
+		?>
 			<div class="fq-material-icon-control">
 				<?php if (!empty($this->label)) : ?>
 					<span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
