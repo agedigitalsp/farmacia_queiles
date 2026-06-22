@@ -18,7 +18,7 @@ if (class_exists('WP_Customize_Control') && !class_exists('Farmacia_Queiles_Mate
 		{
 			$value = (string) $this->value();
 			$current_label = '' !== $value ? ucwords(str_replace('_', ' ', $value)) : '';
-		?>
+?>
 			<div class="fq-material-icon-control">
 				<?php if (!empty($this->label)) : ?>
 					<span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
@@ -51,6 +51,8 @@ final class Farmacia_Queiles_Theme
 	private const CMB2_THEME_OPTIONS_KEY = 'farmacia_queiles_theme_options';
 	private const CMB2_HOME_OPTIONS_KEY = 'farmacia_queiles_home_options';
 	private const HOME_LABS_CACHE_VERSION = 2;
+	private const HOME_FEATURED_CATS_CACHE_VERSION = 1;
+	private const HOME_FEATURED_PRODUCTS_CACHE_VERSION = 1;
 	private string $version;
 	private ?array $material_symbols_icon_choices = null;
 
@@ -79,11 +81,22 @@ final class Farmacia_Queiles_Theme
 		add_action('created_product_brand', [$this, 'maybe_regenerate_home_labs_json_on_term_change']);
 		add_action('edited_product_brand', [$this, 'maybe_regenerate_home_labs_json_on_term_change']);
 		add_action('delete_product_brand', [$this, 'maybe_regenerate_home_labs_json_on_term_change']);
+		add_action('created_product_cat', [$this, 'maybe_regenerate_home_featured_cats_json_on_term_change']);
+		add_action('edited_product_cat', [$this, 'maybe_regenerate_home_featured_cats_json_on_term_change']);
+		add_action('delete_product_cat', [$this, 'maybe_regenerate_home_featured_cats_json_on_term_change']);
 		add_filter('manage_edit-product_cat_columns', [$this, 'add_featured_product_cat_column']);
 		add_filter('manage_edit-product_brand_columns', [$this, 'add_featured_product_brand_column']);
 		add_filter('manage_product_cat_custom_column', [$this, 'render_featured_product_cat_column'], 10, 3);
 		add_filter('manage_product_brand_custom_column', [$this, 'render_featured_product_brand_column'], 10, 3);
 		add_action('wp_ajax_fq_toggle_featured_term', [$this, 'ajax_toggle_featured_term']);
+		add_action('woocommerce_product_options_general_product_data', [$this, 'render_featured_product_field']);
+		add_action('save_post_product', [$this, 'save_featured_product_meta'], 20, 3);
+		add_action('woocommerce_process_product_meta', [$this, 'save_featured_product_meta_simple'], 20, 1);
+		add_action('save_post_product', [$this, 'maybe_regenerate_home_featured_products_json'], 20, 3);
+		add_action('deleted_post', [$this, 'maybe_regenerate_home_featured_products_json_on_delete'], 10, 2);
+		add_action('trashed_post', [$this, 'maybe_regenerate_home_featured_products_json_on_delete'], 10, 2);
+		add_action('untrashed_post', [$this, 'maybe_regenerate_home_featured_products_json_on_delete'], 10, 2);
+		add_action('admin_init', [$this, 'maybe_bootstrap_home_featured_products_json']);
 		add_action('init', [$this, 'register_opiniones_cpt']); // cpt opiniones
 		add_action('init', [$this, 'register_promociones_cpt']);
 		add_action('init', [$this, 'customize_brand_taxonomy'], 99);
@@ -97,6 +110,7 @@ final class Farmacia_Queiles_Theme
 		add_action('admin_init', [$this, 'maybe_flush_rewrite_rules']);
 		add_action('admin_init', [$this, 'maybe_bootstrap_home_promotions_json']);
 		add_action('admin_init', [$this, 'maybe_bootstrap_home_labs_json']);
+		add_action('admin_init', [$this, 'maybe_bootstrap_home_featured_cats_json']);
 		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
 		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
 		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
@@ -173,6 +187,8 @@ final class Farmacia_Queiles_Theme
 		add_theme_support('wc-product-gallery-zoom');
 		add_theme_support('wc-product-gallery-lightbox');
 		add_theme_support('wc-product-gallery-slider');
+
+		add_image_size('fq-featured-cat', 480, 600, true);
 	}
 
 	public function enqueue_assets(): void
@@ -223,6 +239,18 @@ final class Farmacia_Queiles_Theme
 				['farmacia-queiles-style'],
 				$this->version
 			);
+			wp_enqueue_style(
+				'farmacia-queiles-home-featured-cats',
+				get_template_directory_uri() . '/assets/css/home-featured-categories.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-home-featured-products',
+				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-hero',
 				get_template_directory_uri() . '/assets/js/home-hero-promotions.min.js',
@@ -233,6 +261,13 @@ final class Farmacia_Queiles_Theme
 			wp_enqueue_script(
 				'farmacia-queiles-home-labs',
 				get_template_directory_uri() . '/assets/js/home-labs-stories.min.js',
+				[],
+				$this->version,
+				true
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-home-featured-products',
+				get_template_directory_uri() . '/assets/js/home-featured-products.min.js',
 				[],
 				$this->version,
 				true
@@ -1259,6 +1294,41 @@ final class Farmacia_Queiles_Theme
 		return esc_url_raw($value);
 	}
 
+	public function render_featured_product_field(): void
+	{
+		woocommerce_wp_checkbox([
+			'id'          => '_fq_featured_product',
+			'label'       => __('Producto destacado en portada', 'farmacia-queiles'),
+			'description' => __('Marca este producto para mostrarlo en la sección destacada de la portada.', 'farmacia-queiles'),
+		]);
+	}
+
+	public function save_featured_product_meta(int $post_id, WP_Post $post, bool $update): void
+	{
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return;
+		}
+
+		if (!current_user_can('edit_post', $post_id)) {
+			return;
+		}
+
+		$value = isset($_POST['_fq_featured_product']) ? '1' : '0';
+		update_post_meta($post_id, '_fq_featured_product', $value);
+	}
+
+	public function save_featured_product_meta_simple(int $post_id): void
+	{
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return;
+		}
+		if (!current_user_can('edit_post', $post_id)) {
+			return;
+		}
+		$value = isset($_POST['_fq_featured_product']) ? '1' : '0';
+		update_post_meta($post_id, '_fq_featured_product', $value);
+	}
+
 	public function render_featured_product_cat_add_field(string $taxonomy): void
 	{
 		unset($taxonomy);
@@ -1270,12 +1340,43 @@ final class Farmacia_Queiles_Theme
 				<?php echo esc_html__('Categoría destacada', 'farmacia-queiles'); ?>
 			</label>
 		</div>
+		<div class="form-field" id="fq-cat-bg-color-row" style="display:none">
+			<label for="fq_cat_bg_color"><?php echo esc_html__('Color de fondo 1', 'farmacia-queiles'); ?></label>
+			<input type="color" name="fq_cat_bg_color" id="fq_cat_bg_color" value="#dbeeff">
+			<p class="description"><?php echo esc_html__('Color inicial del degradado.', 'farmacia-queiles'); ?></p>
+		</div>
+		<div class="form-field" id="fq-cat-bg-color2-row" style="display:none">
+			<label for="fq_cat_bg_color2"><?php echo esc_html__('Color de fondo 2', 'farmacia-queiles'); ?></label>
+			<input type="color" name="fq_cat_bg_color2" id="fq_cat_bg_color2" value="#ffffff">
+			<p class="description"><?php echo esc_html__('Color final del degradado. Blanco por defecto.', 'farmacia-queiles'); ?></p>
+		</div>
+		<script>
+			(function() {
+				var cb = document.getElementById('fq_featured_product_cat');
+				if (!cb) {
+					return;
+				}
+
+				function toggle() {
+					var show = cb.checked;
+					var thumbnailWrap = document.querySelector('.term-thumbnail-wrap');
+					var colorRow1 = document.getElementById('fq-cat-bg-color-row');
+					var colorRow2 = document.getElementById('fq-cat-bg-color2-row');
+					if (thumbnailWrap) { thumbnailWrap.style.display = show ? '' : 'none'; }
+					if (colorRow1)     { colorRow1.style.display     = show ? '' : 'none'; }
+					if (colorRow2)     { colorRow2.style.display     = show ? '' : 'none'; }
+				}
+				cb.addEventListener('change', toggle);
+				document.addEventListener('DOMContentLoaded', toggle);
+			}());
+		</script>
 	<?php
 	}
 
 	public function render_featured_product_cat_edit_field(WP_Term $term): void
 	{
 		$is_featured = '1' === (string) get_term_meta($term->term_id, '_fq_featured_product_cat', true);
+
 		wp_nonce_field('fq_featured_term_meta', 'fq_featured_term_meta_nonce');
 	?>
 		<tr class="form-field">
@@ -1289,12 +1390,72 @@ final class Farmacia_Queiles_Theme
 				</label>
 			</td>
 		</tr>
+		<tr class="form-field" id="fq-cat-bg-color-row">
+			<th scope="row">
+				<label for="fq_cat_bg_color">Color de fondo 1</label>
+			</th>
+			<td>
+				<input type="color"
+					name="fq_cat_bg_color"
+					id="fq_cat_bg_color"
+					value="<?php echo esc_attr(get_term_meta($term->term_id, '_fq_cat_bg_color', true) ?: '#dbeeff'); ?>">
+				<p class="description">Color inicial del degradado (esquina superior derecha).</p>
+			</td>
+		</tr>
+		<tr class="form-field" id="fq-cat-bg-color2-row">
+			<th scope="row">
+				<label for="fq_cat_bg_color2">Color de fondo 2</label>
+			</th>
+			<td>
+				<input type="color"
+					name="fq_cat_bg_color2"
+					id="fq_cat_bg_color2"
+					value="<?php echo esc_attr(get_term_meta($term->term_id, '_fq_cat_bg_color2', true) ?: '#ffffff'); ?>">
+				<p class="description">Color final del degradado (esquina inferior izquierda). Blanco por defecto.</p>
+			</td>
+		</tr>
+		<script>
+			(function() {
+				var cb = document.getElementById('fq_featured_product_cat');
+				if (!cb) {
+					return;
+				}
+
+				function toggle() {
+					var show = cb.checked;
+					var thumbnailRow = document.querySelector('.term-thumbnail-wrap');
+					var colorRow1 = document.getElementById('fq-cat-bg-color-row');
+					var colorRow2 = document.getElementById('fq-cat-bg-color2-row');
+					if (thumbnailRow) { thumbnailRow.style.display = show ? '' : 'none'; }
+					if (colorRow1)    { colorRow1.style.display    = show ? '' : 'none'; }
+					if (colorRow2)    { colorRow2.style.display    = show ? '' : 'none'; }
+				}
+				cb.addEventListener('change', toggle);
+				document.addEventListener('DOMContentLoaded', toggle);
+			}());
+			</script>
 	<?php
 	}
 
 	public function save_featured_product_cat_meta(int $term_id): void
 	{
 		$this->save_featured_term_meta($term_id, 'product_cat', '_fq_featured_product_cat', 'fq_featured_product_cat');
+		delete_term_meta($term_id, '_fq_featured_cat_image_size');
+
+		if (isset($_POST['fq_cat_bg_color'])) {
+			$color = sanitize_hex_color($_POST['fq_cat_bg_color']);
+			if ($color) {
+				update_term_meta($term_id, '_fq_cat_bg_color', $color);
+			}
+		}
+
+		if (isset($_POST['fq_cat_bg_color2'])) {
+			$color2 = sanitize_hex_color($_POST['fq_cat_bg_color2']);
+			
+			if ($color2) {
+				update_term_meta($term_id, '_fq_cat_bg_color2', $color2);
+			}
+		}
 	}
 
 	public function render_featured_product_brand_add_field(string $taxonomy): void
@@ -1447,7 +1608,7 @@ final class Farmacia_Queiles_Theme
 			]
 		);
 
-		if ('product_brand' === $screen->taxonomy) {
+		if (in_array($screen->taxonomy, ['product_cat', 'product_brand'], true)) {
 			wp_enqueue_media();
 
 			wp_enqueue_style(
@@ -1496,12 +1657,18 @@ final class Farmacia_Queiles_Theme
 			if ('product_brand' === $taxonomy) {
 				$this->regenerate_home_labs_json();
 			}
+			if ('product_cat' === $taxonomy) {
+				$this->regenerate_home_featured_cats_json();
+			}
 			wp_send_json_success(['value' => '1']);
 		}
 
 		delete_term_meta($term_id, $meta_key);
 		if ('product_brand' === $taxonomy) {
 			$this->regenerate_home_labs_json();
+		}
+		if ('product_cat' === $taxonomy) {
+			$this->regenerate_home_featured_cats_json();
 		}
 		wp_send_json_success(['value' => '']);
 	}
@@ -2291,6 +2458,338 @@ final class Farmacia_Queiles_Theme
 			'url' => $url,
 			'home_image' => $home_image,
 			'hero_image' => $hero_image,
+		];
+	}
+
+	public static function get_home_featured_cats_cached_payload(): ?array
+	{
+		$file_path = get_template_directory() . '/assets/data/home-featured-cats.json';
+
+		if (!is_readable($file_path)) {
+			return null;
+		}
+
+		$content = file_get_contents($file_path);
+		if (!is_string($content) || '' === trim($content)) {
+			return null;
+		}
+
+		$data = json_decode($content, true);
+		if (!is_array($data)) {
+			return null;
+		}
+
+		$cats = $data['cats'] ?? null;
+		if (!is_array($cats)) {
+			return null;
+		}
+
+		$cache_version = isset($data['version']) ? (int) $data['version'] : 0;
+		if ($cache_version !== self::HOME_FEATURED_CATS_CACHE_VERSION) {
+			return null;
+		}
+
+		$generated_at = isset($data['generated_at']) ? (int) $data['generated_at'] : 0;
+		if ($generated_at < 1 && empty($cats)) {
+			return null;
+		}
+
+		return [
+			'version'      => $cache_version,
+			'generated_at' => $generated_at,
+			'cats'         => $cats,
+		];
+	}
+
+	public function maybe_regenerate_home_featured_cats_json_on_term_change(int $term_id): void
+	{
+		if ($term_id < 1) {
+			return;
+		}
+
+		$this->regenerate_home_featured_cats_json();
+	}
+
+	public function maybe_bootstrap_home_featured_cats_json(): void
+	{
+		if (!current_user_can('manage_options')) {
+			return;
+		}
+
+		$payload = self::get_home_featured_cats_cached_payload();
+		if (is_array($payload) && ($payload['generated_at'] ?? 0) > 0) {
+			return;
+		}
+
+		$this->regenerate_home_featured_cats_json();
+	}
+
+	private function regenerate_home_featured_cats_json(): void
+	{
+		$payload = $this->build_home_featured_cats_payload();
+		$dir = get_template_directory() . '/assets/data';
+
+		if (!is_dir($dir)) {
+			wp_mkdir_p($dir);
+		}
+
+		if (!is_dir($dir) || !is_writable($dir)) {
+			return;
+		}
+
+		$json = wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		if (!is_string($json)) {
+			return;
+		}
+
+		file_put_contents($dir . '/home-featured-cats.json', $json);
+	}
+
+	private function build_home_featured_cats_payload(): array
+	{
+		$empty = [
+			'version'      => self::HOME_FEATURED_CATS_CACHE_VERSION,
+			'generated_at' => time(),
+			'cats'         => [],
+			
+		];
+
+		if (!taxonomy_exists('product_cat')) {
+			return $empty;
+		}
+
+		$terms = get_terms([
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => false,
+			'meta_query' => [
+				[
+					'key'   => '_fq_featured_product_cat',
+					'value' => '1',
+				],
+			],
+			'number'     => 5,
+		]);
+
+		if (is_wp_error($terms) || empty($terms)) {
+			return $empty;
+		}
+
+		$cats = [];
+		foreach ($terms as $term) {
+			$item = $this->format_featured_cat_payload($term);
+			if (null !== $item) {
+				$cats[] = $item;
+			}
+		}
+
+		return [
+			'version'      => self::HOME_FEATURED_CATS_CACHE_VERSION,
+			'generated_at' => time(),
+			'cats'         => $cats,
+			
+		];
+	}
+
+	private function format_featured_cat_payload(WP_Term $term): ?array
+	{
+		$thumbnail_id = (int) get_term_meta($term->term_id, 'thumbnail_id', true);
+		$image_url    = '';
+
+		if ($thumbnail_id > 0) {
+			$size_key  = (string) get_term_meta($term->term_id, '_fq_featured_cat_image_size', true) ?: 'medium';
+			$size_map  = ['small' => 'medium', 'medium' => 'fq-featured-cat', 'large' => 'full'];
+			$wp_size   = $size_map[$size_key] ?? 'fq-featured-cat';
+			$from_id   = wp_get_attachment_image_url($thumbnail_id, $wp_size);
+			$image_url = is_string($from_id) ? $from_id : '';
+		}
+
+		$url = get_term_link($term);
+		if (is_wp_error($url)) {
+			return null;
+		}
+
+		$bg_color  = (string) get_term_meta($term->term_id, '_fq_cat_bg_color', true) ?: '#dbeeff';
+		$bg_color2 = (string) get_term_meta($term->term_id, '_fq_cat_bg_color2', true) ?: '#ffffff';
+
+		return [
+			'id'        => (int) $term->term_id,
+			'name'      => wp_strip_all_tags($term->name),
+			'url'       => $url,
+			'image'     => $image_url,
+			'bg_color'  => $bg_color,
+			'bg_color2' => $bg_color2,
+		];
+	}
+
+	// ───── Caché: Productos Destacados ─────
+
+	public static function get_home_featured_products_cached_payload(): ?array
+	{
+		$file_path = get_template_directory() . '/assets/data/home-featured-products.json';
+
+		if (!is_readable($file_path)) {
+			return null;
+		}
+
+		$content = file_get_contents($file_path);
+		if (!is_string($content) || '' === trim($content)) {
+			return null;
+		}
+
+		$data = json_decode($content, true);
+		if (!is_array($data)) {
+			return null;
+		}
+
+		$products = $data['products'] ?? null;
+		if (!is_array($products)) {
+			return null;
+		}
+
+		$cache_version = isset($data['version']) ? (int) $data['version'] : 0;
+		if ($cache_version !== self::HOME_FEATURED_PRODUCTS_CACHE_VERSION) {
+			return null;
+		}
+
+		return [
+			'version'      => $cache_version,
+			'generated_at' => isset($data['generated_at']) ? (int) $data['generated_at'] : 0,
+			'products'     => $products,
+		];
+	}
+
+	public function maybe_regenerate_home_featured_products_json(int $post_id, WP_Post $post, bool $update): void
+	{
+		unset($update);
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return;
+		}
+		if ('product' !== $post->post_type) {
+			return;
+		}
+		$this->regenerate_home_featured_products_json();
+	}
+
+	public function maybe_regenerate_home_featured_products_json_on_delete(int $post_id, WP_Post $post): void
+	{
+		if ('product' !== $post->post_type) {
+			return;
+		}
+		$this->regenerate_home_featured_products_json();
+	}
+
+	public function maybe_bootstrap_home_featured_products_json(): void
+	{
+		if (!current_user_can('manage_options')) {
+			return;
+		}
+
+		$payload = self::get_home_featured_products_cached_payload();
+		if (is_array($payload) && ($payload['generated_at'] ?? 0) > 0) {
+			return;
+		}
+
+		$this->regenerate_home_featured_products_json();
+	}
+
+	private function regenerate_home_featured_products_json(): void
+	{
+		$payload = $this->build_home_featured_products_payload();
+		$dir = get_template_directory() . '/assets/data';
+
+		if (!is_dir($dir)) {
+			wp_mkdir_p($dir);
+		}
+
+		if (!is_dir($dir) || !is_writable($dir)) {
+			return;
+		}
+
+		$json = wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		if (!is_string($json)) {
+			return;
+		}
+
+		file_put_contents($dir . '/home-featured-products.json', $json);
+	}
+
+	private function build_home_featured_products_payload(): array
+	{
+		$empty = [
+			'version'      => self::HOME_FEATURED_PRODUCTS_CACHE_VERSION,
+			'generated_at' => time(),
+			'products'     => [],
+		];
+
+		$posts = get_posts([
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => 12,
+			'meta_query'     => [
+				[
+					'key'   => '_fq_featured_product',
+					'value' => '1',
+				],
+			],
+			'no_found_rows'      => true,
+			'ignore_sticky_posts' => true,
+		]);
+
+		if (empty($posts)) {
+			return $empty;
+		}
+
+		$products = [];
+		foreach ($posts as $post) {
+			$product = wc_get_product($post->ID);
+			if (!$product instanceof WC_Product) {
+				continue;
+			}
+
+			$image_id  = (int) $product->get_image_id();
+			$image_url = '';
+			if ($image_id > 0) {
+				$src = wp_get_attachment_image_url($image_id, 'woocommerce_single');
+				$image_url = is_string($src) ? $src : '';
+			}
+			if ('' === $image_url) {
+				$image_url = wc_placeholder_img_src('woocommerce_single');
+			}
+
+			$regular_price = (string) $product->get_regular_price();
+			$sale_price    = (string) $product->get_sale_price();
+			$is_on_sale    = $product->is_on_sale();
+
+			$brands = [];
+			if (taxonomy_exists('product_brand')) {
+				$brand_terms = get_the_terms($post->ID, 'product_brand');
+				if (is_array($brand_terms)) {
+					foreach ($brand_terms as $bt) {
+						$brands[] = wp_strip_all_tags($bt->name);
+					}
+				}
+			}
+
+			$short_desc = wp_strip_all_tags($product->get_short_description());
+
+			$products[] = [
+				'id'              => (int) $post->ID,
+				'name'            => wp_strip_all_tags(get_the_title($post)),
+				'url'             => get_permalink($post),
+				'image'           => $image_url,
+				'brand'           => implode(', ', $brands),
+				'description'     => $short_desc,
+				'regular_price'   => $regular_price,
+				'sale_price'      => $sale_price,
+				'is_on_sale'      => $is_on_sale,
+				'add_to_cart_url' => $product->add_to_cart_url(),
+			];
+		}
+
+		return [
+			'version'      => self::HOME_FEATURED_PRODUCTS_CACHE_VERSION,
+			'generated_at' => time(),
+			'products'     => $products,
 		];
 	}
 
