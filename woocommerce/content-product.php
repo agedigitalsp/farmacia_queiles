@@ -23,45 +23,90 @@ global $product;
 if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 	return;
 }
+
+$product_id = $product->get_id();
+$product_url = get_permalink( $product_id );
+$product_name = $product->get_name();
+$image_id = (int) $product->get_image_id();
+$image_url = $image_id > 0 ? wp_get_attachment_image_url( $image_id, 'woocommerce_single' ) : '';
+$image_url = is_string( $image_url ) && '' !== $image_url ? $image_url : wc_placeholder_img_src( 'woocommerce_single' );
+$description = wp_strip_all_tags( $product->get_short_description() );
+$brand = '';
+
+if ( taxonomy_exists( 'product_brand' ) ) {
+	$brand_terms = get_the_terms( $product_id, 'product_brand' );
+	if ( is_array( $brand_terms ) && ! empty( $brand_terms ) ) {
+		$brand_names = array_map(
+			static fn( $term ) => wp_strip_all_tags( $term->name ),
+			$brand_terms
+		);
+		$brand = implode( ', ', $brand_names );
+	}
+}
+
+$is_on_sale = $product->is_on_sale();
+$regular_price = (string) $product->get_regular_price();
+$sale_price = (string) $product->get_sale_price();
+$add_to_cart_classes = implode(
+	' ',
+	array_filter(
+		[
+			'fp-card__cta',
+			'button',
+			$product->supports( 'ajax_add_to_cart' ) ? 'ajax_add_to_cart' : '',
+			'product_type_' . $product->get_type(),
+			$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
+		]
+	)
+);
 ?>
 <li <?php wc_product_class( '', $product ); ?>>
-	<?php
-	/**
-	 * Hook: woocommerce_before_shop_loop_item.
-	 *
-	 * @hooked woocommerce_template_loop_product_link_open - 10
-	 */
-	do_action( 'woocommerce_before_shop_loop_item' );
+	<article class="fp-card">
+		<div class="fp-card__image-wrap">
+			<?php if ( $is_on_sale ) : ?>
+				<span class="fp-card__badge"><?php echo esc_html__( 'Oferta', 'farmacia-queiles' ); ?></span>
+			<?php endif; ?>
+			<a href="<?php echo esc_url( $product_url ); ?>" aria-label="<?php echo esc_attr( $product_name ); ?>">
+				<img class="fp-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $product_name ); ?>" loading="lazy">
+			</a>
+		</div>
 
-	/**
-	 * Hook: woocommerce_before_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_show_product_loop_sale_flash - 10
-	 * @hooked woocommerce_template_loop_product_thumbnail - 10
-	 */
-	do_action( 'woocommerce_before_shop_loop_item_title' );
+		<div class="fp-card__body">
+			<?php if ( '' !== $brand ) : ?>
+				<div class="fp-card__brand-wrap">
+					<span class="fp-card__brand"><?php echo esc_html( $brand ); ?></span>
+				</div>
+			<?php endif; ?>
 
-	/**
-	 * Hook: woocommerce_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_template_loop_product_title - 10
-	 */
-	do_action( 'woocommerce_shop_loop_item_title' );
+			<h2 class="fp-card__name">
+				<a href="<?php echo esc_url( $product_url ); ?>"><?php echo esc_html( $product_name ); ?></a>
+			</h2>
 
-	/**
-	 * Hook: woocommerce_after_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_template_loop_rating - 5
-	 * @hooked woocommerce_template_loop_price - 10
-	 */
-	do_action( 'woocommerce_after_shop_loop_item_title' );
+			<?php if ( '' !== $description ) : ?>
+				<p class="fp-card__desc"><?php echo esc_html( $description ); ?></p>
+			<?php endif; ?>
 
-	/**
-	 * Hook: woocommerce_after_shop_loop_item.
-	 *
-	 * @hooked woocommerce_template_loop_product_link_close - 5
-	 * @hooked woocommerce_template_loop_add_to_cart - 10
-	 */
-	do_action( 'woocommerce_after_shop_loop_item' );
-	?>
+			<div class="fp-card__price-wrap">
+				<div class="fp-card__price-row">
+					<?php if ( $is_on_sale && '' !== $sale_price ) : ?>
+						<span class="fp-card__price-current"><?php echo wp_kses_post( wc_price( (float) $sale_price ) ); ?></span>
+						<s class="fp-card__price-old"><?php echo wp_kses_post( wc_price( (float) $regular_price ) ); ?></s>
+					<?php elseif ( '' !== $regular_price ) : ?>
+						<span class="fp-card__price-current"><?php echo wp_kses_post( wc_price( (float) $regular_price ) ); ?></span>
+					<?php endif; ?>
+				</div>
+				<span class="fp-card__price-tax"><?php echo esc_html__( 'IVA INC', 'farmacia-queiles' ); ?></span>
+			</div>
+
+			<a class="<?php echo esc_attr( $add_to_cart_classes ); ?>"
+				href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
+				data-product_id="<?php echo esc_attr( (string) $product_id ); ?>"
+				data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
+				data-quantity="1"
+				aria-label="<?php echo esc_attr( $product->add_to_cart_description() ); ?>"
+				rel="nofollow">
+				<?php echo esc_html__( 'Comprar', 'farmacia-queiles' ); ?>
+			</a>
+		</div>
+	</article>
 </li>
