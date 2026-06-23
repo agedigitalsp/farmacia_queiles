@@ -68,9 +68,12 @@ final class Farmacia_Queiles_Theme
 		add_action('customize_register', [$this, 'customize_register']);
 		add_action('customize_controls_enqueue_scripts', [$this, 'enqueue_customizer_control_assets']);
 		add_action('wp_head', [$this, 'render_schema_markup'], 20);
+		add_action('wp', [$this, 'maybe_adjust_woocommerce_product_cat_archive']);
+		add_filter('template_include', [$this, 'force_theme_product_cat_template'], 100);
 		// add_action('wp_footer', [$this, 'render_cart_drawer']); // Deshabilitado: usamos el mini cart de Superplus
 		// add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']); // Deshabilitado: Superplus maneja esto
 		add_filter('nav_menu_link_attributes', [$this, 'filter_nav_menu_link_attributes'], 10, 4);
+		add_filter('woocommerce_structured_data_breadcrumblist', [$this, 'filter_wc_structured_data_breadcrumblist'], 10, 2);
 		add_action('product_cat_add_form_fields', [$this, 'render_featured_product_cat_add_field']);
 		add_action('product_cat_edit_form_fields', [$this, 'render_featured_product_cat_edit_field']);
 		add_action('created_product_cat', [$this, 'save_featured_product_cat_meta']);
@@ -311,6 +314,41 @@ final class Farmacia_Queiles_Theme
 				get_template_directory_uri() . '/assets/css/contact-page.min.css',
 				['farmacia-queiles-style'],
 				$this->version
+			);
+		}
+
+		if (class_exists('WooCommerce') && is_tax('product_cat')) {
+			wp_enqueue_style(
+				'farmacia-queiles-home-featured-products',
+				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-product-cat-header',
+				get_template_directory_uri() . '/assets/css/product-cat-header.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-featured-products'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-product-cat-filters',
+				get_template_directory_uri() . '/assets/css/product-cat-filters.min.css',
+				['farmacia-queiles-product-cat-header'],
+				$this->version
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-product-cat-header',
+				get_template_directory_uri() . '/assets/js/product-cat-header.min.js',
+				[],
+				$this->version,
+				true
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-product-cat-filters',
+				get_template_directory_uri() . '/assets/js/product-cat-filters.min.js',
+				[],
+				$this->version,
+				true
 			);
 		}
 
@@ -1955,6 +1993,46 @@ final class Farmacia_Queiles_Theme
 			'inLanguage' => get_bloginfo('language'),
 		];
 
+		if (class_exists('WooCommerce') && is_tax('product_cat')) {
+			$breadcrumb_items = self::get_product_cat_breadcrumb_items();
+
+			if (!empty($breadcrumb_items)) {
+				$breadcrumb_id = $current_url . '#breadcrumb';
+				$webpage['breadcrumb'] = [
+					'@id' => $breadcrumb_id,
+				];
+
+				$list_items = [];
+				$position = 1;
+
+				foreach ($breadcrumb_items as $crumb) {
+					$name = isset($crumb['name']) ? (string) $crumb['name'] : '';
+					$url = isset($crumb['url']) ? (string) $crumb['url'] : '';
+
+					if ('' === $name || '' === $url) {
+						continue;
+					}
+
+					$list_items[] = [
+						'@type' => 'ListItem',
+						'position' => $position,
+						'name' => $name,
+						'item' => esc_url_raw($url),
+					];
+
+					$position += 1;
+				}
+
+				if (!empty($list_items)) {
+					$graph[] = [
+						'@type' => 'BreadcrumbList',
+						'@id' => $breadcrumb_id,
+						'itemListElement' => $list_items,
+					];
+				}
+			}
+		}
+
 		$graph[] = $webpage;
 
 		$schema = [
@@ -1963,6 +2041,171 @@ final class Farmacia_Queiles_Theme
 		];
 
 		echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+	}
+
+	public function maybe_adjust_woocommerce_product_cat_archive(): void
+	{
+		if (!class_exists('WooCommerce')) {
+			return;
+		}
+
+		if (is_admin() || wp_doing_ajax()) {
+			return;
+		}
+
+		if (is_tax('product_cat')) {
+			remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+		}
+	}
+
+	private function register_product_cat_cmb2_box(): void
+	{
+		if (!taxonomy_exists('product_cat')) {
+			return;
+		}
+
+		$box = new_cmb2_box(
+			[
+				'id' => 'farmacia_queiles_product_cat_design_cmb2',
+				'title' => __('Diseño de categoría', 'farmacia-queiles'),
+				'object_types' => ['term'],
+				'taxonomies' => ['product_cat'],
+				'new_term_section' => true,
+			]
+		);
+
+		$box->add_field(
+			[
+				'name' => __('Imagen de cabecera', 'farmacia-queiles'),
+				'id' => '_fq_product_cat_header_image',
+				'type' => 'file',
+				'options' => [
+					'url' => false,
+				],
+				'query_args' => [
+					'type' => ['image/jpeg', 'image/png', 'image/webp'],
+				],
+				'preview_size' => [320, 120],
+				'text' => [
+					'add_upload_file_text' => __('Subir/Añadir imagen', 'farmacia-queiles'),
+				],
+				'desc' => __('Imagen de fondo para la cabecera de la categoría. Recomendado: 1920x520 px o superior, proporción aproximada 3.7:1.', 'farmacia-queiles'),
+				'sanitization_cb' => [$this, 'sanitize_url'],
+			]
+		);
+
+		$box->add_field(
+			[
+				'name' => __('Imagen promoción', 'farmacia-queiles'),
+				'id' => '_fq_product_cat_promo_image',
+				'type' => 'file',
+				'options' => [
+					'url' => false,
+				],
+				'query_args' => [
+					'type' => ['image/jpeg', 'image/png', 'image/webp'],
+				],
+				'preview_size' => [320, 120],
+				'text' => [
+					'add_upload_file_text' => __('Subir/Añadir imagen', 'farmacia-queiles'),
+				],
+				'desc' => __('Imagen promocional que aparece a la derecha, encima de los productos. Recomendado: 1200x260 px o superior, proporción aproximada 4.6:1.', 'farmacia-queiles'),
+				'sanitization_cb' => [$this, 'sanitize_url'],
+			]
+		);
+	}
+
+	public function force_theme_product_cat_template(string $template): string
+	{
+		if (!class_exists('WooCommerce')) {
+			return $template;
+		}
+
+		if (is_admin() || wp_doing_ajax()) {
+			return $template;
+		}
+
+		if (!is_tax('product_cat')) {
+			return $template;
+		}
+
+		$theme_template = get_theme_file_path('woocommerce/taxonomy-product-cat.php');
+
+		if (is_string($theme_template) && '' !== $theme_template && file_exists($theme_template)) {
+			return $theme_template;
+		}
+
+		return $template;
+	}
+
+	public function filter_wc_structured_data_breadcrumblist(array $markup, $breadcrumb): array
+	{
+		unset($breadcrumb);
+
+		if (is_tax('product_cat')) {
+			return [];
+		}
+
+		return $markup;
+	}
+
+	public static function get_product_cat_breadcrumb_items(int $term_id = 0): array
+	{
+		if (!taxonomy_exists('product_cat')) {
+			return [];
+		}
+
+		$term = null;
+
+		if ($term_id > 0) {
+			$candidate = get_term($term_id, 'product_cat');
+			$term = $candidate instanceof WP_Term && !is_wp_error($candidate) ? $candidate : null;
+		} else {
+			$queried_object = get_queried_object();
+			$term = $queried_object instanceof WP_Term && 'product_cat' === $queried_object->taxonomy ? $queried_object : null;
+		}
+
+		if (!$term) {
+			return [];
+		}
+
+		$items = [
+			[
+				'name' => __('Inicio', 'farmacia-queiles'),
+				'url' => trailingslashit(home_url('/')),
+			],
+		];
+
+		$ancestor_ids = array_reverse(get_ancestors((int) $term->term_id, 'product_cat'));
+
+		foreach ($ancestor_ids as $ancestor_id) {
+			$ancestor = get_term((int) $ancestor_id, 'product_cat');
+
+			if (!$ancestor instanceof WP_Term || is_wp_error($ancestor)) {
+				continue;
+			}
+
+			$ancestor_url = get_term_link($ancestor);
+			if (is_wp_error($ancestor_url)) {
+				continue;
+			}
+
+			$items[] = [
+				'name' => $ancestor->name,
+				'url' => (string) $ancestor_url,
+			];
+		}
+
+		$term_url = get_term_link($term);
+
+		if (!is_wp_error($term_url)) {
+			$items[] = [
+				'name' => $term->name,
+				'url' => (string) $term_url,
+			];
+		}
+
+		return $items;
 	}
 
 	public static function get_header_product_categories(int $limit = 5): array
@@ -3016,6 +3259,7 @@ final class Farmacia_Queiles_Theme
 		}
 
 		$this->register_promociones_cmb2_box();
+		$this->register_product_cat_cmb2_box();
 		$this->register_theme_options_cmb2_boxes();
 	}
 
