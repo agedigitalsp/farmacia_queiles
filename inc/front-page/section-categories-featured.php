@@ -57,14 +57,30 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 ?>
 <section class="home-featured-cats">
 	<div class="container container--wide">
+
 		<div class="home-featured-cats__header">
-			<h2 class="home-featured-cats__title"><?php echo esc_html__('Categorías Destacadas', 'farmacia-queiles'); ?></h2>
-			<a class="home-featured-cats__all-link" href="<?php echo esc_url($shop_url); ?>">
-				<?php echo esc_html__('Ver todas las categorías', 'farmacia-queiles'); ?>
-				<span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-			</a>
+			<div class="home-featured-cats__header-left">
+				<h2 class="home-featured-cats__title"><?php echo esc_html__('Categorías Destacadas', 'farmacia-queiles'); ?></h2>
+			</div>
+			<div class="home-featured-cats__header-right">
+				<div class="home-featured-cats__controls">
+					<div class="home-featured-cats__arrows">
+						<button class="home-featured-cats__arrow" type="button" data-fc-prev aria-label="<?php echo esc_attr__('Categoría anterior', 'farmacia-queiles'); ?>">
+							<span class="material-symbols-outlined">chevron_left</span>
+						</button>
+						<button class="home-featured-cats__arrow" type="button" data-fc-next aria-label="<?php echo esc_attr__('Siguiente categoría', 'farmacia-queiles'); ?>">
+							<span class="material-symbols-outlined">chevron_right</span>
+						</button>
+					</div>
+					<a class="home-featured-cats__all-link" href="<?php echo esc_url($shop_url); ?>">
+						<?php echo esc_html__('Ver todas las categorías', 'farmacia-queiles'); ?>
+						<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+					</a>
+				</div>
+			</div>
 		</div>
 
+		<!-- Grid: visible en desktop -->
 		<div class="home-featured-cats__grid">
 			<?php foreach ($cats as $cat) : ?>
 				<a class="home-featured-cats__card"
@@ -89,5 +105,34 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 				</a>
 			<?php endforeach; ?>
 		</div>
+
+		<!-- Carrusel: visible en mobile -->
+		<div class="home-featured-cats__viewport" data-fc-carousel>
+			<div class="home-featured-cats__track" data-fc-track>
+				<?php foreach ($cats as $cat) : ?>
+					<a class="fc-card"
+					   href="<?php echo esc_url($cat['url']); ?>"
+					   aria-label="<?php echo esc_attr($cat['name']); ?>"
+					   style="background:linear-gradient(200deg,<?php echo esc_attr($cat['bg_color'] ?? '#dbeeff'); ?> 0%,<?php echo esc_attr($cat['bg_color2'] ?? '#ffffff'); ?> 100%)">
+
+						<img class="fc-card__img"
+						     src="<?php echo esc_url($cat['image']); ?>"
+						     alt="<?php echo esc_attr($cat['name']); ?>"
+						     loading="lazy">
+
+						<div class="fc-card__overlay"></div>
+
+						<div class="fc-card__content">
+							<h3 class="fc-card__name"><?php echo esc_html($cat['name']); ?></h3>
+							<div class="fc-card__cta" aria-hidden="true">
+								<span class="fc-card__cta-label"><?php echo esc_html__('Explorar', 'farmacia-queiles'); ?></span>
+								<span class="material-symbols-outlined">arrow_right_alt</span>
+							</div>
+						</div>
+					</a>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
 	</div>
 </section>

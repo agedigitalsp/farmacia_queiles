@@ -1,25 +1,27 @@
-.home-featured-products {
+.home-best-sellers {
     padding: 72px 0 80px;
-    background: #fff;
-    padding-bottom: 30px;
+    background: #fff
 }
 
-.home-featured-products__header {
+.home-best-sellers__header {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-bottom: 40px
 }
 
+/*ver carrito para que no se muestre en los productos destacados ni prodcutos mas vendidos*/
+.added_to_cart {display:none}
+
 @media(min-width:768px) {
-    .home-featured-products__header {
+    .home-best-sellers__header {
         flex-direction: row;
         align-items: flex-end;
         justify-content: space-between
     }
 }
 
-.home-featured-products__kicker {
+.home-best-sellers__kicker {
     display: block;
     font-size: 10px;
     font-weight: 700;
@@ -29,7 +31,7 @@
     margin-bottom: 6px
 }
 
-.home-featured-products__title {
+.home-best-sellers__title {
     margin: 0;
     font-size: 1.75rem;
     font-weight: 300;
@@ -38,29 +40,29 @@
 }
 
 @media(min-width:768px) {
-    .home-featured-products__title {
+    .home-best-sellers__title {
         font-size: 2rem
     }
 }
 
-.home-featured-products__header-right {
+.home-best-sellers__header-right {
     display: flex;
     align-items: flex-end
 }
 
-.home-featured-products__controls {
+.home-best-sellers__controls {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 12px
 }
 
-.home-featured-products__arrows {
+.home-best-sellers__arrows {
     display: flex;
     gap: 8px
 }
 
-.home-featured-products__arrow {
+.home-best-sellers__arrow {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -74,16 +76,16 @@
     transition: border-color .2s, color .2s
 }
 
-.home-featured-products__arrow:hover {
+.home-best-sellers__arrow:hover {
     border-color: #52b2e1;
     color: #52b2e1
 }
 
-.home-featured-products__arrow .material-symbols-outlined {
+.home-best-sellers__arrow .material-symbols-outlined {
     font-size: 1.2rem
 }
 
-.home-featured-products__all-link {
+.home-best-sellers__all-link {
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -94,27 +96,26 @@
     transition: opacity .2s
 }
 
-.home-featured-products__all-link:hover {
+.home-best-sellers__all-link:hover {
     text-decoration: underline
 }
 
-.home-featured-products__all-link .material-symbols-outlined {
+.home-best-sellers__all-link .material-symbols-outlined {
     font-size: 18px
 }
 
-.home-featured-products__viewport {
+.home-best-sellers__viewport {
     overflow: hidden
 }
 
-.home-featured-products__track {
+.home-best-sellers__track {
     display: flex;
     gap: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 50px;
     transition: transform .45s ease
 }
 
-
-.fp-card {
+.bs-card {
     background: #fff;
     border-radius: 12px;
     border: 1px solid transparent;
@@ -128,13 +129,13 @@
     transition: box-shadow .4s ease, transform .4s ease, border-color .4s ease
 }
 
-.fp-card:hover {
+.bs-card:hover {
     box-shadow: 0 20px 40px -12px rgba(56, 62, 66, .18);
     transform: translateY(-4px);
     border-color: rgba(82, 178, 225, .12)
 }
 
-.fp-card__image-wrap {
+.bs-card__image-wrap {
     position: relative;
     aspect-ratio: 1;
     background: #f9fafb;
@@ -144,7 +145,7 @@
     justify-content: center
 }
 
-.fp-card__image {
+.bs-card__image {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -153,11 +154,11 @@
     box-sizing: border-box
 }
 
-.fp-card:hover .fp-card__image {
+.bs-card:hover .bs-card__image {
     transform: scale(1.05)
 }
 
-.fp-card__badge {
+.bs-card__badge {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -172,14 +173,14 @@
     border-radius: 4px
 }
 
-.fp-card__body {
+.bs-card__body {
     padding: 14px 16px 18px;
     display: flex;
     flex-direction: column;
     flex: 1
 }
 
-.fp-card__brand-wrap {
+.bs-card__brand-wrap {
     display: inline-block;
     border: 1px solid #f0f0f0;
     border-radius: 4px;
@@ -188,7 +189,7 @@
     width: fit-content
 }
 
-.fp-card__brand {
+.bs-card__brand {
     font-size: .6rem;
     font-weight: 600;
     color: #6b7280;
@@ -196,7 +197,7 @@
     letter-spacing: .1em
 }
 
-.fp-card__name {
+.bs-card__name {
     margin: 0;
     font-size: .8rem;
     font-weight: 700;
@@ -209,16 +210,16 @@
     min-height: 2.4em
 }
 
-.fp-card__name a {
+.bs-card__name a {
     color: inherit;
     text-decoration: none
 }
 
-.fp-card__name a:hover {
+.bs-card__name a:hover {
     color: #52b2e1
 }
 
-.fp-card__desc {
+.bs-card__desc {
     font-size: .72rem;
     color: #a3a3a3;
     font-weight: 300;
@@ -231,42 +232,42 @@
     font-style: italic
 }
 
-.fp-card__price-wrap {
+.bs-card__price-wrap {
     display: flex;
     flex-direction: column;
     margin: 10px 0
 }
 
-.fp-card__price-row {
+.bs-card__price-row {
     display: flex;
     align-items: baseline;
     gap: 8px
 }
 
-.fp-card__price-current {
+.bs-card__price-current {
     font-size: 1rem;
     font-weight: 800;
     color: #383e42
 }
 
-.fp-card__price-current .woocommerce-Price-amount {
+.bs-card__price-current .woocommerce-Price-amount {
     font-size: inherit;
     font-weight: inherit;
     color: inherit
 }
 
-.fp-card__price-old {
+.bs-card__price-old {
     font-size: .75rem;
     color: #9ca3af;
     margin-left: 4px
 }
 
-.fp-card__price-old .woocommerce-Price-amount {
+.bs-card__price-old .woocommerce-Price-amount {
     font-size: inherit;
     color: inherit
 }
 
-.fp-card__price-tax {
+.bs-card__price-tax {
     font-size: 9px;
     font-weight: 700;
     color: #9ca3af;
@@ -274,7 +275,7 @@
     margin-top: 2px
 }
 
-.fp-card__cta {
+.bs-card__cta {
     display: block;
     width: 100%;
     margin-top: 10px;
@@ -292,33 +293,33 @@
     transition: background .25s, color .25s
 }
 
-.fp-card__cta:hover {
+.bs-card__cta:hover {
     background: #fff;
     color: #52b2e1
 }
 
 @media(max-width:767px) {
-    .home-featured-products {
+    .home-best-sellers {
         padding: 48px 0 56px
     }
 
-    .home-featured-products__header {
+    .home-best-sellers__header {
         margin-bottom: 24px
     }
 
-    .home-featured-products__title {
+    .home-best-sellers__title {
         font-size: 1.5rem
     }
 
-    .home-featured-products__controls {
+    .home-best-sellers__controls {
         align-items: flex-start
     }
 
-    .fp-card {
+    .bs-card {
         min-width: 170px
     }
 
-    .fp-card__body {
+    .bs-card__body {
         padding: 12px 14px 16px
     }
 }
