@@ -1,56 +1,74 @@
 <?php
 /**
- * Single Product tabs
+ * Single Product tabs — Farmacia Queiles
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/single-product/tabs/tabs.php.
- *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see     https://woocommerce.com/document/template-structure/
- * @package WooCommerce\Templates
- * @version 9.8.0
+ * @package Farmacia_Queiles
+ * @version 9.8.0 (WooCommerce compatibility)
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Filter tabs and allow third parties to add their own.
- *
- * Each tab is an array containing title, callback and priority.
- *
- * @see woocommerce_default_product_tabs()
- */
-$product_tabs = apply_filters( 'woocommerce_product_tabs', array() );
+/** @var array $product_tabs */
+$product_tabs = apply_filters( 'woocommerce_product_tabs', [] );
 
-if ( ! empty( $product_tabs ) ) : ?>
+if ( empty( $product_tabs ) ) {
+	return;
+}
 
-	<div class="woocommerce-tabs wc-tabs-wrapper">
-		<ul class="tabs wc-tabs" role="tablist">
-			<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-				<li role="presentation" class="<?php echo esc_attr( $key ); ?>_tab" id="tab-title-<?php echo esc_attr( $key ); ?>">
-					<a href="#tab-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>">
-						<?php echo wp_kses_post( apply_filters( 'woocommerce_product_' . $key . '_tab_title', $product_tab['title'], $key ) ); ?>
-					</a>
-				</li>
-			<?php endforeach; ?>
-		</ul>
-		<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-			<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab" id="tab-<?php echo esc_attr( $key ); ?>" role="tabpanel" aria-labelledby="tab-title-<?php echo esc_attr( $key ); ?>">
-				<?php
-				if ( isset( $product_tab['callback'] ) ) {
-					call_user_func( $product_tab['callback'], $key, $product_tab );
-				}
-				?>
-			</div>
+/* Iconos por nombre de tab */
+$tab_icons = [
+	'description'            => 'description',
+	'additional_information' => 'science',
+	'reviews'                => 'star_rate',
+];
+
+$first_key = (string) array_key_first( $product_tabs );
+?>
+
+<div class="fq-sp-tabs" data-fq-tabs>
+
+	<!-- Cabecera de tabs -->
+	<div class="fq-sp-tabs__nav" role="tablist">
+		<?php foreach ( $product_tabs as $key => $tab ) :
+			$is_first = ( $key === $first_key );
+			$icon     = $tab_icons[ $key ] ?? 'article';
+			$title    = apply_filters( 'woocommerce_product_' . $key . '_tab_title', $tab['title'], $key );
+		?>
+		<button
+			class="fq-sp-tabs__btn<?php echo $is_first ? ' is-active' : ''; ?>"
+			role="tab"
+			id="fq-tab-btn-<?php echo esc_attr( $key ); ?>"
+			aria-controls="fq-tab-panel-<?php echo esc_attr( $key ); ?>"
+			aria-selected="<?php echo $is_first ? 'true' : 'false'; ?>"
+			data-tab="<?php echo esc_attr( $key ); ?>"
+			type="button"
+		>
+			<span class="material-symbols-outlined"><?php echo esc_html( $icon ); ?></span>
+			<?php echo wp_kses_post( $title ); ?>
+		</button>
 		<?php endforeach; ?>
-
-		<?php do_action( 'woocommerce_product_after_tabs' ); ?>
 	</div>
 
-<?php endif; ?>
+	<!-- Contenido de tabs -->
+	<?php foreach ( $product_tabs as $key => $tab ) :
+		$is_first = ( $key === $first_key );
+	?>
+	<div
+		class="fq-sp-tabs__panel<?php echo $is_first ? ' is-active' : ''; ?>"
+		role="tabpanel"
+		id="fq-tab-panel-<?php echo esc_attr( $key ); ?>"
+		aria-labelledby="fq-tab-btn-<?php echo esc_attr( $key ); ?>"
+		<?php echo $is_first ? '' : 'hidden'; ?>
+	>
+		<?php
+		if ( isset( $tab['callback'] ) ) {
+			call_user_func( $tab['callback'], $key, $tab );
+		}
+		?>
+	</div>
+	<?php endforeach; ?>
+
+	<?php do_action( 'woocommerce_product_after_tabs' ); ?>
+</div>

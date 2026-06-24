@@ -73,6 +73,7 @@ final class Farmacia_Queiles_Theme
 		// add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']); // Deshabilitado: Superplus maneja esto
 		add_filter('nav_menu_link_attributes', [$this, 'filter_nav_menu_link_attributes'], 10, 4);
 		add_filter('woocommerce_structured_data_breadcrumblist', [$this, 'filter_wc_structured_data_breadcrumblist'], 10, 2);
+		add_action('pre_get_posts', [$this, 'apply_product_cat_custom_order']);
 		add_action('product_cat_add_form_fields', [$this, 'render_featured_product_cat_add_field']);
 		add_action('product_cat_edit_form_fields', [$this, 'render_featured_product_cat_edit_field']);
 		add_action('created_product_cat', [$this, 'save_featured_product_cat_meta']);
@@ -315,6 +316,29 @@ final class Farmacia_Queiles_Theme
 			wp_enqueue_script(
 				'farmacia-queiles-product-cat-filters',
 				get_template_directory_uri() . '/assets/js/product-cat-filters.min.js',
+				[],
+				$this->version,
+				true
+			);
+		}
+
+		// Assets para ficha de producto individual
+		if (class_exists('WooCommerce') && is_singular('product')) {
+			wp_enqueue_style(
+				'farmacia-queiles-home-featured-products',
+				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-single-product',
+				get_template_directory_uri() . '/assets/css/single-product.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-featured-products'],
+				$this->version
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-single-product',
+				get_template_directory_uri() . '/assets/js/single-product.min.js',
 				[],
 				$this->version,
 				true
@@ -1990,6 +2014,72 @@ final class Farmacia_Queiles_Theme
 			}
 		}
 
+		// BreadcrumbList para producto individual
+		if (class_exists('WooCommerce') && is_singular('product')) {
+			global $post;
+
+			$crumb_items   = [];
+			$crumb_items[] = ['name' => __('Inicio', 'farmacia-queiles'), 'url' => home_url('/')];
+
+			// Categorías del producto (tomamos la principal / la de mayor profundidad)
+			$product_cats = get_the_terms((int) $post->ID, 'product_cat');
+			if (is_array($product_cats) && !empty($product_cats)) {
+				// Encontrar la categoría de mayor profundidad
+				$deepest_term = null;
+				$max_depth    = -1;
+				foreach ($product_cats as $cat) {
+					$ancestors = get_ancestors((int) $cat->term_id, 'product_cat');
+					$depth     = count($ancestors);
+					if ($depth > $max_depth) {
+						$max_depth    = $depth;
+						$deepest_term = $cat;
+					}
+				}
+				if ($deepest_term !== null) {
+					// Añadir ancestros
+					$ancestor_ids = array_reverse(get_ancestors((int) $deepest_term->term_id, 'product_cat'));
+					foreach ($ancestor_ids as $anc_id) {
+						$anc_term = get_term((int) $anc_id, 'product_cat');
+						if ($anc_term instanceof WP_Term) {
+							$crumb_items[] = [
+								'name' => (string) $anc_term->name,
+								'url'  => (string) get_term_link($anc_term),
+							];
+						}
+					}
+					$crumb_items[] = [
+						'name' => (string) $deepest_term->name,
+						'url'  => (string) get_term_link($deepest_term),
+					];
+				}
+			}
+
+			// Producto actual (sin URL — es el ítem actual)
+			$crumb_items[] = ['name' => (string) get_the_title((int) $post->ID), 'url' => (string) get_permalink((int) $post->ID)];
+
+			$bc_id     = $current_url . '#breadcrumb';
+			$list_items = [];
+			$position   = 1;
+			foreach ($crumb_items as $crumb) {
+				$list_items[] = [
+					'@type'    => 'ListItem',
+					'position' => $position,
+					'name'     => (string) $crumb['name'],
+					'item'     => esc_url_raw((string) $crumb['url']),
+				];
+				$position += 1;
+			}
+
+			if (!empty($list_items)) {
+				$webpage['breadcrumb'] = ['@id' => $bc_id];
+				$graph[] = [
+					'@type'           => 'BreadcrumbList',
+					'@id'             => $bc_id,
+					'itemListElement' => $list_items,
+				];
+			}
+		}
+
 		$graph[] = $webpage;
 
 		$schema = [
@@ -2093,6 +2183,80 @@ final class Farmacia_Queiles_Theme
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Gestiona el orden en archivos product_cat:
+	 *
+	 * Orden por defecto (sin selección del usuario):
+	 *   1. Destacados/promocionados primero (_featured = yes).
+	 *   2. Con stock antes que sin stock (_stock_status = instock).
+	 *   3. Más vendidos (total_sales DESC).
+	 *   4. Sin stock al final (automático por el punto 2).
+	 *
+	 * Cuando el usuario elige un orden en el select del plugin,
+	 * el plugin gestiona price/date/popularity. Nosotros solo
+	 * garantizamos que sin stock quede siempre al final.
+	 */
+	public function apply_product_cat_custom_order(\WP_Query $query): void
+	{
+		if (is_admin() || !$query->is_main_query()) {
+			return;
+		}
+
+		if (!function_exists('is_tax') || !is_tax('product_cat')) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$sp_order = isset($_GET['sp_filter_order']) ? sanitize_key($_GET['sp_filter_order']) : '';
+
+		$meta_query = (array) $query->get('meta_query');
+
+		// Siempre registramos la cláusula de stock para poder ordenar por ella.
+		$meta_query['stock_clause'] = [
+			'key'     => '_stock_status',
+			'value'   => 'instock',
+			'compare' => '=',
+		];
+
+		if ('' === $sp_order) {
+			// ── Orden por defecto ──────────────────────────────────────────
+			// 1. Destacados/promocionados (_featured = yes → 1, resto → 0).
+			$meta_query['featured_clause'] = [
+				'key'     => '_featured',
+				'value'   => 'yes',
+				'compare' => '=',
+			];
+
+			// 2 & 3. Con stock + más vendidos.
+			$meta_query['sales_clause'] = [
+				'key'     => 'total_sales',
+				'type'    => 'NUMERIC',
+				'compare' => 'EXISTS',
+			];
+
+			$query->set('meta_query', $meta_query);
+
+			// Orden: destacados ↓ · con stock ↓ · más vendidos ↓ · fecha ↓
+			$query->set('orderby', [
+				'featured_clause' => 'DESC',
+				'stock_clause'    => 'DESC',
+				'sales_clause'    => 'DESC',
+				'date'            => 'DESC',
+			]);
+		} else {
+			// ── Orden elegido por el usuario ───────────────────────────────
+			// El plugin gestiona price/date/popularity en su propio switch.
+			// Solo añadimos stock_clause al final para que sin stock quede último.
+			$query->set('meta_query', $meta_query);
+
+			$current_orderby = (array) $query->get('orderby');
+			if (!isset($current_orderby['stock_clause'])) {
+				$current_orderby['stock_clause'] = 'DESC';
+				$query->set('orderby', $current_orderby);
+			}
+		}
 	}
 
 	public function filter_wc_structured_data_breadcrumblist(array $markup, $breadcrumb): array

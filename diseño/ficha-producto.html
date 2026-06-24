@@ -1,0 +1,479 @@
+<!DOCTYPE html><html lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Solis Ultra-Fluid Invisible SPF50+ - Farmacia Queiles</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script data-purpose="tailwind-config" id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#52b2e1",
+            "bg-ref": "#F4F6F8",
+            "text-dark": "#383E42",
+            "text-muted": "#6B7280",
+          },
+          fontFamily: {
+            "sans": ["Poppins", "sans-serif"],
+            "display": ["Montserrat", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="utilities" type="text/tailwindcss">
+    @layer utilities {
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    }
+  </style>
+<style data-purpose="base-styles">
+    :root {
+      --primary: #52b2e1;
+      --surface: #FFFFFF;
+      --bg-ref: #F4F6F8;
+      --text-dark: #383E42;
+      --text-muted: #6B7280;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-dark);
+      background-color: var(--surface);
+    }
+    .luxury-header-shadow {
+      box-shadow: 0 4px 20px -10px rgba(56, 62, 66, 0.05);
+    }
+    .search-input-transition {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link-hover { position: relative; }
+    .nav-link-hover::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    .nav-link-hover:hover::after { width: 100%; }
+    .util-icon-hover { transition: transform 0.2s ease, color 0.2s ease; }
+    .util-icon-hover:hover { transform: translateY(-1px); color: var(--primary); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="antialiased selection:bg-primary/20 selection:text-text-dark">
+<!-- BEGIN: PreHeader -->
+<aside class="w-full border-b border-[#e5e7eb] py-2" style="background-color: rgb(56, 62, 66); color: white; border-bottom-color: rgba(255, 255, 255, 0.1);">
+<div class="max-w-[1450px] mx-auto px-8 flex justify-between items-center text-[0.75rem] tracking-wide font-light">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[1.1rem]">call</span>
+<span class="">976 642 685</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[1.1rem]">location_on</span>
+<span class="">Av. Reino de Aragón 3, Tarazona</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[1.1rem]">schedule</span>
+<span class="">L-V 9:00-13:45 · 16:30-20:00</span>
+</div>
+</div>
+<div>
+<a class="font-medium uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1 text-white" href="#">
+          CONTACTO<span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- END: PreHeader -->
+<!-- BEGIN: MainHeader -->
+<header class="w-full bg-white luxury-header-shadow sticky top-0 z-50">
+<div class="max-w-[1450px] mx-auto px-8 py-6 flex items-center justify-between gap-12">
+<a class="flex items-center gap-4 shrink-0 group" href="#">
+<img alt="Farmacia Queiles" class="h-14 w-auto object-contain transition-transform group-hover:scale-105 duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUykh2oI2xIyyRMxYD50OhpAgWwY6uJbd_j1cyDX_14ELlHGgDDVw9IMWA3FHEkmoivAbs0xbeJq8v-2aI8HKvhvp6lDdt_uab4wNLh2OHKJbCjna7zabNjtjQ2JvyTf4pG5BFt1Vz-uMlV3ScmyI-di0qCL4IVCqO0WuSxcI2rlZ_6dezEtSZjnhBHgDFE-B9dUNB9-Hw6EquaX6eqGf4wivTvec4CnFpvTwBWLhioEuYHWqZroI0zoIKkJ7QYBjnH3Uj6-uZPuxb">
+</a>
+<div class="flex-1 max-w-2xl">
+<div class="relative group">
+<div class="absolute inset-y-0 flex items-center pointer-events-none left-6">
+<span class="material-symbols-outlined text-gray-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="w-full bg-transparent border border-gray-200 rounded-full py-3.5 pl-14 pr-6 text-[0.85rem] font-light placeholder:text-gray-400 focus:ring-1 focus:ring-primary/20 search-input-transition focus:border-primary/40 focus:shadow-sm outline-none cursor-text" placeholder="Busca por necesidad (ej. 'manchas', 'crema solar piel grasa')..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-8">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined util-icon-hover text-[1.6rem]">person</span>
+<span class="text-[0.65rem] font-medium uppercase tracking-widest text-text-muted group-hover:text-primary transition-colors">Mi Cuenta</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined util-icon-hover text-[1.6rem]">favorite</span>
+<span class="text-[0.65rem] font-medium uppercase tracking-widest text-text-muted group-hover:text-primary transition-colors">Favoritos</span>
+</a>
+<a class="flex flex-col items-center gap-1 group relative" href="#">
+<span class="material-symbols-outlined util-icon-hover text-[1.6rem]">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-primary text-white text-[0.6rem] font-bold w-4 h-4 flex items-center justify-center rounded-full">2</span>
+<span class="text-[0.65rem] font-medium uppercase tracking-widest text-text-muted group-hover:text-primary transition-colors">Carrito</span>
+</a>
+</div>
+</div>
+<nav class="border-t border-[#f1f5f9]">
+<div class="max-w-[1450px] mx-auto px-8 py-4 flex items-center justify-between">
+<div class="flex items-center gap-10">
+<a class="text-[0.8rem] font-medium uppercase tracking-[0.1em] nav-link-hover" href="#">Dermocosmética</a>
+<a class="text-[0.8rem] font-medium uppercase tracking-[0.1em] nav-link-hover text-primary" href="#">Solar</a>
+<a class="text-[0.8rem] font-medium uppercase tracking-[0.1em] nav-link-hover" href="#">Facial</a>
+<a class="text-[0.8rem] font-medium uppercase tracking-[0.1em] nav-link-hover" href="#">Corporal</a>
+<a class="text-[0.8rem] font-medium uppercase tracking-[0.1em] nav-link-hover" href="#">Infantil</a>
+<button class="flex items-center gap-2 border border-gray-200 hover:border-primary px-5 py-2 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest transition-all hover:bg-bg-ref">
+<span class="material-symbols-outlined text-[1.1rem] text-primary">grid_view</span>MÁS CATEGORÍAS<span class="material-symbols-outlined text-[1rem]">expand_more</span>
+</button>
+</div>
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 border border-gray-200 hover:border-primary px-5 py-2 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest transition-all hover:bg-bg-ref">
+<span class="material-symbols-outlined text-[1.1rem] text-primary">medical_services</span>SERVICIOS<span class="material-symbols-outlined text-[1rem]">expand_more</span>
+</button>
+</div>
+</div>
+</nav>
+</header>
+<!-- END: MainHeader -->
+<main class="pb-24 pt-4">
+<div class="max-w-[1450px] mx-auto px-8">
+<!-- BEGIN: Breadcrumb -->
+<div class="flex items-center justify-between mb-6">
+<nav aria-label="Breadcrumb" class="flex text-[0.75rem] text-text-muted uppercase tracking-widest font-medium">
+<ol class="inline-flex items-center space-x-1 md:space-x-2">
+<li class="inline-flex items-center"><a class="hover:text-primary transition-colors" href="#">Home</a></li>
+<li class="">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[1rem] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Solar</a>
+</div>
+</li>
+<li class="">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[1rem] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Protección Facial</a>
+</div>
+</li>
+<li aria-current="page" class="">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[1rem] mx-1">chevron_right</span>
+<span class="text-text-dark">Solis Ultra-Fluid</span>
+</div>
+</li>
+</ol>
+</nav>
+</div>
+<!-- END: Breadcrumb -->
+<!-- BEGIN: Product Hero Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 border-gray-100 pb-4 mb-6">
+<!-- Image Gallery -->
+<div class="flex flex-col gap-6">
+<div class="relative flex-1 bg-bg-ref rounded-sm overflow-hidden flex items-center justify-center border border-[#d5dde4]" style="aspect-ratio: 3 / 2.1;">
+<img alt="Solis Ultra-Fluid Invisible SPF50+" class="w-full h-full object-cover" id="main-product-image" src="https://lh3.googleusercontent.com/aida/AP1WRLs7J_qpUtGb2Apgaop3tRNa9TDpx4soZiU_1sGiSj3nsT3vSf-CFuEi5pw6dxEiR0y5w2jibF0ZxTLoM7mV42hU33xG_VYAZ81dCkA2mchgxMuhpUMQf8mkfauRtq1EpHc0IZNntEgfl58EKRisFUVEMahEk0F2kxRdZ2vuS77KaCwGNLEck_v0s45-Q6_XsgqquIEANgPsSbiqx2BHczOTj4b6Wo4O9A0-KENkRXn6ZXaaWxUsnYXI4Kei" style="aspect-ratio: 4 / 5;">
+<button aria-label="Add to wishlist" class="absolute top-6 right-6 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all group/fav border border-gray-100">
+<span class="material-symbols-outlined text-[1.4rem] text-gray-400 group-hover/fav:text-red-500 transition-colors">favorite</span>
+</button>
+</div>
+<!-- Thumbnails -->
+<div class="flex flex-row gap-4 overflow-x-auto scrollbar-hide w-full">
+<button class="w-20 h-24 bg-bg-ref rounded-md border-2 border-primary overflow-hidden shrink-0" onclick="changeImage('https://lh3.googleusercontent.com/aida/AP1WRLs7J_qpUtGb2Apgaop3tRNa9TDpx4soZiU_1sGiSj3nsT3vSf-CFuEi5pw6dxEiR0y5w2jibF0ZxTLoM7mV42hU33xG_VYAZ81dCkA2mchgxMuhpUMQf8mkfauRtq1EpHc0IZNntEgfl58EKRisFUVEMahEk0F2kxRdZ2vuS77KaCwGNLEck_v0s45-Q6_XsgqquIEANgPsSbiqx2BHczOTj4b6Wo4O9A0-KENkRXn6ZXaaWxUsnYXI4Kei', this)">
+<img alt="Thumbnail 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs7J_qpUtGb2Apgaop3tRNa9TDpx4soZiU_1sGiSj3nsT3vSf-CFuEi5pw6dxEiR0y5w2jibF0ZxTLoM7mV42hU33xG_VYAZ81dCkA2mchgxMuhpUMQf8mkfauRtq1EpHc0IZNntEgfl58EKRisFUVEMahEk0F2kxRdZ2vuS77KaCwGNLEck_v0s45-Q6_XsgqquIEANgPsSbiqx2BHczOTj4b6Wo4O9A0-KENkRXn6ZXaaWxUsnYXI4Kei">
+</button>
+<button class="w-20 h-24 bg-bg-ref rounded-md border border-transparent hover:border-gray-300 transition-all overflow-hidden shrink-0 opacity-70 hover:opacity-100" onclick="changeImage('https://lh3.googleusercontent.com/aida/AP1WRLvfCjMHX399aJ_cEzSSsF3ihf5Esv7HXpES3Qy0IUj1eLnhSJXIaIaZaJjxgLEOFsOhjvwE8VExehv1DqI8qmbekzxZI21hkUrSPbiuS7OgXz97v4VxR5eEaypcaVBSaefdTwb3SRP9rzVc14U7Lwlqnvit1G017niVHiwwotxyUOqjoJfw2jL_GxbcPzaFsFgpsYHjXx1D04Pg3-_TWGoqz-e8rDnHuyB34xEbKcTZUci5EGj_LQpKv_8', this)">
+<img alt="Thumbnail 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLvfCjMHX399aJ_cEzSSsF3ihf5Esv7HXpES3Qy0IUj1eLnhSJXIaIaZaJjxgLEOFsOhjvwE8VExehv1DqI8qmbekzxZI21hkUrSPbiuS7OgXz97v4VxR5eEaypcaVBSaefdTwb3SRP9rzVc14U7Lwlqnvit1G017niVHiwwotxyUOqjoJfw2jL_GxbcPzaFsFgpsYHjXx1D04Pg3-_TWGoqz-e8rDnHuyB34xEbKcTZUci5EGj_LQpKv_8">
+</button>
+<button class="w-20 h-24 bg-bg-ref rounded-md border border-transparent hover:border-gray-300 transition-all overflow-hidden shrink-0 opacity-70 hover:opacity-100" onclick="changeImage('https://lh3.googleusercontent.com/aida/AP1WRLszzWvf3IsXutykCRAXEHdMjtY5aKXKSwuLzPNz4slU7G3iJz3SOohZ_ByrnpXgvKlDeV4LZ-mofx1emTPkZFKpIj_dbr6m-VkNSf7D89EDkxIY6q9My_1zpuW377y1MfMa4dNThHI0CnMp0Fc4Xwz5n4t6soaHkQow7BEg9vE8zl2DnoJ2cCz6P_13YSPu2kt039pfwHHW05yNhrVeRvISRwyH2GePXod_l9JWBguNMPh-zLSyvJhcoo4', this)">
+<img alt="Thumbnail 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLszzWvf3IsXutykCRAXEHdMjtY5aKXKSwuLzPNz4slU7G3iJz3SOohZ_ByrnpXgvKlDeV4LZ-mofx1emTPkZFKpIj_dbr6m-VkNSf7D89EDkxIY6q9My_1zpuW377y1MfMa4dNThHI0CnMp0Fc4Xwz5n4t6soaHkQow7BEg9vE8zl2DnoJ2cCz6P_13YSPu2kt039pfwHHW05yNhrVeRvISRwyH2GePXod_l9JWBguNMPh-zLSyvJhcoo4">
+</button>
+</div>
+</div>
+<!-- Product Info & Buy Box -->
+<div class="flex flex-col justify-start pt-4 mb-12">
+<div class="mb-6 flex flex-col">
+<span class="text-[0.75rem] font-semibold tracking-[0.3em] uppercase block text-text-muted mb-2">SOLIS LUXURY LABORATORIES</span>
+<h1 class="text-3xl md:text-4xl lg:text-[2.5rem] font-display font-light text-text-dark leading-tight mb-0">Solis Ultra-Fluid <span class="font-medium">Invisible SPF50+</span></h1>
+</div>
+<p class="text-[1rem] font-light text-text-muted leading-relaxed mb-8">Fotoprotector facial de fase acuosa y textura ultra-ligera que aporta una hidratación intensa y absorción inmediata. Acabado invisible sin residuo graso.</p>
+<div class="flex items-center">
+<div class="flex flex-col w-full gap-6">
+<div class="flex flex-col md:flex-row items-end justify-between w-full gap-12">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-sm text-gray-400 line-through">29,95€</span>
+<span class="px-3 py-1 bg-red-50 text-red-600 text-[0.9rem] font-bold rounded-sm uppercase tracking-wider border border-red-100">-15%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-4xl font-semibold text-text-dark">24,90€</span>
+<span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">IVA INCL.</span>
+</div>
+</div>
+<div class="flex flex-1 items-start gap-10">
+<div class="flex flex-col gap-2 shrink-0 self-center">
+<div class="flex flex-col gap-1.5">
+<span class="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-1">CANTIDAD</span>
+<div class="relative w-20">
+<select class="bg-white border border-gray-200 rounded-sm py-2 px-3 text-sm font-medium text-text-dark focus:ring-1 focus:ring-primary focus:border-primary outline-none appearance-none cursor-pointer w-full" id="quantity">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[1.2rem]">expand_more</span>
+</div>
+</div>
+<div class="text-[10px] text-text-muted font-medium uppercase tracking-widest flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>STOCK: 14 uds.</div>
+</div>
+<div class="flex flex-col gap-3 items-stretch h-full w-[85%]">
+<button class="w-full text-white rounded-full text-[0.75rem] font-semibold uppercase tracking-widest transition-all shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 flex justify-center items-center gap-2 duration-300 hover:opacity-90 h-10" style="background-color: rgb(255, 107, 53); color: white;">COMPRAR AHORA</button>
+<button class="w-full bg-transparent border border-gray-200 text-text-dark rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:border-primary hover:text-primary transition-all flex justify-center items-center gap-2 bg-white duration-300 h-10">
+<span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 p-3 bg-bg-ref rounded-sm flex items-center justify-center gap-3 border border-[#d5dde4]/30 w-full">
+<span class="material-symbols-outlined text-primary text-[1.2rem]">local_shipping</span>
+<p class="text-[0.7rem] font-medium uppercase tracking-widest text-text-muted leading-tight whitespace-nowrap">ENVÍO GRATIS PARA PEDIDOS SUPERIORES A 50€</p>
+</div>
+<div class="grid grid-cols-2 gap-4 py-6 mt-0">
+<div class="flex items-center gap-3 text-[0.75rem] text-text-muted font-medium uppercase tracking-widest"><span class="material-symbols-outlined text-[1.2rem] text-primary">lock</span> PAGO SEGURO</div>
+<div class="flex items-center gap-3 text-[0.75rem] text-text-muted font-medium uppercase tracking-widest"><span class="material-symbols-outlined text-[1.2rem] text-primary">store</span> FARMACIA FÍSICA</div>
+<div class="flex items-center gap-3 text-[0.75rem] text-text-muted font-medium uppercase tracking-widest"><span class="material-symbols-outlined text-[1.2rem] text-primary">assignment_return</span> DEVOLUCIÓN FÁCIL</div>
+<div class="flex items-center gap-3 text-[0.75rem] text-text-muted font-medium uppercase tracking-widest"><span class="material-symbols-outlined text-[1.2rem] text-primary">medical_services</span> ATENCIÓN SANITARIA</div>
+</div><div class="flex items-center gap-6 mt-4 pt-6 border-t border-gray-100">
+  
+  <div class="flex items-center gap-4">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb9TNR__lUuAzf4sdYtlXHnan6ZsTc0RRhXjWlSeSEfp-jH33ep2yCWM0Lx0KsoTFtzD-xG_1M43XvKESs3e95s4QM62FKDSmk3TXNFS_Vnq-tAsUEGzURN3fxXxeir4fro6WS1wx3fB2_iQ_ZW3MJXs2PKqHs5ixbFsdVmipc0wIbo_hdG0hTkJXfKYjYg5vdWfQfjyLC3GATMlXZJKhQMMqV0tysY1Lx5a_nTI0pBAzX1D3tO_mG1jGAc281WMwaXxeHkB6qHng_ZQs" alt="Visa" class="h-4 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-6 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCra1iNKllImdn2vZvRvgixI1ltQ73jGRYltBLC1ynkNEzbii990Z7IJD--atLXmlUM2t5FSPfOL39q-SFklnQEq-WBuPTyFla5kxTx7mhU6cptnmVEP4XTUEZJHF4q11UQBoRM6gJuVp8xnGkluPLkCS-7r5zfTo3csqeL5X5F7ebdtUqJPEZyySELBrgtEBzn_-GyDdkzpkW77_qh-aTUm2PMajGLjRtP1z09e955JQFZNhzhgiOWecwMqFZLcw5_zGLPZND3v1jKLo" alt="Bizum" class="h-5 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity">
+  </div>
+</div>
+</div>
+</div>
+<!-- END: Product Hero Section -->
+<!-- BEGIN: Product Details Tabs & Info -->
+<div class="flex flex-col lg:flex-row gap-12 mb-8">
+<!-- Left: Tabs and Content -->
+<div class="flex-1"><div class="flex border-b border-gray-200 mb-8 overflow-x-auto scrollbar-hide" id="product-tabs">
+  <button onclick="switchTab('desc')" id="tab-desc" class="py-3 px-6 text-[0.75rem] font-semibold uppercase tracking-widest text-primary border-b-2 border-primary whitespace-nowrap flex items-center gap-2 transition-colors">
+    <span class="material-symbols-outlined text-[1.2rem]">description</span> DESCRIPCIÓN
+  </button>
+  <button onclick="switchTab('comp')" id="tab-comp" class="py-3 px-6 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted border-b-2 border-transparent hover:text-text-dark transition-colors whitespace-nowrap flex items-center gap-2">
+    <span class="material-symbols-outlined text-[1.2rem]">science</span> COMPOSICIÓN
+  </button>
+  <button onclick="switchTab('mode')" id="tab-mode" class="py-3 px-6 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted border-b-2 border-transparent hover:text-text-dark transition-colors whitespace-nowrap flex items-center gap-2">
+    <span class="material-symbols-outlined text-[1.2rem]">touch_app</span> MODO DE EMPLEO
+  </button>
+  <button onclick="switchTab('faq')" id="tab-faq" class="py-3 px-6 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted border-b-2 border-transparent hover:text-text-dark transition-colors whitespace-nowrap flex items-center gap-2">
+    <span class="material-symbols-outlined text-[1.2rem]">help_outline</span> PREGUNTAS FRECUENTES
+  </button>
+</div>
+<div id="tab-content-container" class="text-sm text-text-muted font-light leading-relaxed">
+  <div id="content-desc" class="block">
+    <p class="mb-6">Protección solar diaria de alta eficacia con textura fluida que se funde con la piel, dejándola suave y mate. Ideal para todo tipo de pieles, incluyendo las más sensibles y atópicas.</p>
+    <ul class="space-y-4">
+      <li class="flex gap-3"><span class="material-symbols-outlined text-primary text-[1.2rem] shrink-0">water_drop</span> <span class="font-semibold text-text-dark">Hidratación Intensa:</span> Ácido hialurónico que hidrata en profundidad.</li>
+      <li class="flex gap-3"><span class="material-symbols-outlined text-primary text-[1.2rem] shrink-0">shield</span> <span class="font-semibold text-text-dark">Alta Protección:</span> Filtros UVA/UVB de amplio espectro SPF50+.</li>
+      <li class="flex gap-3"><span class="material-symbols-outlined text-primary text-[1.2rem] shrink-0">spa</span> <span class="font-semibold text-text-dark">Tolerancia Óptima:</span> Testado dermatológicamente, no comedogénico.</li>
+      <li class="flex gap-3"><span class="material-symbols-outlined text-primary text-[1.2rem] shrink-0">eco</span> <span class="font-semibold text-text-dark">Sea Friendly:</span> Fórmula respetuosa con el ecosistema marino.</li>
+    </ul>
+  </div>
+  <div id="content-comp" class="hidden">
+    <p class="">Fórmula avanzada con Ácido Hialurónico, Vitamina E y filtros solares de última generación. Libre de parabenos y fragancias sintéticas.</p>
+  </div>
+  <div id="content-mode" class="hidden">
+    <p class="">Aplicar generosamente sobre la piel seca o mojada, media hora antes de la exposición solar. Reaplicar cada 2 horas o tras transpirar, nadar o secarse con toalla.</p>
+  </div>
+  <div id="content-faq" class="hidden">
+    <div class="space-y-4">
+      <div>
+        <p class="font-semibold text-text-dark mb-1">¿Es apto para pieles grasas?</p>
+        <p class="">Sí, su textura ultra-ligera es no comedogénica.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-text-dark mb-1">¿Deja residuo blanco?</p>
+        <p class="">No, su acabado es invisible.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script class="">
+function switchTab(tabId) {
+  const tabs = ['desc', 'comp', 'mode', 'faq'];
+  tabs.forEach(id => {
+    const btn = document.getElementById('tab-' + id);
+    const content = document.getElementById('content-' + id);
+    if (id === tabId) {
+      btn.classList.add('text-primary', 'border-primary');
+      btn.classList.remove('text-text-muted', 'border-transparent');
+      content.classList.remove('hidden');
+      content.classList.add('block');
+    } else {
+      btn.classList.remove('text-primary', 'border-primary');
+      btn.classList.add('text-text-muted', 'border-transparent');
+      content.classList.add('hidden');
+      content.classList.remove('block');
+    }
+  });
+}
+</script></div>
+<!-- Right: Expert Advice -->
+<div class="lg:w-1/3">
+<div class="bg-bg-ref p-8 rounded-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined text-[1.5rem]">person_4</span>
+</div>
+<div>
+<h4 class="text-sm font-semibold uppercase tracking-widest text-text-dark mb-1">EL CONSEJO DE MARÍA</h4>
+<p class="text-[0.65rem] font-bold text-primary tracking-[0.2em] uppercase">TU FARMACÉUTICA</p>
+</div>
+</div>
+<p class="text-sm font-light text-text-muted italic leading-relaxed mb-6">
+              "El secreto de una buena fotoprotección no es solo el índice SPF, sino la constancia. Te recomiendo aplicar la cantidad equivalente a dos dedos sobre el rostro 30 minutos antes de la exposición y, fundamental, re-aplicar cada 2 horas si estás al aire libre."
+            </p>
+<a class="text-[0.75rem] font-semibold text-primary uppercase tracking-widest flex items-center gap-1 hover:underline" href="#">
+              CONSULTAR DUDAS PERSONALIZADAS <span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- END: Product Details Tabs & Info -->
+<!-- BEGIN: Completa tu rutina -->
+<div class="mb-12">
+<div class="text-center mb-12">
+<span class="text-primary text-[0.65rem] font-bold tracking-[0.3em] uppercase mb-4 block">CUIDADO INTEGRAL</span>
+<h2 class="text-3xl font-light text-text-dark tracking-tight">Completa tu rutina</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Routine Step 1 -->
+<div class="group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden md:h-[350px]"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><img alt="Limpiador Agua Micelar" class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtWqO9H9-C7H37vEWEfvY7ajU6pA_jVJhOVgnDb54iJEFCRDvZ5XRMCPudLrTYU9oYERp1NjCTwwmV1t-oIl_HXWVplWqhmCavD7WFUC_Q_IGRsITmlF8xVTFHVGzpplwf2EMc3pEdBb_6yqomOdLuWg_hq7cl0zpizLlsTpA_0V6KW6n7xpFALBCuj4yU_QyUv31100Qkod3vW_aX5ySMhPC3fgneDLnNuwyUdzz83tOQKhzDzziHL26lVK_0YAbEc-r8UEwzsMij"></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">QUEILES</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight">Limpiador Agua Micelar</h3><p class="text-[0.75rem] text-text-muted italic line-clamp-1">Limpieza profunda y suave para pieles sensibles.</p><div class="mt-2"><div class="flex items-baseline gap-2"><span class="text-xl font-bold text-text-dark">15,50€</span><span class="text-[0.7rem] text-gray-400 line-through">18,95€</span></div><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div>
+<!-- Routine Step 2 -->
+<div class="group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden md:h-[350px]"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><img alt="Sérum Antioxidante" class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU_8hnSaFANWZh0gUqAMGTvFOcOV9VYbklVfU4qvJc8m8X4muElnYch3MYmH19a7wt4QDZ6I-7G5gcnFk1UGJ-QbuyBdXrsAxo7jQedpuHQ512BF6t91YsCrhOhPSHQMoI7QAj3YHtGWry6jV1pAS_SMMSnxIu_nIFab9t29rkfoUL4NMHBnfJJB4Lr5AC-BG_5SvEFO_ZnVsVKo0dWgRf97u0aeHa3p0f0sbw1VCXnF7EvJ0mUoxUZ1jx_y81ox6uv4jMnGaTJ5vR"></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">SESDERMA</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight">Sérum C-Vit Liposomal</h3><p class="text-[0.75rem] text-text-muted italic line-clamp-1">Potente antioxidante con Vitamina C estable.</p><div class="mt-2"><div class="flex items-baseline gap-2"><span class="text-xl font-bold text-text-dark">39,90€</span><span class="text-[0.7rem] text-gray-400 line-through">44,95€</span></div><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div>
+<!-- Routine Step 3 -->
+<div class="group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden md:h-[350px]"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><img alt="Solis Tinted Fluid SPF50+" class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKsLHkoAboQ82OA2DUHAWsrjKM_KvC1cAqGuglO1ih6pFzCTEFKSnE04xr825QlXBdt-9Ivv3ls59AliJ8gaMAxVRUeCLUik3hoAOihFu2ztOgWtB7nPR3rmhs-fprGj5bC3d05sCebMOls2Ek-XOTNA7M6Th6VZc5tn-JV4Ed01cokn7gtsf5TJgzby53PWYc6vEQlPipszfWaXzkiI5E_nKbXu1qy8R8XllgXy8v7rLlRu_bDIh5FMTgBl4kJBqaxLQIElRo5hCp"></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">SOLIS</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight">Solis Tinted Fluid SPF50+</h3><p class="text-[0.75rem] text-text-muted italic line-clamp-1">Protección solar con color para un tono uniforme.</p><div class="mt-2"><div class="flex items-baseline gap-2"><span class="text-xl font-bold text-text-dark">26,90€</span><span class="text-[0.7rem] text-gray-400 line-through">31,50€</span></div><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div>
+</div>
+</div>
+<!-- END: Completa tu rutina -->
+<!-- BEGIN: Productos Relacionados -->
+<div class="mb-2">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 border-b border-gray-100 pb-4">
+<h2 class="text-2xl font-light text-text-dark tracking-tight">Productos Relacionados</h2>
+<div class="flex gap-2 mt-4 md:mt-0">
+<button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition-all bg-white"><span class="material-symbols-outlined text-[1.2rem]">chevron_left</span></button>
+<button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition-all bg-white"><span class="material-symbols-outlined text-[1.2rem]">chevron_right</span></button>
+</div>
+</div>
+<div class="flex overflow-x-auto gap-6 scrollbar-hide pb-4 snap-x"><!-- Rel Card 1 -->
+<div class="min-w-[240px] md:min-w-[280px] snap-start group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><button aria-label="Add to wishlist" class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all group/fav border border-gray-100 z-10"><span class="material-symbols-outlined text-[1.2rem] text-gray-400 group-hover/fav:text-red-500 transition-colors">favorite</span></button><span class="material-symbols-outlined text-[4rem] text-gray-200 group-hover:scale-110 transition-transform duration-700">wb_sunny</span></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">HELIOCARE</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight line-clamp-2 h-10">Heliocare 360º Gel Oil-Free</h3><div class="mt-2"><span class="text-xl font-bold text-text-dark">23,50€</span><br><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div>
+
+<!-- Rel Card 2 -->
+<div class="min-w-[240px] md:min-w-[280px] snap-start group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><button aria-label="Add to wishlist" class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all group/fav border border-gray-100 z-10"><span class="material-symbols-outlined text-[1.2rem] text-gray-400 group-hover/fav:text-red-500 transition-colors">favorite</span></button><span class="material-symbols-outlined text-[4rem] text-gray-200 group-hover:scale-110 transition-transform duration-700">dermatology</span></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">ISDIN</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight line-clamp-2 h-10">Isdin Fusion Water Magic SPF50</h3><div class="mt-2"><span class="text-xl font-bold text-text-dark">21,90€</span><br><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div>
+
+<!-- Rel Card 3 -->
+<div class="min-w-[240px] md:min-w-[280px] snap-start group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><button aria-label="Add to wishlist" class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all group/fav border border-gray-100 z-10"><span class="material-symbols-outlined text-[1.2rem] text-gray-400 group-hover/fav:text-red-500 transition-colors">favorite</span></button><span class="material-symbols-outlined text-[4rem] text-gray-200 group-hover:scale-110 transition-transform duration-700">spa</span></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">LA ROCHE-POSAY</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight line-clamp-2 h-10">La Roche-Posay UVMune 400</h3><div class="mt-2"><span class="text-xl font-bold text-text-dark">19,95€</span><br><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div>
+
+<!-- Rel Card 4 -->
+<div class="min-w-[240px] md:min-w-[280px] snap-start group bg-white border border-gray-100 p-6 flex flex-col hover:shadow-xl transition-all duration-500 rounded-md relative"><div class="relative aspect-square mb-6 bg-bg-ref rounded-sm flex items-center justify-center p-8 overflow-hidden"><div class="absolute top-0 left-0 bg-[#2D3235] text-white text-[10px] font-bold px-3 py-1.5 z-10 tracking-widest">TOP</div><button aria-label="Add to wishlist" class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all group/fav border border-gray-100 z-10"><span class="material-symbols-outlined text-[1.2rem] text-gray-400 group-hover/fav:text-red-500 transition-colors">favorite</span></button><span class="material-symbols-outlined text-[4rem] text-gray-200 group-hover:scale-110 transition-transform duration-700">water_drop</span></div><div class="flex flex-col gap-2"><span class="inline-block border border-gray-200 px-2 py-0.5 text-[10px] font-semibold text-text-muted w-fit rounded-sm">EUCERIN</span><h3 class="text-[0.9rem] font-bold text-text-dark leading-tight line-clamp-2 h-10">Eucerin Sun Fluid Control</h3><div class="mt-2"><span class="text-xl font-bold text-text-dark">20,50€</span><br><span class="text-[9px] text-gray-400 font-medium uppercase">IVA INC</span></div><button class="w-full bg-[#52b2e1] text-white border border-transparent py-2.5 rounded-full text-[0.75rem] font-semibold uppercase tracking-widest hover:bg-white hover:text-[#52b2e1] hover:border-[#52b2e1] transition-all duration-300 mt-4 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[1rem]">shopping_bag</span>AÑADIR AL CARRITO</button></div></div></div>
+</div>
+<!-- END: Productos Relacionados -->
+</div>
+</main>
+<!-- BEGIN: Footer -->
+<footer class="bg-[#2D3235] text-white font-['Poppins']">
+<div class="max-w-[1450px] mx-auto px-8">
+<div class="py-12 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="max-w-md">
+<h3 class="text-xl font-semibold tracking-tight mb-2">Únete a nuestra comunidad</h3>
+<p class="text-sm text-white/60 font-light">Recibe consejos farmacéuticos exclusivos y descubre antes que nadie nuestras novedades botánicas.</p>
+</div>
+<div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+<input class="bg-white/5 border border-white/10 px-6 py-3.5 rounded-full text-sm font-light focus:outline-none focus:border-[#52b2e1] focus:ring-1 focus:ring-[#52b2e1]/30 transition-all sm:w-[320px]" placeholder="Tu correo electrónico" type="email">
+<button class="bg-[#52b2e1] text-white px-8 py-3.5 rounded-full text-[0.7rem] font-semibold uppercase tracking-widest hover:bg-[#3da0d1] transition-all duration-300">Suscribirme</button>
+</div>
+</div>
+<div class="pt-10 pb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
+<!-- Col 1 -->
+<div class="flex flex-col gap-6">
+<a class="block w-48" href="#">
+<img alt="Farmacia Queiles" class="w-full brightness-0 invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXBd0XiFTv3JR224o9oaw9sIkSs5LEorDFxVtrgXX0vdc-O2t-7lciHsgJhkzy1TntNu9Lm2cr28FT6pntYyIwuj0RycUr9lDGXvRyESSAdNtVROXi4fb1TTtXrHQKOh-UQQ0CsS82JdeWBeHY3QLi6oK5MEFI0M1bsgTtIC8U2Yq7zmzkE7WBqXEqS7k9_rbXMjIy2znUpE9ifp9Wuz-YZqETMpyk9O106HG_A1wRMSvBDFjiXGx4grtdDl7w5SsrMVtdY_NBh2C4">
+</a>
+<p class="text-[0.85rem] font-light leading-relaxed text-white/60 italic">Donde la ciencia farmacéutica se encuentra con el bienestar profundo. Cuidamos tu piel y tu salud con el rigor de un boticario y la sensibilidad de quien valora la vida.</p>
+</div>
+<!-- Col 2 -->
+<div class="footer-section">
+<div class="flex items-center justify-between cursor-pointer md:cursor-default group" onclick="if(window.innerWidth &lt; 768) { this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180'); }">
+<h4 class="text-sm font-semibold uppercase tracking-[0.15em] mb-0 md:mb-6">Explorar</h4>
+<span class="material-symbols-outlined md:hidden transition-transform duration-300 chevron">expand_more</span>
+</div>
+<div class="hidden md:flex flex-col gap-4 mt-4 md:mt-0">
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Dermocosmética</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Protección Solar</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Cuidado Facial</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Bienestar Infantil</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Cuidado Corporal</a>
+</div>
+</div>
+<!-- Col 3 -->
+<div class="footer-section">
+<div class="flex items-center justify-between cursor-pointer md:cursor-default group" onclick="if(window.innerWidth &lt; 768) { this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180'); }">
+<h4 class="text-sm font-semibold uppercase tracking-[0.15em] mb-0 md:mb-6">Soporte</h4>
+<span class="material-symbols-outlined md:hidden transition-transform duration-300 chevron">expand_more</span>
+</div>
+<div class="hidden md:flex flex-col gap-4 mt-4 md:mt-0">
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Envíos y Entregas</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Gestión de Devoluciones</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Seguimiento de Pedido</a>
+<a class="text-[13px] text-white/60 hover:text-[#52b2e1] transition-colors font-regular" href="#">Preguntas Frecuentes</a>
+</div>
+</div>
+<!-- Col 4 -->
+<div class="flex flex-col gap-6">
+<h4 class="text-sm font-semibold uppercase tracking-[0.15em]">Contacto</h4>
+<div class="flex flex-col gap-4 text-[13px] text-white/60 font-light">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-[1.1rem] text-[#52b2e1]">location_on</span>
+<span class="">Av. Reino de Aragón 3, 50500 Tarazona</span>
+</div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-[1.1rem] text-[#52b2e1]">call</span>
+<span class="">976 642 685</span>
+</div>
+<div class="pt-2 border-t border-white/5">
+<p class="font-medium text-white/80 mb-1">Nuestra Botica:</p>
+<p class="">L-V: 9:00 - 13:45 | 16:30 - 20:00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: Footer -->
+<script data-purpose="image-gallery-handler">
+    function changeImage(src, btn) {
+      document.getElementById('main-product-image').src = src;
+      const thumbnails = btn.parentElement.querySelectorAll('button');
+      thumbnails.forEach(t => {
+        t.classList.remove('border-primary', 'opacity-100');
+        t.classList.add('border-transparent', 'opacity-70');
+      });
+      btn.classList.add('border-primary', 'opacity-100');
+      btn.classList.remove('border-transparent', 'opacity-70');
+    }
+  </script>
+
+
+
+
+
+
+</body></html>
