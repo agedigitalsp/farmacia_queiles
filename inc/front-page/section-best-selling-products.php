@@ -9,7 +9,8 @@ $products = is_array($cached_payload['products'] ?? null) ? $cached_payload['pro
 
 if (empty($products)) {
 	$products_raw = wc_get_products([
-		'orderby'  => 'total_sales',
+		'orderby'  => 'meta_value_num',
+		'meta_key' => 'total_sales',
 		'order'    => 'DESC',
 		'limit'    => 12,
 		'status'   => 'publish',
