@@ -13,6 +13,7 @@ require get_template_directory() . '/inc/front-page/section-best-selling-product
 require get_template_directory() . '/inc/front-page/section-labs-stories.php';
 require get_template_directory() . '/inc/front-page/section-health-commitment.php';
 require get_template_directory() . '/inc/front-page/section-consulting-cta.php';
+require get_template_directory() . '/inc/front-page/section-opiniones.php';
 require get_template_directory() . '/inc/front-page/section-faqs.php';
 do_action('farmacia_queiles_home_sections');
 do_action('farmacia_queiles_after_home_sections');
