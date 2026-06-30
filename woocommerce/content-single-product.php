@@ -238,6 +238,13 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 					<div class="fq-sp-cta">
 						<?php if ( $is_purchasable && $in_stock ) : ?>
 						<a
+							href="<?php echo esc_url( add_query_arg( [ 'add-to-cart' => $product_id, 'quantity' => 1 ], wc_get_checkout_url() ) ); ?>"
+							class="fq-sp-btn fq-sp-btn--buynow"
+							aria-label="<?php echo esc_attr__( 'Comprar ahora', 'farmacia-queiles' ); ?>"
+						>
+							<?php echo esc_html__( 'Comprar ahora', 'farmacia-queiles' ); ?>
+						</a>
+						<a
 							href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
 							class="<?php echo esc_attr( $add_to_cart_classes ); ?> fq-sp-btn--primary"
 							data-product_id="<?php echo esc_attr( (string) $product_id ); ?>"
@@ -291,6 +298,8 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 					'visa'       => 'visa.svg',
 					'mastercard' => 'mastercard.svg',
 					'bizum'      => 'bizum.svg',
+					'Apple Pay'  => 'apple-pay.svg',
+					'Google Pay' => 'google-pay.svg',
 				];
 				foreach ( $payment_logos as $alt => $file ) :
 					$file_path = get_template_directory() . '/assets/img/payments/' . $file;
@@ -298,7 +307,7 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 				?>
 					<img
 						src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/payments/' . $file ); ?>"
-						alt="<?php echo esc_attr( ucfirst( $alt ) ); ?>"
+						alt="<?php echo esc_attr( $alt ); ?>"
 						class="fq-sp-payments__logo"
 						loading="lazy"
 					>

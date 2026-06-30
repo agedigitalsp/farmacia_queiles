@@ -3477,6 +3477,7 @@ final class Farmacia_Queiles_Theme
 		$this->register_theme_options_cmb2_boxes();
 		$this->register_product_tabs_cmb2_box();
 		$this->register_product_rutina_cmb2_box();
+		$this->register_page_header_cmb2_box();
 	}
 
 	private function register_promociones_cmb2_box(): void
@@ -4606,6 +4607,31 @@ JS;
 			</div>
 		</section>
 		<?php
+	}
+
+	// ── Imagen de cabecera para páginas secundarias ──────────────────
+
+	private function register_page_header_cmb2_box(): void
+	{
+		$box = new_cmb2_box([
+			'id'           => 'fq_page_header_meta',
+			'title'        => __('Cabecera de página', 'farmacia-queiles'),
+			'object_types' => ['page'],
+			'context'      => 'side',
+			'priority'     => 'low',
+		]);
+
+		$box->add_field([
+			'name' => __('Imagen de fondo del hero', 'farmacia-queiles'),
+			'desc' => __('Si no se selecciona se usará la imagen destacada o la imagen por defecto.', 'farmacia-queiles'),
+			'id'   => '_fq_page_header_image',
+			'type' => 'file',
+			'options' => ['url' => false],
+			'text' => [
+				'add_upload_file_text' => __('Seleccionar imagen', 'farmacia-queiles'),
+			],
+			'preview_size' => 'medium',
+		]);
 	}
 
 	private function get_schema_current_url(): string

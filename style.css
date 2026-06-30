@@ -2003,3 +2003,64 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 /* ==========================================================================
    MIGAS DE PAN — FIN
    ========================================================================== */
+
+
+/* ==========================================================================
+   PÁGINAS SECUNDARIAS — HERO + CONTENIDO (fq-secondary-page)
+   ========================================================================== */
+
+.fq-secondary-page__hero {
+    padding: 56px 0 48px;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    margin: 0 0 14px;
+}
+
+.fq-secondary-page__title {
+    margin: 0;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--primary, #52b2e1);
+    line-height: 1.15;
+}
+
+.fq-secondary-page__content {
+    padding-top: 40px;
+    padding-bottom: 60px;
+    line-height: 1.8;
+    color: var(--text-dark, #383e42);
+    font-size: 15px;
+}
+
+.fq-secondary-page__content h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 32px 0 12px;
+    color: var(--text-dark, #383e42);
+}
+
+.fq-secondary-page__content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 24px 0 8px;
+}
+
+.fq-secondary-page__content p {
+    margin: 0 0 16px;
+}
+
+@media (max-width: 768px) {
+    .fq-secondary-page__hero {
+        padding: 36px 0 32px;
+    }
+    .fq-secondary-page__content {
+        padding-top: 28px;
+        padding-bottom: 40px;
+    }
+}
+
+/* ==========================================================================
+   PÁGINAS SECUNDARIAS — FIN
+   ========================================================================== */
