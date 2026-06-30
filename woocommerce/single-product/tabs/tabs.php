@@ -21,7 +21,9 @@ if ( empty( $product_tabs ) ) {
 $tab_icons = [
 	'description'            => 'description',
 	'additional_information' => 'science',
-	'reviews'                => 'star_rate',
+	'fq_composicion'         => 'science',
+	'fq_modo_empleo'         => 'touch_app',
+	'fq_faqs'                => 'help_outline',
 ];
 
 $first_key = (string) array_key_first( $product_tabs );

@@ -78,9 +78,6 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 		<!-- Galería -->
 		<div class="fq-sp-gallery">
 			<div class="fq-sp-gallery__main" id="fq-sp-main-wrap">
-				<?php if ( $is_on_sale ) : ?>
-					<span class="fq-sp-gallery__badge"><?php echo esc_html( $discount_pct ); ?></span>
-				<?php endif; ?>
 
 				<?php
 				$main_src = $main_image_id > 0
@@ -263,23 +260,23 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 			</div>
 
 			<!-- Meta WooCommerce (SKU, categorías, etiquetas) -->
-			<?php do_action( 'woocommerce_product_meta_start' ); ?>
-			<?php wc_get_template( 'single-product/meta.php' ); ?>
-			<?php do_action( 'woocommerce_product_meta_end' ); ?>
+			<?php //do_action( 'woocommerce_product_meta_start' ); ?>
+			<?php //wc_get_template( 'single-product/meta.php' ); ?>
+			<?php //do_action( 'woocommerce_product_meta_end' ); ?>
 
 			<!-- Schema WooCommerce (JSON-LD de producto) -->
-			<?php do_action( 'woocommerce_single_product_summary' ); ?>
 
 		</div><!-- /fq-sp-info -->
 	</div><!-- /fq-sp-hero -->
 
 	<!-- ══ TABS + CONSEJO ════════════════════════════════════════ -->
+	<!-- ══ TABS + CONSEJO (grid 2 col) ══════════════════════════════ -->
 	<div class="fq-sp-lower">
 		<div class="fq-sp-lower__tabs">
 			<?php do_action( 'woocommerce_after_single_product_summary' ); ?>
 		</div>
 
-		<!-- Consejo de la farmacéutica -->
+		<!-- Consejo de la farmacéutica — sticky junto a los tabs -->
 		<aside class="fq-sp-advice" aria-label="<?php echo esc_attr__( 'Consejo de la farmacéutica', 'farmacia-queiles' ); ?>">
 			<div class="fq-sp-advice__avatar">
 				<span class="material-symbols-outlined">person_4</span>
@@ -306,4 +303,7 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 
 </div><!-- #product-xxx -->
 
-<?php do_action( 'woocommerce_after_single_product' ); ?>
+<!-- ══ SECCIONES FULL-WIDTH (rutina + relacionados) ══════════════ -->
+<div class="fq-sp-fullwidth">
+	<?php do_action( 'woocommerce_after_single_product' ); ?>
+</div>
