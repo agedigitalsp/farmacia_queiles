@@ -1,0 +1,293 @@
+/* ═══════════════════════════════════════════════════════════════
+   Metabox: Contenido de pestañas + Completa tu rutina — Admin
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Variables ── */
+:root{
+  --fq-blue:#52b2e1;
+  --fq-blue-dark:#3a9dce;
+  --fq-blue-light:rgba(82,178,225,.1);
+  --fq-text:#383e42;
+  --fq-muted:#6b7280;
+  --fq-border:#e2e8f0;
+  --fq-surface:#f8fafc;
+  --fq-red:#e11d48;
+  --fq-red-bg:#fff1f2;
+  --fq-red-border:#fecdd3;
+}
+
+/* ── Cabecera del metabox ── */
+#fq_product_tabs_meta .postbox-header,
+#fq_product_rutina_meta .postbox-header{
+  background:var(--fq-surface);
+  border-bottom:2px solid var(--fq-blue);
+}
+#fq_product_tabs_meta .postbox-header h2,
+#fq_product_rutina_meta .postbox-header h2{
+  color:var(--fq-text);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+/* ── Wrapper general del grupo FAQ ── */
+#_fq_faqs_repeat{
+  padding:4px 0 0;
+}
+
+/* ── Cada tarjeta de pregunta ── */
+#_fq_faqs_repeat .cmb-repeatable-group{
+  border:1px solid var(--fq-border);
+  border-radius:8px;
+  margin-bottom:10px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+  transition:box-shadow .2s,border-color .2s;
+}
+#_fq_faqs_repeat .cmb-repeatable-group:hover{
+  box-shadow:0 4px 16px rgba(82,178,225,.13);
+  border-color:rgba(82,178,225,.4);
+}
+
+/* ── Cabecera de la tarjeta (título + botones orden/eliminar) ── */
+#_fq_faqs_repeat .cmb-group-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--fq-surface);
+  border-bottom:1px solid var(--fq-border);
+  padding:10px 14px;
+  margin:0;
+  cursor:default;
+  user-select:none;
+}
+/* Ícono drag */
+#_fq_faqs_repeat .cmb-group-title::before{
+  content:"⣿";
+  font-size:15px;
+  color:#c4cdd6;
+  cursor:grab;
+  flex-shrink:0;
+}
+/* Texto "Pregunta #N" */
+#_fq_faqs_repeat .cmb-group-title span{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--fq-muted);
+  flex:1;
+}
+
+/* ── Botones subir/bajar de CMB2 ── */
+#_fq_faqs_repeat .cmb-group-title .cmb-shift-rows{
+  display:flex;
+  gap:4px;
+  margin-left:auto;
+}
+#_fq_faqs_repeat .cmb-group-title .cmb-shift-rows button,
+#_fq_faqs_repeat .cmb-group-title .move-up,
+#_fq_faqs_repeat .cmb-group-title .move-down{
+  width:28px;
+  height:28px;
+  border:1px solid var(--fq-border);
+  border-radius:4px;
+  background:#fff;
+  color:var(--fq-muted);
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  padding:0;
+  line-height:1;
+  transition:border-color .15s,color .15s,background .15s;
+}
+#_fq_faqs_repeat .cmb-group-title .move-up:hover,
+#_fq_faqs_repeat .cmb-group-title .move-down:hover{
+  border-color:var(--fq-blue);
+  color:var(--fq-blue);
+  background:var(--fq-blue-light);
+}
+
+/* ── Botón eliminar ── */
+#_fq_faqs_repeat .cmb-remove-group-row{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:var(--fq-red-bg);
+  border:1px solid var(--fq-red-border);
+  color:var(--fq-red);
+  border-radius:4px;
+  padding:4px 10px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:background .15s,border-color .15s;
+  flex-shrink:0;
+}
+#_fq_faqs_repeat .cmb-remove-group-row:hover{
+  background:var(--fq-red-border);
+  border-color:var(--fq-red);
+}
+/* Eliminar el float nativo de CMB2 */
+#_fq_faqs_repeat .cmb-remove-group-row{float:none}
+
+/* ── Cuerpo de la tarjeta ── */
+#_fq_faqs_repeat .cmb-repeatable-grouping{
+  padding:20px 20px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+/* ── Fila individual dentro del grupo ── */
+#_fq_faqs_repeat .cmb-repeatable-grouping .cmb-row{
+  margin:0;
+  padding:0;
+  border:0;
+}
+
+/* ── Labels ── */
+#_fq_faqs_repeat .cmb-repeatable-grouping .cmb-th{
+  padding:0 0 6px;
+  width:100%;
+  float:none;
+}
+#_fq_faqs_repeat .cmb-repeatable-grouping .cmb-th label{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--fq-blue);
+}
+
+/* ── Inputs y textareas ── */
+#_fq_faqs_repeat .cmb-repeatable-grouping .cmb-td{
+  width:100%;
+  float:none;
+  padding:0;
+}
+#_fq_faqs_repeat .cmb-repeatable-grouping input[type="text"],
+#_fq_faqs_repeat .cmb-repeatable-grouping textarea{
+  width:100%;
+  border:1px solid var(--fq-border);
+  border-radius:6px;
+  padding:10px 14px;
+  font-size:13px;
+  font-family:inherit;
+  color:var(--fq-text);
+  background:#fff;
+  box-sizing:border-box;
+  transition:border-color .15s,box-shadow .15s;
+  box-shadow:none;
+}
+#_fq_faqs_repeat .cmb-repeatable-grouping input[type="text"]:focus,
+#_fq_faqs_repeat .cmb-repeatable-grouping textarea:focus{
+  border-color:var(--fq-blue);
+  box-shadow:0 0 0 3px rgba(82,178,225,.15);
+  outline:none;
+}
+#_fq_faqs_repeat .cmb-repeatable-grouping input[type="text"]{
+  font-weight:600;
+}
+#_fq_faqs_repeat .cmb-repeatable-grouping textarea{
+  min-height:80px;
+  resize:vertical;
+  font-weight:400;
+  line-height:1.6;
+}
+
+/* ── Botón "Añadir pregunta" ── */
+#_fq_faqs_repeat .cmb-add-group-row{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+  background:var(--fq-blue);
+  color:#fff;
+  border:0;
+  border-radius:6px;
+  padding:10px 22px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .2s,transform .1s;
+  box-shadow:0 2px 8px rgba(82,178,225,.3);
+}
+#_fq_faqs_repeat .cmb-add-group-row:hover{
+  background:var(--fq-blue-dark);
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(82,178,225,.4);
+}
+#_fq_faqs_repeat .cmb-add-group-row:active{transform:translateY(0)}
+/* Quita el pseudo ::before del CSS anterior */
+#_fq_faqs_repeat .cmb-add-group-row::before{content:none}
+
+/* ── Campos wysiwyg — composición y modo de empleo ── */
+#_fq_composicion .wp-editor-wrap,
+#_fq_modo_empleo .wp-editor-wrap{
+  border:1px solid var(--fq-border);
+  border-radius:6px;
+  overflow:hidden;
+  transition:border-color .15s;
+}
+#_fq_composicion .wp-editor-wrap:focus-within,
+#_fq_modo_empleo .wp-editor-wrap:focus-within{
+  border-color:var(--fq-blue);
+  box-shadow:0 0 0 3px rgba(82,178,225,.12);
+}
+
+/* ── Metabox rutina ── */
+.fq-rutina-admin{padding:4px 0}
+.fq-rutina-admin p{margin:0 0 14px}
+.fq-rutina-admin label strong{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--fq-blue);
+}
+.fq-rutina-admin .description{
+  display:block;
+  font-size:11px;
+  color:var(--fq-muted);
+  margin-top:3px;
+}
+.fq-rutina-admin input[type="text"].widefat{
+  border:1px solid var(--fq-border);
+  border-radius:6px;
+  padding:9px 13px;
+  font-size:13px;
+  margin-top:6px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.fq-rutina-admin input[type="text"].widefat:focus{
+  border-color:var(--fq-blue);
+  box-shadow:0 0 0 3px rgba(82,178,225,.15);
+  outline:none;
+}
+.fq-rutina-admin .select2-container{margin-top:6px}
+.fq-rutina-admin .select2-container--default .select2-selection--multiple{
+  border:1px solid var(--fq-border);
+  border-radius:6px;
+  min-height:42px;
+  padding:4px 8px;
+}
+.fq-rutina-admin .select2-container--default.select2-container--focus .select2-selection--multiple{
+  border-color:var(--fq-blue);
+  box-shadow:0 0 0 3px rgba(82,178,225,.15);
+}
+.fq-rutina-admin .select2-container--default .select2-selection--multiple .select2-selection__choice{
+  background:var(--fq-blue-light);
+  border:1px solid rgba(82,178,225,.3);
+  color:var(--fq-blue-dark);
+  border-radius:4px;
+  font-size:12px;
+  font-weight:600;
+  padding:2px 8px;
+}

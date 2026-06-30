@@ -74,6 +74,7 @@ final class Farmacia_Queiles_Theme
 		// add_filter('woocommerce_add_to_cart_fragments', [$this, 'update_cart_fragments']); // Deshabilitado: Superplus maneja esto
 		add_filter('nav_menu_link_attributes', [$this, 'filter_nav_menu_link_attributes'], 10, 4);
 		add_filter('woocommerce_structured_data_breadcrumblist', [$this, 'filter_wc_structured_data_breadcrumblist'], 10, 2);
+		add_action('pre_get_posts', [$this, 'apply_product_cat_custom_order']);
 		add_action('product_cat_add_form_fields', [$this, 'render_featured_product_cat_add_field']);
 		add_action('product_cat_edit_form_fields', [$this, 'render_featured_product_cat_edit_field']);
 		add_action('created_product_cat', [$this, 'save_featured_product_cat_meta']);
@@ -114,9 +115,25 @@ final class Farmacia_Queiles_Theme
 		add_action('init', [$this, 'register_promociones_cpt']);
 		add_action('init', [$this, 'customize_brand_taxonomy'], 99);
 		add_action('cmb2_admin_init', [$this, 'register_cmb2_boxes']);
+		add_filter('woocommerce_product_tabs', [$this, 'register_product_custom_tabs'], 20);
+		add_action('woocommerce_after_single_product', [$this, 'render_product_rutina_section'], 5);
+		add_filter('woocommerce_output_related_products_args', static function (array $args): array {
+			$args['posts_per_page'] = 5;
+			$args['columns']        = 5;
+			return $args;
+		});
+		// Mover relacionados fuera del grid de tabs, al bloque full-width
+		add_action('wp', static function (): void {
+			if (!is_product()) {
+				return;
+			}
+			remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
+			add_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 10);
+		});
 		add_action('rest_api_init', [$this, 'register_promociones_rest_routes']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_promociones_admin_assets']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_term_featured_admin_assets']);
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_product_tabs_admin_assets']);
 		add_filter('manage_promociones_posts_columns', [$this, 'add_promociones_admin_columns']);
 		add_action('manage_promociones_posts_custom_column', [$this, 'render_promociones_admin_columns'], 10, 2);
 		add_action('after_switch_theme', [$this, 'schedule_rewrite_flush']);
@@ -124,6 +141,7 @@ final class Farmacia_Queiles_Theme
 		add_action('admin_init', [$this, 'maybe_bootstrap_home_promotions_json']);
 		add_action('admin_init', [$this, 'maybe_bootstrap_home_labs_json']);
 		add_action('admin_init', [$this, 'maybe_bootstrap_home_featured_cats_json']);
+		add_action('wp', [$this, 'bootstrap_missing_home_json_files']);
 		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
 		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
 		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
@@ -346,6 +364,29 @@ final class Farmacia_Queiles_Theme
 			wp_enqueue_script(
 				'farmacia-queiles-product-cat-filters',
 				get_template_directory_uri() . '/assets/js/product-cat-filters.min.js',
+				[],
+				$this->version,
+				true
+			);
+		}
+
+		// Assets para ficha de producto individual
+		if (class_exists('WooCommerce') && is_singular('product')) {
+			wp_enqueue_style(
+				'farmacia-queiles-home-featured-products',
+				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-single-product',
+				get_template_directory_uri() . '/assets/css/single-product.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-featured-products'],
+				$this->version
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-single-product',
+				get_template_directory_uri() . '/assets/js/single-product.min.js',
 				[],
 				$this->version,
 				true
@@ -2033,6 +2074,72 @@ final class Farmacia_Queiles_Theme
 			}
 		}
 
+		// BreadcrumbList para producto individual
+		if (class_exists('WooCommerce') && is_singular('product')) {
+			global $post;
+
+			$crumb_items   = [];
+			$crumb_items[] = ['name' => __('Inicio', 'farmacia-queiles'), 'url' => home_url('/')];
+
+			// Categorías del producto (tomamos la principal / la de mayor profundidad)
+			$product_cats = get_the_terms((int) $post->ID, 'product_cat');
+			if (is_array($product_cats) && !empty($product_cats)) {
+				// Encontrar la categoría de mayor profundidad
+				$deepest_term = null;
+				$max_depth    = -1;
+				foreach ($product_cats as $cat) {
+					$ancestors = get_ancestors((int) $cat->term_id, 'product_cat');
+					$depth     = count($ancestors);
+					if ($depth > $max_depth) {
+						$max_depth    = $depth;
+						$deepest_term = $cat;
+					}
+				}
+				if ($deepest_term !== null) {
+					// Añadir ancestros
+					$ancestor_ids = array_reverse(get_ancestors((int) $deepest_term->term_id, 'product_cat'));
+					foreach ($ancestor_ids as $anc_id) {
+						$anc_term = get_term((int) $anc_id, 'product_cat');
+						if ($anc_term instanceof WP_Term) {
+							$crumb_items[] = [
+								'name' => (string) $anc_term->name,
+								'url'  => (string) get_term_link($anc_term),
+							];
+						}
+					}
+					$crumb_items[] = [
+						'name' => (string) $deepest_term->name,
+						'url'  => (string) get_term_link($deepest_term),
+					];
+				}
+			}
+
+			// Producto actual (sin URL — es el ítem actual)
+			$crumb_items[] = ['name' => (string) get_the_title((int) $post->ID), 'url' => (string) get_permalink((int) $post->ID)];
+
+			$bc_id     = $current_url . '#breadcrumb';
+			$list_items = [];
+			$position   = 1;
+			foreach ($crumb_items as $crumb) {
+				$list_items[] = [
+					'@type'    => 'ListItem',
+					'position' => $position,
+					'name'     => (string) $crumb['name'],
+					'item'     => esc_url_raw((string) $crumb['url']),
+				];
+				$position += 1;
+			}
+
+			if (!empty($list_items)) {
+				$webpage['breadcrumb'] = ['@id' => $bc_id];
+				$graph[] = [
+					'@type'           => 'BreadcrumbList',
+					'@id'             => $bc_id,
+					'itemListElement' => $list_items,
+				];
+			}
+		}
+
 		$graph[] = $webpage;
 
 		$schema = [
@@ -2136,6 +2243,80 @@ final class Farmacia_Queiles_Theme
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Gestiona el orden en archivos product_cat:
+	 *
+	 * Orden por defecto (sin selección del usuario):
+	 *   1. Destacados/promocionados primero (_featured = yes).
+	 *   2. Con stock antes que sin stock (_stock_status = instock).
+	 *   3. Más vendidos (total_sales DESC).
+	 *   4. Sin stock al final (automático por el punto 2).
+	 *
+	 * Cuando el usuario elige un orden en el select del plugin,
+	 * el plugin gestiona price/date/popularity. Nosotros solo
+	 * garantizamos que sin stock quede siempre al final.
+	 */
+	public function apply_product_cat_custom_order(\WP_Query $query): void
+	{
+		if (is_admin() || !$query->is_main_query()) {
+			return;
+		}
+
+		if (!function_exists('is_tax') || !is_tax('product_cat')) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$sp_order = isset($_GET['sp_filter_order']) ? sanitize_key($_GET['sp_filter_order']) : '';
+
+		$meta_query = (array) $query->get('meta_query');
+
+		// Siempre registramos la cláusula de stock para poder ordenar por ella.
+		$meta_query['stock_clause'] = [
+			'key'     => '_stock_status',
+			'value'   => 'instock',
+			'compare' => '=',
+		];
+
+		if ('' === $sp_order) {
+			// ── Orden por defecto ──────────────────────────────────────────
+			// 1. Destacados/promocionados (_featured = yes → 1, resto → 0).
+			$meta_query['featured_clause'] = [
+				'key'     => '_featured',
+				'value'   => 'yes',
+				'compare' => '=',
+			];
+
+			// 2 & 3. Con stock + más vendidos.
+			$meta_query['sales_clause'] = [
+				'key'     => 'total_sales',
+				'type'    => 'NUMERIC',
+				'compare' => 'EXISTS',
+			];
+
+			$query->set('meta_query', $meta_query);
+
+			// Orden: destacados ↓ · con stock ↓ · más vendidos ↓ · fecha ↓
+			$query->set('orderby', [
+				'featured_clause' => 'DESC',
+				'stock_clause'    => 'DESC',
+				'sales_clause'    => 'DESC',
+				'date'            => 'DESC',
+			]);
+		} else {
+			// ── Orden elegido por el usuario ───────────────────────────────
+			// El plugin gestiona price/date/popularity en su propio switch.
+			// Solo añadimos stock_clause al final para que sin stock quede último.
+			$query->set('meta_query', $meta_query);
+
+			$current_orderby = (array) $query->get('orderby');
+			if (!isset($current_orderby['stock_clause'])) {
+				$current_orderby['stock_clause'] = 'DESC';
+				$query->set('orderby', $current_orderby);
+			}
+		}
 	}
 
 	public function filter_wc_structured_data_breadcrumblist(array $markup, $breadcrumb): array
@@ -2820,6 +3001,39 @@ final class Farmacia_Queiles_Theme
 		$this->regenerate_home_featured_cats_json();
 	}
 
+	public function bootstrap_missing_home_json_files(): void
+	{
+		$dir = get_template_directory() . '/assets/data';
+		if (is_dir($dir) && !is_writable($dir)) {
+			return;
+		}
+
+		$payload = self::get_home_promotions_cached_payload();
+		if (!is_array($payload) || ($payload['generated_at'] ?? 0) < 1) {
+			$this->regenerate_home_promotions_json();
+		}
+
+		$payload = self::get_home_labs_cached_payload();
+		if (!is_array($payload) || ($payload['generated_at'] ?? 0) < 1) {
+			$this->regenerate_home_labs_json();
+		}
+
+		$payload = self::get_home_featured_cats_cached_payload();
+		if (!is_array($payload) || ($payload['generated_at'] ?? 0) < 1) {
+			$this->regenerate_home_featured_cats_json();
+		}
+
+		$payload = self::get_home_featured_products_cached_payload();
+		if (!is_array($payload) || ($payload['generated_at'] ?? 0) < 1) {
+			$this->regenerate_home_featured_products_json();
+		}
+
+		$payload = self::get_home_best_sellers_cached_payload();
+		if (!is_array($payload) || ($payload['generated_at'] ?? 0) < 1) {
+			$this->regenerate_home_best_sellers_json();
+		}
+	}
+
 	private function regenerate_home_featured_cats_json(): void
 	{
 		$payload = $this->build_home_featured_cats_payload();
@@ -3262,6 +3476,8 @@ final class Farmacia_Queiles_Theme
 		$this->register_promociones_cmb2_box();
 		$this->register_product_cat_cmb2_box();
 		$this->register_theme_options_cmb2_boxes();
+		$this->register_product_tabs_cmb2_box();
+		$this->register_product_rutina_cmb2_box();
 	}
 
 	private function register_promociones_cmb2_box(): void
@@ -4000,6 +4216,397 @@ JS;
 		}
 
 		return '';
+	}
+
+	public function enqueue_product_tabs_admin_assets(string $hook): void
+	{
+		if (!in_array($hook, ['post.php', 'post-new.php'], true)) {
+			return;
+		}
+		$screen = get_current_screen();
+		if (!$screen || 'product' !== $screen->post_type) {
+			return;
+		}
+
+		// CSS tabs + rutina admin
+		wp_enqueue_style(
+			'fq-product-tabs-admin',
+			get_template_directory_uri() . '/assets/css/admin/product-tabs.min.css',
+			[],
+			$this->version
+		);
+
+		// Select2
+		wp_enqueue_style(
+			'farmacia-queiles-select2',
+			get_template_directory_uri() . '/assets/vendor/select2/css/select2.min.css',
+			[],
+			'4.1.0-rc.0'
+		);
+		wp_enqueue_script(
+			'farmacia-queiles-select2',
+			get_template_directory_uri() . '/assets/vendor/select2/js/select2.min.js',
+			['jquery'],
+			'4.1.0-rc.0',
+			true
+		);
+
+		// JS rutina
+		wp_enqueue_script(
+			'fq-product-rutina-admin',
+			get_template_directory_uri() . '/assets/js/admin/product-rutina.min.js',
+			['jquery', 'farmacia-queiles-select2'],
+			$this->version,
+			true
+		);
+	}
+
+	// ── Tabs personalizados de ficha de producto ────────────────────
+
+	private function register_product_tabs_cmb2_box(): void
+	{
+		$box = new_cmb2_box([
+			'id'           => 'fq_product_tabs_meta',
+			'title'        => __('Contenido de pestañas', 'farmacia-queiles'),
+			'object_types' => ['product'],
+			'context'      => 'normal',
+			'priority'     => 'high',
+		]);
+
+		$box->add_field([
+			'name' => __('Composición', 'farmacia-queiles'),
+			'desc' => __('Ingredientes, fórmula y activos del producto.', 'farmacia-queiles'),
+			'id'   => '_fq_composicion',
+			'type' => 'wysiwyg',
+			'options' => ['textarea_rows' => 6, 'media_buttons' => false],
+		]);
+
+		$box->add_field([
+			'name' => __('Modo de empleo', 'farmacia-queiles'),
+			'desc' => __('Instrucciones de aplicación paso a paso.', 'farmacia-queiles'),
+			'id'   => '_fq_modo_empleo',
+			'type' => 'wysiwyg',
+			'options' => ['textarea_rows' => 6, 'media_buttons' => false],
+		]);
+
+		$faqs_group = $box->add_field([
+			'id'          => '_fq_faqs',
+			'type'        => 'group',
+			'description' => __('Añade preguntas y respuestas para la pestaña "Preguntas frecuentes".', 'farmacia-queiles'),
+			'options'     => [
+				'group_title'   => __('Pregunta #{#}', 'farmacia-queiles'),
+				'add_button'    => __('+ Añadir pregunta', 'farmacia-queiles'),
+				'remove_button' => __('Eliminar', 'farmacia-queiles'),
+				'sortable'      => true,
+				'closed'        => false,
+			],
+		]);
+
+		$box->add_group_field($faqs_group, [
+			'name'        => __('Pregunta', 'farmacia-queiles'),
+			'id'          => 'fq_faq_pregunta',
+			'type'        => 'text',
+			'attributes'  => ['placeholder' => __('¿Es apto para pieles grasas?', 'farmacia-queiles')],
+		]);
+
+		$box->add_group_field($faqs_group, [
+			'name'        => __('Respuesta', 'farmacia-queiles'),
+			'id'          => 'fq_faq_respuesta',
+			'type'        => 'textarea_small',
+			'attributes'  => ['rows' => 3, 'placeholder' => __('Sí, su textura ultra-ligera es no comedogénica.', 'farmacia-queiles')],
+		]);
+	}
+
+	public function register_product_custom_tabs(array $tabs): array
+	{
+		global $product;
+
+		// Eliminar tab de valoraciones de WooCommerce
+		unset($tabs['reviews']);
+
+		if (!$product instanceof \WC_Product) {
+			return $tabs;
+		}
+
+		$product_id = (int) $product->get_id();
+
+		$composicion = (string) get_post_meta($product_id, '_fq_composicion', true);
+		$modo_empleo = (string) get_post_meta($product_id, '_fq_modo_empleo', true);
+		$faqs        = get_post_meta($product_id, '_fq_faqs', true);
+
+		if ('' !== trim($composicion)) {
+			$tabs['fq_composicion'] = [
+				'title'    => __('Composición', 'farmacia-queiles'),
+				'priority' => 20,
+				'callback' => [$this, 'render_tab_composicion'],
+			];
+		}
+
+		if ('' !== trim($modo_empleo)) {
+			$tabs['fq_modo_empleo'] = [
+				'title'    => __('Modo de empleo', 'farmacia-queiles'),
+				'priority' => 30,
+				'callback' => [$this, 'render_tab_modo_empleo'],
+			];
+		}
+
+		if (!empty($faqs) && is_array($faqs)) {
+			$has_content = false;
+			foreach ($faqs as $faq) {
+				if (!empty(trim((string) ($faq['fq_faq_pregunta'] ?? '')))) {
+					$has_content = true;
+					break;
+				}
+			}
+			if ($has_content) {
+				$tabs['fq_faqs'] = [
+					'title'    => __('Preguntas frecuentes', 'farmacia-queiles'),
+					'priority' => 40,
+					'callback' => [$this, 'render_tab_faqs'],
+				];
+			}
+		}
+
+		return $tabs;
+	}
+
+	public function render_tab_composicion(string $key, array $tab): void
+	{
+		global $product;
+		if (!$product instanceof \WC_Product) {
+			return;
+		}
+		$content = (string) get_post_meta((int) $product->get_id(), '_fq_composicion', true);
+		if ('' !== trim($content)) {
+			echo '<div class="fq-sp-tab-content fq-sp-tab-content--composicion">' . wp_kses_post(wpautop($content)) . '</div>';
+		}
+	}
+
+	public function render_tab_modo_empleo(string $key, array $tab): void
+	{
+		global $product;
+		if (!$product instanceof \WC_Product) {
+			return;
+		}
+		$content = (string) get_post_meta((int) $product->get_id(), '_fq_modo_empleo', true);
+		if ('' !== trim($content)) {
+			echo '<div class="fq-sp-tab-content fq-sp-tab-content--modo-empleo">' . wp_kses_post(wpautop($content)) . '</div>';
+		}
+	}
+
+	public function render_tab_faqs(string $key, array $tab): void
+	{
+		global $product;
+		if (!$product instanceof \WC_Product) {
+			return;
+		}
+		$faqs = get_post_meta((int) $product->get_id(), '_fq_faqs', true);
+		if (empty($faqs) || !is_array($faqs)) {
+			return;
+		}
+		echo '<div class="fq-sp-tab-content fq-sp-tab-content--faqs"><dl class="fq-sp-faqs">';
+		foreach ($faqs as $faq) {
+			$question = trim((string) ($faq['fq_faq_pregunta'] ?? ''));
+			$answer   = trim((string) ($faq['fq_faq_respuesta'] ?? ''));
+			if ('' === $question) {
+				continue;
+			}
+			echo '<div class="fq-sp-faqs__item">'
+				. '<dt class="fq-sp-faqs__q">' . esc_html($question) . '</dt>'
+				. '<dd class="fq-sp-faqs__a">' . wp_kses_post(nl2br(esc_html($answer))) . '</dd>'
+				. '</div>';
+		}
+		echo '</dl></div>';
+	}
+
+	// ── Sección "Completa tu rutina" ────────────────────────────────
+
+	private function register_product_rutina_cmb2_box(): void
+	{
+		add_meta_box(
+			'fq_product_rutina_meta',
+			__('Completa tu rutina', 'farmacia-queiles'),
+			[$this, 'render_rutina_meta_box'],
+			'product',
+			'normal',
+			'low'
+		);
+		add_action('save_post_product', [$this, 'save_rutina_meta'], 20);
+	}
+
+	public function render_rutina_meta_box(\WP_Post $post): void
+	{
+		wp_nonce_field('fq_rutina_save', 'fq_rutina_nonce');
+
+		$kicker   = (string) get_post_meta($post->ID, '_fq_rutina_kicker', true);
+		$titulo   = (string) get_post_meta($post->ID, '_fq_rutina_titulo', true);
+		$sel_ids  = get_post_meta($post->ID, '_fq_rutina_productos', true);
+		$sel_ids  = is_array($sel_ids) ? array_filter(array_map('intval', $sel_ids)) : [];
+
+		// Carga los productos ya seleccionados para pre-poblar el select
+		$selected_products = [];
+		foreach ($sel_ids as $pid) {
+			$t = get_the_title($pid);
+			if ($t) {
+				$selected_products[$pid] = $t;
+			}
+		}
+		?>
+		<div class="fq-rutina-admin">
+			<p>
+				<label for="fq_rutina_kicker"><strong><?php echo esc_html__('Kicker (texto superior en azul)', 'farmacia-queiles'); ?></strong></label><br>
+				<input id="fq_rutina_kicker" name="fq_rutina_kicker" type="text"
+					value="<?php echo esc_attr($kicker ?: 'CUIDADO INTEGRAL'); ?>"
+					placeholder="CUIDADO INTEGRAL" class="widefat">
+			</p>
+			<p>
+				<label for="fq_rutina_titulo"><strong><?php echo esc_html__('Título de la sección', 'farmacia-queiles'); ?></strong></label><br>
+				<input id="fq_rutina_titulo" name="fq_rutina_titulo" type="text"
+					value="<?php echo esc_attr($titulo ?: 'Completa tu rutina'); ?>"
+					placeholder="Completa tu rutina" class="widefat">
+			</p>
+			<p>
+				<label for="fq_rutina_productos"><strong><?php echo esc_html__('Productos de la rutina', 'farmacia-queiles'); ?></strong></label><br>
+				<span class="description"><?php echo esc_html__('Añade entre 3 y 9 productos. Se mostrarán 3 aleatorios en el frontend.', 'farmacia-queiles'); ?></span>
+			</p>
+			<select
+				id="fq_rutina_productos"
+				name="fq_rutina_productos[]"
+				class="fq-rutina-products-select widefat"
+				multiple
+				data-rest-url="<?php echo esc_url(rest_url('farmacia-queiles/v1/products-search')); ?>"
+				data-rest-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>"
+				data-placeholder="<?php echo esc_attr__('Busca y añade productos...', 'farmacia-queiles'); ?>">
+				<?php foreach ($selected_products as $pid => $label) : ?>
+					<option value="<?php echo esc_attr((string) $pid); ?>" selected>
+						<?php echo esc_html($label); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<?php
+	}
+
+	public function save_rutina_meta(int $post_id): void
+	{
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return;
+		}
+		if (!isset($_POST['fq_rutina_nonce']) || !wp_verify_nonce((string) $_POST['fq_rutina_nonce'], 'fq_rutina_save')) {
+			return;
+		}
+		if (!current_user_can('edit_post', $post_id)) {
+			return;
+		}
+
+		$kicker  = isset($_POST['fq_rutina_kicker']) ? sanitize_text_field((string) $_POST['fq_rutina_kicker']) : '';
+		$titulo  = isset($_POST['fq_rutina_titulo']) ? sanitize_text_field((string) $_POST['fq_rutina_titulo']) : '';
+		$ids_raw = isset($_POST['fq_rutina_productos']) && is_array($_POST['fq_rutina_productos'])
+			? array_values(array_filter(array_map('intval', (array) $_POST['fq_rutina_productos'])))
+			: [];
+
+		update_post_meta($post_id, '_fq_rutina_kicker', $kicker);
+		update_post_meta($post_id, '_fq_rutina_titulo', $titulo);
+		update_post_meta($post_id, '_fq_rutina_productos', $ids_raw);
+	}
+
+	public function render_product_rutina_section(): void
+	{
+		global $product;
+		if (!$product instanceof \WC_Product) {
+			return;
+		}
+
+		$product_id  = (int) $product->get_id();
+		$ids_raw     = get_post_meta($product_id, '_fq_rutina_productos', true);
+		$product_ids = is_array($ids_raw) ? array_filter(array_map('intval', $ids_raw)) : [];
+
+		if (empty($product_ids)) {
+			return;
+		}
+
+		// Mezclar aleatoriamente y coger 3
+		shuffle($product_ids);
+		$product_ids = array_slice($product_ids, 0, 3);
+
+		$kicker = (string) get_post_meta($product_id, '_fq_rutina_kicker', true);
+		$titulo = (string) get_post_meta($product_id, '_fq_rutina_titulo', true);
+		$kicker = '' !== trim($kicker) ? $kicker : 'CUIDADO INTEGRAL';
+		$titulo = '' !== trim($titulo) ? $titulo : 'Completa tu rutina';
+
+		$products = array_filter(array_map(fn(int $id) => wc_get_product($id), $product_ids));
+		if (empty($products)) {
+			return;
+		}
+		?>
+		<section class="fq-sp-rutina">
+			<div class="fq-sp-rutina__head">
+				<span class="fq-sp-rutina__kicker"><?php echo esc_html($kicker); ?></span>
+				<h2 class="fq-sp-rutina__title"><?php echo esc_html($titulo); ?></h2>
+			</div>
+			<div class="fq-sp-rutina__grid">
+				<?php foreach ($products as $rutina_product) :
+					/** @var WC_Product $rutina_product */
+					$rp_id       = (int) $rutina_product->get_id();
+					$rp_name     = (string) $rutina_product->get_name();
+					$rp_url      = (string) get_permalink($rp_id);
+					$rp_img      = (int) $rutina_product->get_image_id();
+					$rp_img_src  = $rp_img > 0 ? (string) wp_get_attachment_image_url($rp_img, 'woocommerce_thumbnail') : wc_placeholder_img_src();
+					$rp_excerpt  = wp_trim_words((string) $rutina_product->get_short_description(), 12, '…');
+					$rp_regular  = (string) $rutina_product->get_regular_price();
+					$rp_sale     = (string) $rutina_product->get_sale_price();
+					$rp_on_sale  = (bool) $rutina_product->is_on_sale();
+					$rp_price    = $rp_on_sale && '' !== $rp_sale ? $rp_sale : $rp_regular;
+
+					// Marca
+					$rp_brand = '';
+					if (taxonomy_exists('product_brand')) {
+						$rp_brands = get_the_terms($rp_id, 'product_brand');
+						if (is_array($rp_brands) && !empty($rp_brands)) {
+							$rp_brand = (string) $rp_brands[0]->name;
+						}
+					}
+				?>
+				<article class="fq-sp-rutina__card">
+					<a class="fq-sp-rutina__img-wrap" href="<?php echo esc_url($rp_url); ?>" tabindex="-1" aria-hidden="true">
+						<?php if ($rp_on_sale) : ?>
+							<span class="fq-sp-rutina__badge"><?php echo esc_html__('TOP', 'farmacia-queiles'); ?></span>
+						<?php endif; ?>
+						<img src="<?php echo esc_url($rp_img_src); ?>" alt="<?php echo esc_attr($rp_name); ?>" loading="lazy">
+					</a>
+					<div class="fq-sp-rutina__body">
+						<?php if ('' !== $rp_brand) : ?>
+							<span class="fq-sp-rutina__brand"><?php echo esc_html($rp_brand); ?></span>
+						<?php endif; ?>
+						<h3 class="fq-sp-rutina__name"><a href="<?php echo esc_url($rp_url); ?>"><?php echo esc_html($rp_name); ?></a></h3>
+						<?php if ('' !== $rp_excerpt) : ?>
+							<p class="fq-sp-rutina__excerpt"><?php echo esc_html($rp_excerpt); ?></p>
+						<?php endif; ?>
+						<div class="fq-sp-rutina__price-row">
+							<?php if ($rp_on_sale && '' !== $rp_sale) : ?>
+								<strong class="fq-sp-rutina__price"><?php echo wp_kses_post(wc_price((float) $rp_sale)); ?></strong>
+								<s class="fq-sp-rutina__price-old"><?php echo wp_kses_post(wc_price((float) $rp_regular)); ?></s>
+							<?php elseif ('' !== $rp_regular) : ?>
+								<strong class="fq-sp-rutina__price"><?php echo wp_kses_post(wc_price((float) $rp_regular)); ?></strong>
+							<?php endif; ?>
+							<span class="fq-sp-rutina__iva"><?php echo esc_html__('IVA INC', 'farmacia-queiles'); ?></span>
+						</div>
+						<a
+							href="<?php echo esc_url($rutina_product->add_to_cart_url()); ?>"
+							class="fq-sp-rutina__cta add_to_cart_button ajax_add_to_cart"
+							data-product_id="<?php echo esc_attr((string) $rp_id); ?>"
+							data-quantity="1"
+							rel="nofollow"
+						>
+							<span class="material-symbols-outlined">shopping_bag</span>
+							<?php echo esc_html__('Añadir al carrito', 'farmacia-queiles'); ?>
+						</a>
+					</div>
+				</article>
+				<?php endforeach; ?>
+			</div>
+		</section>
+		<?php
 	}
 
 	private function get_schema_current_url(): string
