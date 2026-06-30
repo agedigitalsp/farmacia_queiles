@@ -72,6 +72,55 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 
 	<?php do_action( 'woocommerce_before_single_product_summary' ); ?>
 
+	<!-- ══ MIGAS DE PAN ══════════════════════════════════════════ -->
+	<?php
+	$fq_sp_crumbs = [
+		[ 'name' => __( 'Inicio', 'farmacia-queiles' ), 'url' => home_url( '/' ) ],
+	];
+	$fq_sp_cats = get_the_terms( $product_id, 'product_cat' );
+	if ( is_array( $fq_sp_cats ) && ! empty( $fq_sp_cats ) ) {
+		// Categoría principal: la de mayor profundidad
+		usort( $fq_sp_cats, static fn( $a, $b ) => $b->parent <=> $a->parent );
+		$fq_sp_cat = $fq_sp_cats[0];
+		// Ancestros de la categoría, de más general a más específico
+		$fq_sp_ancestors = array_reverse( get_ancestors( (int) $fq_sp_cat->term_id, 'product_cat' ) );
+		foreach ( $fq_sp_ancestors as $ancestor_id ) {
+			$ancestor_term = get_term( $ancestor_id, 'product_cat' );
+			if ( $ancestor_term instanceof WP_Term ) {
+				$fq_sp_crumbs[] = [
+					'name' => $ancestor_term->name,
+					'url'  => (string) get_term_link( $ancestor_term ),
+				];
+			}
+		}
+		$fq_sp_crumbs[] = [
+			'name' => $fq_sp_cat->name,
+			'url'  => (string) get_term_link( $fq_sp_cat ),
+		];
+	}
+	$fq_sp_crumbs[] = [ 'name' => $product_name, 'url' => '' ];
+	?>
+	<nav class="fq-product-cat-breadcrumb fq-sp-breadcrumb" aria-label="<?php echo esc_attr__( 'Migas de pan', 'farmacia-queiles' ); ?>">
+		<ol class="fq-product-cat-breadcrumb__list">
+			<?php foreach ( $fq_sp_crumbs as $fq_i => $fq_crumb ) :
+				$fq_is_last = $fq_i === count( $fq_sp_crumbs ) - 1;
+			?>
+			<li class="fq-product-cat-breadcrumb__item<?php echo $fq_is_last ? ' is-current' : ''; ?>"<?php echo $fq_is_last ? ' aria-current="page"' : ''; ?>>
+				<?php if ( ! $fq_is_last && '' !== $fq_crumb['url'] ) : ?>
+					<a href="<?php echo esc_url( $fq_crumb['url'] ); ?>"><?php echo esc_html( $fq_crumb['name'] ); ?></a>
+				<?php else : ?>
+					<span><?php echo esc_html( $fq_crumb['name'] ); ?></span>
+				<?php endif; ?>
+			</li>
+			<?php if ( ! $fq_is_last ) : ?>
+			<li class="fq-product-cat-breadcrumb__sep" aria-hidden="true">
+				<span class="material-symbols-outlined">chevron_right</span>
+			</li>
+			<?php endif; ?>
+			<?php endforeach; ?>
+		</ol>
+	</nav>
+
 	<!-- ══ HERO: Galería + Info ══════════════════════════════════ -->
 	<div class="fq-sp-hero">
 
