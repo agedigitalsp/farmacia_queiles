@@ -4543,8 +4543,16 @@ JS;
 			<div class="fq-sp-rutina__head">
 				<span class="fq-sp-rutina__kicker"><?php echo esc_html($kicker); ?></span>
 				<h2 class="fq-sp-rutina__title"><?php echo esc_html($titulo); ?></h2>
+				<div class="fq-sp-rutina__arrows" aria-hidden="true">
+					<button class="fq-sp-rutina__arrow fq-sp-rutina__arrow--prev" type="button" aria-label="<?php echo esc_attr__('Anterior', 'farmacia-queiles'); ?>">
+						<span class="material-symbols-outlined">chevron_left</span>
+					</button>
+					<button class="fq-sp-rutina__arrow fq-sp-rutina__arrow--next" type="button" aria-label="<?php echo esc_attr__('Siguiente', 'farmacia-queiles'); ?>">
+						<span class="material-symbols-outlined">chevron_right</span>
+					</button>
+				</div>
 			</div>
-			<div class="fq-sp-rutina__grid">
+			<div class="fq-sp-rutina__grid" data-fq-rutina-track>
 				<?php foreach ($products as $rutina_product) :
 					/** @var WC_Product $rutina_product */
 					$rp_id       = (int) $rutina_product->get_id();

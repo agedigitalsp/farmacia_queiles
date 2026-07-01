@@ -22,7 +22,7 @@
 .single-product .fq-single-product {
     max-width: 1450px;
     margin: 0 auto;
-    padding: 0 0 64px
+    padding: 0 0 20px;
 }
 
 /* ── HERO: grid galería + info ─────────────────────────────────── */
@@ -155,18 +155,21 @@
     display: none!important
 }
 
-/* ── Precio ────────────────────────────────────────────────────── */
+/* ── Precio + acciones ─────────────────────────────────────────── */
 .fq-sp-buybox {
     margin-bottom: 20px;
     display: flex;
-    gap: 3rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px 24px
 }
 
 .fq-sp-price {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    margin-bottom: 20px
+    margin-bottom: 0;
+    flex: 1 1 auto
 }
 
 .fq-sp-price__old-row {
@@ -214,15 +217,7 @@
     color: #9ca3af
 }
 
-/* ── Acciones: cantidad + CTA ──────────────────────────────────── */
-.fq-sp-actions {
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
+/* ── Acciones: cantidad + CTA (hijos directos de .fq-sp-buybox) ── */
 .fq-sp-qty {
     display: flex;
     flex-direction: column;
@@ -281,7 +276,7 @@
 }
 
 .fq-sp-cta {
-    flex: 1;
+    flex: 1 1 180px;
     min-width: 180px;
     display: flex;
     flex-direction: column;
@@ -647,6 +642,20 @@
     margin-bottom: 24px
 }
 
+.fq-sp-related__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px
+}
+
+.fq-sp-related__kicker {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--primary,#52b2e1)
+}
+
 .fq-sp-related__title {
     font-size: 1.5rem;
     font-weight: 300;
@@ -759,18 +768,24 @@
 }
 
 .fq-sp-rutina__head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
     text-align: center;
     margin-bottom: 48px
 }
 
 .fq-sp-rutina__kicker {
     display: block;
+    width: 100%;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: .3em;
     text-transform: uppercase;
     color: var(--primary,#52b2e1);
-    margin-bottom: 12px
+    margin-bottom: 4px
 }
 
 .fq-sp-rutina__title {
@@ -778,7 +793,37 @@
     font-weight: 300;
     color: var(--text-dark,#383e42);
     margin: 0;
-    letter-spacing: -.01em
+    letter-spacing: -.01em;
+    flex: 1
+}
+
+/* Flechas — ocultas en desktop, visibles solo en móvil */
+.fq-sp-rutina__arrows {
+    display: none;
+    gap: 8px
+}
+
+.fq-sp-rutina__arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #d1d9e2;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: border-color .2s,color .2s
+}
+
+.fq-sp-rutina__arrow:hover {
+    border-color: var(--primary,#52b2e1);
+    color: var(--primary,#52b2e1)
+}
+
+.fq-sp-rutina__arrow .material-symbols-outlined {
+    font-size: 18px
 }
 
 .fq-sp-rutina__grid {
@@ -986,8 +1031,41 @@
 }
 
 @media(max-width: 768px) {
+    /* Rutina: grid → slider horizontal */
+    .fq-sp-rutina__head {
+        justify-content: space-between;
+        text-align: left;
+        margin-bottom: 24px
+    }
+
+    .fq-sp-rutina__kicker {
+        width: auto;
+        flex: 0 0 100%
+    }
+
+    .fq-sp-rutina__arrows {
+        display: flex;
+        flex-shrink: 0
+    }
+
     .fq-sp-rutina__grid {
-        grid-template-columns:1fr
+        display: flex;
+        overflow-x: auto;
+        gap: 16px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding-bottom: 8px
+    }
+
+    .fq-sp-rutina__grid::-webkit-scrollbar {
+        display: none
+    }
+
+    .fq-sp-rutina__card {
+        min-width: 240px;
+        max-width: 260px;
+        flex-shrink: 0;
+        scroll-snap-align: start
     }
 
     .fq-sp-rutina {
@@ -1010,12 +1088,8 @@
         font-size: 2rem
     }
 
-    .fq-sp-actions {
-        gap: 16px
-    }
-
     .fq-sp-trust {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr 1fr
     }
 
     .fq-sp-lower {
@@ -1037,18 +1111,37 @@
     }
 }
 
+@media(max-width: 640px) {
+    /* Precio + cantidad en la misma fila; botones debajo a ancho completo */
+    .fq-sp-buybox {
+        gap: 12px 16px
+    }
+
+    .fq-sp-price {
+        flex: 1 1 auto;
+        min-width: 0
+    }
+
+    /* Qty al lado del precio */
+    .fq-sp-qty {
+        flex-shrink: 0;
+        align-self: flex-end
+    }
+
+    /* CTA ocupa toda la fila siguiente */
+    .fq-sp-cta {
+        flex: 1 1 100%;
+        min-width: unset
+    }
+}
+
 @media(max-width: 480px) {
     .fq-sp-gallery__thumb {
-        width:58px;
+        width: 58px;
         height: 72px
     }
 
-    .fq-sp-actions {
-        flex-direction: column
-    }
-
-    .fq-sp-cta {
-        min-width: unset;
-        width: 100%
+    .fq-sp-buybox {
+        gap: 10px 12px
     }
 }

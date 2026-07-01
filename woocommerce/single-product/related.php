@@ -27,9 +27,12 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 <section class="fq-sp-related" aria-label="<?php echo esc_attr__( 'Productos relacionados', 'farmacia-queiles' ); ?>">
 
 	<div class="fq-sp-related__head">
-		<h2 class="fq-sp-related__title">
-			<?php echo esc_html( apply_filters( 'woocommerce_product_related_products_heading', __( 'Productos relacionados', 'farmacia-queiles' ) ) ); ?>
-		</h2>
+		<div class="fq-sp-related__heading">
+			<span class="fq-sp-related__kicker"><?php echo esc_html__( 'También te puede interesar', 'farmacia-queiles' ); ?></span>
+			<h2 class="fq-sp-related__title">
+				<?php echo esc_html( apply_filters( 'woocommerce_product_related_products_heading', __( 'Productos relacionados', 'farmacia-queiles' ) ) ); ?>
+			</h2>
+		</div>
 		<div class="fq-sp-related__arrows" aria-hidden="true">
 			<button class="fq-sp-related__arrow fq-sp-related__arrow--prev" type="button" aria-label="<?php echo esc_attr__( 'Anterior', 'farmacia-queiles' ); ?>">
 				<span class="material-symbols-outlined">chevron_left</span>

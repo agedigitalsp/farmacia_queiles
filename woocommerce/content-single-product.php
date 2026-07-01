@@ -199,69 +199,68 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 					<span class="fq-sp-price__tax"><?php echo esc_html__( 'IVA incluido', 'farmacia-queiles' ); ?></span>
 				</div>
 
-				<!-- Cantidad + CTA -->
-				<div class="fq-sp-actions">
-					<?php if ( $is_purchasable && $in_stock ) : ?>
-					<div class="fq-sp-qty">
-						<label class="fq-sp-qty__label" for="fq-sp-qty-<?php echo esc_attr( (string) $product_id ); ?>">
-							<?php echo esc_html__( 'Cantidad', 'farmacia-queiles' ); ?>
-						</label>
-						<div class="fq-sp-qty__wrap">
+				<!-- Cantidad -->
+				<?php if ( $is_purchasable && $in_stock ) : ?>
+				<div class="fq-sp-qty">
+					<label class="fq-sp-qty__label" for="fq-sp-qty-<?php echo esc_attr( (string) $product_id ); ?>">
+						<?php echo esc_html__( 'Cantidad', 'farmacia-queiles' ); ?>
+					</label>
+					<div class="fq-sp-qty__wrap">
+						<?php
+						woocommerce_quantity_input( [
+							'input_id'   => 'fq-sp-qty-' . $product_id,
+							'input_name' => 'quantity',
+							'input_value'=> 1,
+							'min_value'  => 1,
+							'max_value'  => $stock_qty ?: '',
+							'classes'    => [ 'fq-sp-qty__input' ],
+						] );
+						?>
+					</div>
+					<?php if ( $stock_qty !== null ) : ?>
+						<span class="fq-sp-qty__stock is-in-stock">
+							<span class="fq-sp-qty__stock-dot"></span>
 							<?php
-							woocommerce_quantity_input( [
-								'input_id'   => 'fq-sp-qty-' . $product_id,
-								'input_name' => 'quantity',
-								'input_value'=> 1,
-								'min_value'  => 1,
-								'max_value'  => $stock_qty ?: '',
-								'classes'    => [ 'fq-sp-qty__input' ],
-							] );
+							/* translators: %d: stock quantity */
+							printf( esc_html__( 'Stock: %d uds.', 'farmacia-queiles' ), (int) $stock_qty );
 							?>
-						</div>
-						<?php if ( $stock_qty !== null ) : ?>
-							<span class="fq-sp-qty__stock is-in-stock">
-								<span class="fq-sp-qty__stock-dot"></span>
-								<?php
-								/* translators: %d: stock quantity */
-								printf( esc_html__( 'Stock: %d uds.', 'farmacia-queiles' ), (int) $stock_qty );
-								?>
-							</span>
-						<?php else : ?>
-							<span class="fq-sp-qty__stock is-in-stock">
-								<span class="fq-sp-qty__stock-dot"></span>
-								<?php echo esc_html__( 'En stock', 'farmacia-queiles' ); ?>
-							</span>
-						<?php endif; ?>
-					</div>
-					<?php endif; ?>
-
-					<div class="fq-sp-cta">
-						<?php if ( $is_purchasable && $in_stock ) : ?>
-						<a
-							href="<?php echo esc_url( add_query_arg( [ 'add-to-cart' => $product_id, 'quantity' => 1 ], wc_get_checkout_url() ) ); ?>"
-							class="fq-sp-btn fq-sp-btn--buynow"
-							aria-label="<?php echo esc_attr__( 'Comprar ahora', 'farmacia-queiles' ); ?>"
-						>
-							<?php echo esc_html__( 'Comprar ahora', 'farmacia-queiles' ); ?>
-						</a>
-						<a
-							href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
-							class="<?php echo esc_attr( $add_to_cart_classes ); ?> fq-sp-btn--primary"
-							data-product_id="<?php echo esc_attr( (string) $product_id ); ?>"
-							data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
-							data-quantity="1"
-							aria-label="<?php echo esc_attr( $product->add_to_cart_description() ); ?>"
-							rel="nofollow"
-						>
-							<span class="material-symbols-outlined">shopping_bag</span>
-							<?php echo esc_html__( 'Añadir al carrito', 'farmacia-queiles' ); ?>
-						</a>
-						<?php else : ?>
-						<span class="fq-sp-btn fq-sp-btn--disabled">
-							<?php echo esc_html__( 'Sin stock', 'farmacia-queiles' ); ?>
 						</span>
-						<?php endif; ?>
-					</div>
+					<?php else : ?>
+						<span class="fq-sp-qty__stock is-in-stock">
+							<span class="fq-sp-qty__stock-dot"></span>
+							<?php echo esc_html__( 'En stock', 'farmacia-queiles' ); ?>
+						</span>
+					<?php endif; ?>
+				</div>
+				<?php endif; ?>
+
+				<!-- Botones CTA -->
+				<div class="fq-sp-cta">
+					<?php if ( $is_purchasable && $in_stock ) : ?>
+					<a
+						href="<?php echo esc_url( add_query_arg( [ 'add-to-cart' => $product_id, 'quantity' => 1 ], wc_get_checkout_url() ) ); ?>"
+						class="fq-sp-btn fq-sp-btn--buynow"
+						aria-label="<?php echo esc_attr__( 'Comprar ahora', 'farmacia-queiles' ); ?>"
+					>
+						<?php echo esc_html__( 'Comprar ahora', 'farmacia-queiles' ); ?>
+					</a>
+					<a
+						href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
+						class="<?php echo esc_attr( $add_to_cart_classes ); ?> fq-sp-btn--primary"
+						data-product_id="<?php echo esc_attr( (string) $product_id ); ?>"
+						data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
+						data-quantity="1"
+						aria-label="<?php echo esc_attr( $product->add_to_cart_description() ); ?>"
+						rel="nofollow"
+					>
+						<span class="material-symbols-outlined">shopping_bag</span>
+						<?php echo esc_html__( 'Añadir al carrito', 'farmacia-queiles' ); ?>
+					</a>
+					<?php else : ?>
+					<span class="fq-sp-btn fq-sp-btn--disabled">
+						<?php echo esc_html__( 'Sin stock', 'farmacia-queiles' ); ?>
+					</span>
+					<?php endif; ?>
 				</div>
 			</div><!-- /fq-sp-buybox -->
 
