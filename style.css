@@ -2064,3 +2064,201 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 /* ==========================================================================
    PÁGINAS SECUNDARIAS — FIN
    ========================================================================== */
+   ========================================================================== 
+*/
+
+
+/* ==========================================================================
+   MENÚ MÓVIL SUPERPLUS — DISEÑO HEREDADO DEL MENÚ ANTERIOR
+   ========================================================================== 
+*/
+
+.menu_movil .hamburger-container {
+	max-width: min(380px, 100%);
+	padding: 0;
+	background: #fff;
+}
+
+.menu_movil .overlay {
+	background: rgba(17, 24, 39, 0.46);
+}
+
+.menu_movil .menu-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 16px;
+	border-bottom: 1px solid #e5e7eb;
+	margin: 0;
+}
+
+.menu_movil .menu-header__brand {
+	display: flex;
+	align-items: center;
+}
+
+.menu_movil .menu-header__brand .custom-logo-link {
+	display: flex;
+}
+
+.menu_movil .menu-header__brand .custom-logo {
+	max-width: 350px;
+	height: auto;
+}
+
+.menu_movil .menu-title {
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-dark);
+}
+
+.menu_movil .back-arrow {
+	position: static;
+	order: -1;
+	gap: 0;
+}
+
+.menu_movil .back-arrow .txt_cerrar {
+	display: none;
+}
+
+.menu_movil .back-arrow .icono_cerrar {
+	width: 40px;
+	height: 40px;
+	border: 0;
+	border-radius: 999px;
+	background: #f3f4f6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: none;
+}
+
+.menu_movil .menu-close {
+	position: static;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border: 0;
+	border-radius: 999px;
+	background: #f3f4f6;
+	color: var(--text-dark);
+	cursor: pointer;
+	padding: 0;
+}
+
+.menu_movil .menu-close .txt_cerrar {
+	display: none;
+}
+
+.menu_movil .menu-close .icono_cerrar {
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 0;
+	margin-bottom: 2px;
+	color: var(--text-dark);
+}
+
+.menu_movil .menu-content {
+	padding: 20px 16px 120px;
+	position: static;
+}
+
+.menu_movil .menu-categories {
+	margin-bottom: 28px;
+}
+
+.menu_movil .menu-categories__title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-dark);
+}
+
+.menu_movil .menu-categories__list {
+	list-style: none;
+	margin: 14px 0 0;
+	padding: 0;
+}
+
+.menu_movil .menu-categories__list li + li {
+	margin-top: 8px;
+}
+
+.menu_movil .menu-categories__link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: #f8fafc;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--text-dark);
+	transition: background 0.2s, color 0.2s;
+}
+
+.menu_movil .menu-categories__link.is-current,
+.menu_movil .menu-categories__link:hover,
+.menu_movil .menu-categories__link:focus {
+	background: rgba(82, 178, 225, 0.1);
+	color: var(--primary);
+}
+
+.menu_movil .sp-hamburger-menu,
+.menu_movil .sp-hamburger-menu ul {
+	position: static;
+}
+
+.menu_movil .sp-hamburger-menu li {
+	padding: 0;
+	margin: 0;
+}
+
+.menu_movil .sp-hamburger-menu li + li {
+	margin-top: 8px;
+}
+
+.menu_movil .sp-hamburger-menu li a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: #f8fafc;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--text-dark);
+	transition: background 0.2s, color 0.2s;
+}
+
+.menu_movil .sp-hamburger-menu li a:hover,
+.menu_movil .sp-hamburger-menu li a:focus {
+	background: rgba(82, 178, 225, 0.1);
+	color: var(--primary);
+}
+
+.menu_movil .sp-hamburger-menu .submenu-indicator {
+	float: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 0;
+	width: 24px;
+	height: 24px;
+}
+
+@media (min-width: 1025px) {
+	.hamburger-toggle,
+	.menu_movil {
+		display: none;
+	}
+}

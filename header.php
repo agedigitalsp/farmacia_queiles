@@ -148,10 +148,7 @@ if (is_tax('product_cat')) {
 							<span class="util-link__label"><?php echo esc_html__('Favoritos', 'farmacia-queiles'); ?></span>
 						</a>
 
-						<button class="util-link util-link--menu" type="button" data-open-mobile-menu="true" aria-controls="site-mobile-menu" aria-expanded="false">
-							<span class="material-symbols-outlined util-link__icon">menu</span>
-							<span class="util-link__label"><?php echo esc_html__('Menú', 'farmacia-queiles'); ?></span>
-						</button>
+						<?php echo do_shortcode('[sp_menu_movil]'); ?>
 
 						<?php if (class_exists('WooCommerce')) : ?>
 							<a
@@ -286,54 +283,7 @@ if (is_tax('product_cat')) {
 			</div>
 		</div>
 
-		<div id="site-mobile-menu" class="site-mobile-menu" aria-hidden="true">
-			<div class="site-mobile-menu__overlay" data-close-mobile-menu="true"></div>
-			<aside class="site-mobile-menu__panel">
-				<div class="site-mobile-menu__header">
-					<div class="site-mobile-menu__brand">
-						<?php if (function_exists('the_custom_logo') && has_custom_logo()) : ?>
-							<?php the_custom_logo(); ?>
-						<?php else : ?>
-							<a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>">
-								<span class="site-title"><?php bloginfo('name'); ?></span>
-							</a>
-						<?php endif; ?>
-					</div>
-					<button class="site-mobile-menu__close" type="button" data-close-mobile-menu="true" aria-label="<?php echo esc_attr__('Cerrar menú', 'farmacia-queiles'); ?>">
-						<span class="material-symbols-outlined">close</span>
-					</button>
-				</div>
 
-				<div class="site-mobile-menu__content">
-					<div class="site-mobile-menu__block">
-						<h2 class="site-mobile-menu__title"><?php echo esc_html__('Categorías', 'farmacia-queiles'); ?></h2>
-						<?php if (!empty($header_categories['featured']) || !empty($header_categories['more'])) : ?>
-							<ul class="site-mobile-menu__list" role="list">
-								<?php foreach (array_merge($header_categories['featured'], $header_categories['more']) as $category) : ?>
-									<li>
-										<a class="site-mobile-menu__link<?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>" href="<?php echo esc_url(get_term_link($category)); ?>">
-											<?php echo esc_html($category->name); ?>
-										</a>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						<?php else : ?>
-							<?php
-							wp_nav_menu(
-								[
-									'theme_location' => 'primary',
-									'container' => false,
-									'menu_class' => 'site-mobile-menu__list',
-									'fallback_cb' => false,
-								]
-							);
-							?>
-						<?php endif; ?>
-					</div>
-
-				</div>
-			</aside>
-		</div>
 
 		<nav class="mobile-bottom-bar" aria-label="<?php echo esc_attr__('Accesos móviles', 'farmacia-queiles'); ?>">
 			<a class="mobile-bottom-bar__item" href="<?php echo esc_url(home_url('/')); ?>">

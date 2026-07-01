@@ -53,7 +53,7 @@ final class Farmacia_Queiles_Theme
 	private const HOME_LABS_CACHE_VERSION = 2;
 	private const HOME_FEATURED_CATS_CACHE_VERSION = 1;
 	private const HOME_FEATURED_PRODUCTS_CACHE_VERSION = 1;
-	private const HOME_BEST_SELLERS_CACHE_VERSION = 1;
+	private const HOME_BEST_SELLERS_CACHE_VERSION = 2;
 	private string $version;
 	private ?array $material_symbols_icon_choices = null;
 
@@ -3347,7 +3347,8 @@ final class Farmacia_Queiles_Theme
 		];
 
 		$products = wc_get_products([
-			'orderby'  => 'total_sales',
+			'orderby'  => 'meta_value_num',
+			'meta_key' => 'total_sales',
 			'order'    => 'DESC',
 			'limit'    => 12,
 			'status'   => 'publish',
