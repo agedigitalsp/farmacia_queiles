@@ -151,6 +151,18 @@ final class Farmacia_Queiles_Theme
 		add_action('trashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('untrashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		
+		add_filter('excerpt_length', function ($length) {
+			return 20; // Número de palabras que quieras
+		});
+
+		add_filter('excerpt_more', function ($more) {
+			return '...';
+		});
+
+		add_filter('wpseo_breadcrumb_separator', function () {
+			return '<span class="yoast-breadcrumb__separator">&gt;</span>';
+		});
+
 
 		// ===== INICIO: Deshabilitar Coming Soon de WooCommerce =====
 		// add_filter('pre_option_woocommerce_coming_soon', '__return_zero');
@@ -393,6 +405,21 @@ final class Farmacia_Queiles_Theme
 				true
 			);
 		}
+
+		wp_enqueue_style(
+			'farmacia-queiles-blog-page',
+			get_template_directory_uri() . '/assets/css/blog-page.min.css',
+			['farmacia-queiles-style'],
+			$this->version
+		);
+		
+		wp_enqueue_style(
+			'farmacia-queiles-blog-single-page',
+			get_template_directory_uri() . '/assets/css/blog-single-page.min.css',
+			['farmacia-queiles-style'],
+			$this->version
+		);
+
 
 		// Deshabilitado: Superplus maneja todo el carrito
 		// if (class_exists('WooCommerce')) {
