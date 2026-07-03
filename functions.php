@@ -145,6 +145,7 @@ final class Farmacia_Queiles_Theme
 		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
 		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
 		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
+		add_action('save_post_promociones', [$this, 'save_promociones_meta'], 10, 2);
 		add_action('save_post_promociones', [$this, 'maybe_regenerate_home_promotions_json'], 20, 3);
 		add_action('deleted_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('trashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
