@@ -1,4 +1,8 @@
 <?php
+/*
+Template Name: Blog
+*/
+
 
 if (!defined('ABSPATH')) {
 	exit;
