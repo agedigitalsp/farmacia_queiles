@@ -15,6 +15,14 @@ $my_account_url = Farmacia_Queiles_Theme::get_setting(
 	class_exists('WooCommerce') ? wc_get_page_permalink('myaccount') : wp_login_url()
 );
 $favorites_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_favorites_url', home_url('/favoritos'));
+$fq_fav_count = 0;
+if (is_user_logged_in()) {
+	$fq_fav_stored = get_user_meta(get_current_user_id(), '_fq_favorites', true);
+	$fq_fav_count  = is_array($fq_fav_stored) ? count(array_filter($fq_fav_stored, 'intval')) : 0;
+} elseif (isset($_COOKIE['fq_favorites'])) {
+	$fq_fav_decoded = json_decode(urldecode(sanitize_text_field(wp_unslash($_COOKIE['fq_favorites']))), true);
+	$fq_fav_count   = is_array($fq_fav_decoded) ? count(array_filter($fq_fav_decoded, 'intval')) : 0;
+}
 $footer_whatsapp_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_url', '');
 $cart_count = 0;
 $header_categories = class_exists('WooCommerce') ? Farmacia_Queiles_Theme::get_header_product_categories(5) : ['featured' => [], 'more' => []];
@@ -142,9 +150,12 @@ if (is_tax('product_cat')) {
 					<div class="site-header__utils">
 						<?php echo do_shortcode('[sp_mi_cuenta_icono]'); ?>
 
-						<a class="util-link" href="<?php echo esc_url($favorites_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($favorites_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+						<a class="util-link" href="<?php echo esc_url($favorites_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($favorites_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 																							?>>
 							<span class="material-symbols-outlined util-link__icon">favorite</span>
+							<span class="util-link__badge fq-fav-count-badge<?php echo $fq_fav_count < 1 ? ' is-empty' : ''; ?>" aria-live="polite">
+								<?php echo esc_html((string) $fq_fav_count); ?>
+							</span>
 							<span class="util-link__label"><?php echo esc_html__('Favoritos', 'farmacia-queiles'); ?></span>
 						</a>
 

@@ -69,6 +69,9 @@ $add_to_cart_classes = implode(
 			<a href="<?php echo esc_url( $product_url ); ?>" aria-label="<?php echo esc_attr( $product_name ); ?>">
 				<img class="fp-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $product_name ); ?>" loading="lazy">
 			</a>
+			<button class="fq-fav-btn" type="button" data-fq-fav="<?php echo esc_attr( (string) $product_id ); ?>" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Guardar en favoritos', 'farmacia-queiles' ); ?>">
+				<span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+			</button>
 		</div>
 
 		<div class="fp-card__body">

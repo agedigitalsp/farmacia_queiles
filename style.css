@@ -199,23 +199,24 @@ a {
 
 .contenedor_filtros_superior {
 	gap: 0 !important;
+	padding: 0 16px;
 }
 
 .sp-filter-sidebar-header {
     display: none !important;
 }
 
-.tax-product_cat .sp-filter-main {
+.woocommerce  .sp-filter-main {
     max-width: 1450px;
     margin: 0 auto;
 }
 
-.tax-product_cat .fq-filter-card--filters .slider-tooltip {
+.woocommerce  .fq-filter-card--filters .slider-tooltip {
     top: 30px;
     background-color: #52b2e1;
 }
 
-.tax-product_cat .fq-filter-card--filters #sp-price-slider {
+.woocommerce  .fq-filter-card--filters #sp-price-slider {
     margin-bottom: 60px;
 }
 
@@ -1196,7 +1197,7 @@ body.site-mobile-panel-open {
 
 @media (max-width: 1024px) {
 	body {
-		padding-bottom: 72px;
+		padding-bottom: 65px;
 	}
 
 	.site-preheader__left {
@@ -1363,6 +1364,79 @@ body.site-mobile-panel-open {
 .error-404__search input[type="submit"]:focus {
 	border-color: var(--primary);
 	color: var(--primary);
+}
+
+
+/* ── Sin productos — mensaje de SuperPlus ────────────────────── */
+/* Cuando no hay productos el contenedor lateral debe ocupar el 100% */
+.sp-filter-wrapper--lateral:has(> .sp-filter-products-container p.woocommerce-info) .sp-filter-products-container {
+	width: 100%;
+}
+
+#sp-filter-products-list > p.woocommerce-info,
+.sp-filter-products-container p.woocommerce-info {
+	width: calc(100% - 30px);
+	margin-left: 16px;
+	margin-right: 16px;
+	box-sizing: border-box;
+	max-width: calc(100% - 30px);
+}
+
+/* ── Sin productos (WooCommerce) ─────────────────────────────── */
+.fq-no-products {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 80px 24px;
+	gap: 12px;
+}
+
+.fq-no-products__icon .material-symbols-outlined {
+	font-size: 64px;
+	color: #d1d5db;
+}
+
+.fq-no-products__title {
+	font-size: 22px;
+	font-weight: 300;
+	color: var(--text-dark, #383e42);
+	margin: 0;
+	letter-spacing: -0.02em;
+}
+
+.fq-no-products__text {
+	font-size: 14px;
+	color: var(--text-muted, #6b7280);
+	margin: 0;
+}
+
+.fq-no-products__actions {
+	margin-top: 8px;
+}
+
+.fq-no-products__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 46px;
+	padding: 0 28px;
+	border-radius: 999px;
+	background: var(--primary);
+	border: 1px solid var(--primary);
+	color: #fff;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	transition: opacity 0.2s;
+}
+
+.fq-no-products__button:hover,
+.fq-no-products__button:focus {
+	opacity: 0.88;
 }
 
 .footer-brand__name {
@@ -1752,6 +1826,7 @@ body.site-mobile-panel-open {
 	font-weight: 600 !important;
 	letter-spacing: 0.04em !important;
 	line-height: 1.2 !important;
+	color: #fff !important;
 }
 
 .mobile-bottom-bar .header-cart-icon .cart-count-fragment {
@@ -1998,6 +2073,9 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
         font-size: 10px;
         letter-spacing: 0.2em;
     }
+	.hamburger-toggle span {
+        display: none !important;
+    }
 }
 
 /* ==========================================================================
@@ -2059,13 +2137,14 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
         padding-top: 28px;
         padding-bottom: 40px;
     }
+	.contenedor_filtros_superior {
+		margin-bottom: -10px !important;
+	}
 }
 
 /* ==========================================================================
    PÁGINAS SECUNDARIAS — FIN
    ========================================================================== */
-   ========================================================================== 
-*/
 
 
 /* ==========================================================================
@@ -2260,5 +2339,31 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 	.hamburger-toggle,
 	.menu_movil {
 		display: none;
+	}
+}
+
+/* ── Simetría de iconos en utils del header (≤1024px) ────────── */
+@media (max-width: 1024px) {
+	.site-header__utils {
+		gap: 20px;
+	}
+
+	.site-header__utils .mi-cuenta-icono-logueado .icono-mi-cuenta,
+	.site-header__utils .mi-cuenta-icono-no-logueado .icono-mi-cuenta {
+		font-size: 28px !important;
+	}
+
+	.site-header__utils .hamburger-toggle .user_icon_header {
+		width: 28px !important;
+		height: 28px !important;
+		background-size: contain !important;
+	}
+
+	.site-header__utils .site-navigation-woo > ul > li > a,
+	.site-header__utils .hamburger-toggle {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 }

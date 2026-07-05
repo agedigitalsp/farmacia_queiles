@@ -1076,6 +1076,10 @@
         gap: 24px
     }
 
+    .content {
+        padding-top: 0;
+    }
+
     .fq-sp-gallery__main {
         aspect-ratio: 4/3
     }

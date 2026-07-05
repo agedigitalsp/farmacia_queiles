@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════════════════════════════════
+   shop-slider.min.css — Slider de promociones en página de tienda
+   ═══════════════════════════════════════════════════════════════════ */
+
+.fq-shop-slider {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 24px;
+    border-radius: 6px;
+    border: 1px solid #e6edf5;
+    background: #f8fafc;
+    box-shadow: 0 16px 34px -28px rgba(31,41,55,.25)
+}
+
+.fq-shop-slider__track {
+    position: relative;
+    width: 100%
+}
+
+/* ── Slides ─────────────────────────────────────────────────────── */
+.fq-shop-slider__slide {
+    display: none;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 48px 40px;
+    min-height: 220px
+}
+
+.fq-shop-slider__slide.is-active {
+    display: flex;
+    align-items: center
+}
+
+.fq-shop-slider__inner {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    width: 100%
+}
+
+/* ── Imagen ─────────────────────────────────────────────────────── */
+.fq-shop-slider__img-wrap {
+    flex-shrink: 0;
+    width: 45%;
+    max-width: 520px;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 16/7;
+    background: var(--bg-ref,#f4f6f8)
+}
+
+.fq-shop-slider__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block
+}
+
+/* ── Contenido textual ──────────────────────────────────────────── */
+.fq-shop-slider__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.fq-shop-slider__kicker {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--primary,#52b2e1)
+}
+
+.fq-shop-slider__title {
+    font-size: clamp(1.6rem,3vw,2.4rem);
+    font-weight: 300;
+    color: var(--text-dark,#383e42);
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -.02em
+}
+
+.fq-shop-slider__desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-muted,#6b7280);
+    line-height: 1.7;
+    margin: 0
+}
+
+.fq-shop-slider__cta {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 10px 28px;
+    border-radius: 999px;
+    background: var(--primary,#52b2e1);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .25s ease, box-shadow .25s ease;
+    box-shadow: 0 10px 24px -8px rgba(82,178,225,.4)
+}
+
+.fq-shop-slider__cta:hover {
+    background: #3da4d6;
+    box-shadow: 0 12px 28px -8px rgba(82,178,225,.5)
+}
+
+/* ── Controles / flechas ────────────────────────────────────────── */
+.fq-shop-slider__controls {
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    display: flex;
+    gap: 8px;
+    z-index: 2
+}
+
+.fq-shop-slider__arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.12);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted,#6b7280);
+    cursor: pointer;
+    transition: border-color .2s, color .2s, box-shadow .2s
+}
+
+.fq-shop-slider__arrow:hover {
+    border-color: var(--primary,#52b2e1);
+    color: var(--primary,#52b2e1);
+    box-shadow: 0 4px 12px rgba(82,178,225,.2)
+}
+
+.fq-shop-slider__arrow .material-symbols-outlined {
+    font-size: 18px
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .fq-shop-slider__inner {
+        flex-direction: column;
+        gap: 24px
+    }
+
+    .fq-shop-slider__img-wrap {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 16/6
+    }
+
+    .fq-shop-slider__slide {
+        padding: 32px 24px
+    }
+
+    .fq-shop-slider__controls {
+        position: static;
+        justify-content: center;
+        padding: 12px 0 8px
+    }
+}
+
+@media (max-width: 480px) {
+    .fq-shop-slider__cta {
+        align-self: stretch;
+        justify-content: center
+    }
+}
