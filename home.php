@@ -11,9 +11,12 @@ if (!defined('ABSPATH')) {
 get_header();
 ?>
 
+<div class="container container--wide">
+    <?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
+</div>
+
 <section class="blog-hero">
     <div class="container container--wide">
-        <?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
         <div class="blog-hero__card">
             <div class="blog-hero__content">
                 <span class="sp-faqs-home-label blog-hero__kicker">Blog</span>
@@ -43,6 +46,8 @@ get_header();
                             <span class="blog-card__image-link">
                                 <?php if (has_post_thumbnail()): ?>
                                     <?php the_post_thumbnail('medium'); ?>
+                                <?php else: ?>
+                                    <img class="blog-card__default-img" src="http://localhost:10059/wp-content/uploads/2026/06/cropped-favicon-farmacia-queiles-300x300.png" alt="" loading="lazy">
                                 <?php endif; ?>
                             </span>
 
@@ -71,7 +76,17 @@ get_header();
         <?php endif; ?>
     </main>
 
+    <div class="blog-filter-overlay"></div>
+
+    <button class="blog-filter-toggle" type="button" aria-label="Filtrar">
+        <span class="material-symbols-outlined">filter_list</span>
+        Filtrar
+    </button>
+
     <aside class="blog-sidebar">
+        <button class="blog-filter-close" type="button" aria-label="Cerrar filtros">
+            <span class="material-symbols-outlined">close</span>
+        </button>
         <?php if (is_active_sidebar('sidebar-1')) : ?>
             <?php dynamic_sidebar('sidebar-1'); ?>
         <?php endif; ?>

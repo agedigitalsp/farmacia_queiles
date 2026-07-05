@@ -7,7 +7,11 @@ body.single .container {
 }
 
 .entry-header {
+  padding: 42px 0 36px;
+  background-size: cover;
+  background-position: center;
   margin-bottom: 40px;
+  text-align: center;
 }
 
 .entry-badge {
@@ -25,12 +29,12 @@ body.single .container {
 }
 
 .entry-header .entry-title {
-  margin: 0 0 12px;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
-  color: var(--text-dark, #383e42);
+  margin: 0 0 10px;
+  font-size: clamp(30px, 3vw, 48px);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--primary, #52b2e1);
 }
 
 .entry-content {
@@ -298,54 +302,54 @@ body.single .container {
 }
 
 .related-posts {
-  margin-top: 64px;
-  padding-top: 40px;
+  margin-top: 48px;
+  padding-top: 28px;
   border-top: 1px solid #e5e7eb;
   width: 100%;
-
 }
 
 .related-posts__title {
-  margin: 0 0 28px;
-  font-size: 1.25rem;
+  margin: 0 0 20px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-dark, #383e42);
 }
 
 .related-posts .blog-grid {
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   align-items: start;
 }
 
-.related-posts .blog-card .blog-card__image-link {
-  aspect-ratio: 16 / 9;
-}
-
-
 .related-posts .blog-card .blog-card__title {
-  font-size: 0.95rem;
-  margin-top: 20px;
-  padding-left: 5px;
+  font-size: 0.7rem;
+  margin-top: 4px;
+  padding-left: 0;
+  line-height: 1.2;
 }
 
 .related-posts .blog-card .blog-card__body {
-  padding: 10px 10px 14px;
-  gap: 4px;
+  padding: 4px 6px 8px;
+  gap: 2px;
 }
 
 .related-posts .blog-card .blog-card__excerpt {
   display: none;
-  
-}
-
-.blog-card__excerpt p{
-    margin-left: 10px;
-    font-size: 14px;
-    font-weight: 400;
 }
 
 .related-posts .blog-card .blog-card__link {
-  padding: 10px 10px;
+  font-size: 0.55rem;
+}
+
+.related-posts .blog-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 62, 66, 0.06);
+}
+
+.blog-card__excerpt p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .yoast-breadcrumb {
@@ -357,6 +361,7 @@ body.single .container {
   text-transform: uppercase;
   font-weight: 600;
   color: var(--text-muted, #6b7280);
+  margin-top: 20px;
 }
 
 .yoast-breadcrumb a,
@@ -412,11 +417,12 @@ body.single .container {
   }
 
   .entry-header {
+    padding: 32px 0 28px;
     margin-bottom: 28px;
   }
 
   .entry-header .entry-title {
-    font-size: 1.75rem;
+    font-size: clamp(22px, 5vw, 30px);
   }
 
   .entry-content {

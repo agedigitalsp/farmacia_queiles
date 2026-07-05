@@ -3,20 +3,30 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+$header_style = '';
+
+if (is_category()) {
+    $cat_id = (int) get_queried_object_id();
+    $cat_image_url = (string) get_term_meta($cat_id, '_fq_blog_cat_header_image', true);
+
+    if ('' !== $cat_image_url) {
+        $header_style = "background-image:linear-gradient(rgba(255,255,255,0.72),rgba(255,255,255,0.72)),url('" . esc_url($cat_image_url) . "');";
+    }
+}
+
 get_header()
 ?>
 
-<section class="blog-hero">
+<div class="container container--wide">
+    <?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
+</div>
+
+<section class="blog-hero"<?php echo '' !== $header_style ? ' style="' . esc_attr($header_style) . '"' : ''; ?>>
     <div class="container container--wide">
-        <?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
         <div class="blog-hero__card">
             <div class="blog-hero__content">
-                <span class="sp-faqs-home-label blog-hero__kicker">
-                   Archivo
-                </span>
-
                 <h1 class="sp-faqs-home-title blog-hero__heading">
-                    <?php the_archive_title(); ?>
+                    <?php echo esc_html(preg_replace('/^.*?:\s*/', '', wp_strip_all_tags(get_the_archive_title()))); ?>
                 </h1>
 
                 <?php the_archive_description('<p class="blog-hero__description">', '</p>'); ?>
@@ -45,6 +55,8 @@ get_header()
                             <span class="blog-card__image-link">
                                 <?php if (has_post_thumbnail()): ?>
                                     <?php the_post_thumbnail('medium'); ?>
+                                <?php else: ?>
+                                    <img class="blog-card__default-img" src="http://localhost:10059/wp-content/uploads/2026/06/cropped-favicon-farmacia-queiles-300x300.png" alt="" loading="lazy">
                                 <?php endif; ?>
                             </span>
 
@@ -73,7 +85,17 @@ get_header()
         <?php endif; ?>
     </main>
 
+    <div class="blog-filter-overlay"></div>
+
+    <button class="blog-filter-toggle" type="button" aria-label="Filtrar">
+        <span class="material-symbols-outlined">filter_list</span>
+        Filtrar
+    </button>
+
     <aside class="blog-sidebar">
+        <button class="blog-filter-close" type="button" aria-label="Cerrar filtros">
+            <span class="material-symbols-outlined">close</span>
+        </button>
         <?php if (is_active_sidebar('sidebar-1')) : ?>
             <?php dynamic_sidebar('sidebar-1'); ?>
         <?php endif; ?>
