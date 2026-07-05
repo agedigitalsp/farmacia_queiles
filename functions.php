@@ -150,11 +150,29 @@ final class Farmacia_Queiles_Theme
 		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
 		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
 		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
+		add_action('save_post_promociones', [$this, 'save_promociones_meta'], 10, 2);
 		add_action('save_post_promociones', [$this, 'maybe_regenerate_home_promotions_json'], 20, 3);
 		add_action('deleted_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('trashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('untrashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		
+		add_filter('excerpt_length', function ($length) {
+			return 12;
+		});
+
+		add_filter('excerpt_more', function ($more) {
+			return '...';
+		});
+
+		add_filter('wpseo_breadcrumb_separator', function () {
+			return '<span class="yoast-breadcrumb__separator">&gt;</span>';
+		});
+
+		add_action('category_add_form_fields', [$this, 'render_blog_cat_header_image_field']);
+		add_action('category_edit_form_fields', [$this, 'render_blog_cat_header_image_edit_field']);
+		add_action('created_category', [$this, 'save_blog_cat_header_image']);
+		add_action('edited_category', [$this, 'save_blog_cat_header_image']);
+
 
 		// ===== INICIO: Deshabilitar Coming Soon de WooCommerce =====
 		// add_filter('pre_option_woocommerce_coming_soon', '__return_zero');
@@ -413,6 +431,29 @@ final class Farmacia_Queiles_Theme
 				true
 			);
 		}
+
+		wp_enqueue_style(
+			'farmacia-queiles-blog-page',
+			get_template_directory_uri() . '/assets/css/blog-page.min.css',
+			['farmacia-queiles-style'],
+			$this->version
+		);
+		
+		wp_enqueue_style(
+			'farmacia-queiles-blog-single-page',
+			get_template_directory_uri() . '/assets/css/blog-single-page.min.css',
+			['farmacia-queiles-style'],
+			$this->version
+		);
+
+		wp_enqueue_script(
+			'farmacia-queiles-blog-page',
+			get_template_directory_uri() . '/assets/js/blog-page.min.js',
+			[],
+			$this->version,
+			true
+		);
+
 
 		// Deshabilitado: Superplus maneja todo el carrito
 		// if (class_exists('WooCommerce')) {
@@ -1776,7 +1817,7 @@ final class Farmacia_Queiles_Theme
 
 		$screen = get_current_screen();
 
-		if (!$screen || !in_array($screen->taxonomy, ['product_cat', 'product_brand'], true)) {
+		if (!$screen || !in_array($screen->taxonomy, ['product_cat', 'product_brand', 'category'], true)) {
 			return;
 		}
 
@@ -1796,7 +1837,7 @@ final class Farmacia_Queiles_Theme
 			]
 		);
 
-		if (in_array($screen->taxonomy, ['product_cat', 'product_brand'], true)) {
+		if (in_array($screen->taxonomy, ['product_cat', 'product_brand', 'category'], true)) {
 			wp_enqueue_media();
 
 			wp_enqueue_style(
@@ -1813,6 +1854,46 @@ final class Farmacia_Queiles_Theme
 				$this->version,
 				true
 			);
+
+			if ('category' === $screen->taxonomy) {
+				wp_add_inline_script('farmacia-queiles-term-brand-images', '
+					(function($) {
+						$(function() {
+							var $preview = $("#fq-blog-cat-header-preview");
+							var $input = $("#fq-blog-cat-header-image");
+							var $upload = $("#fq-blog-cat-header-upload");
+							var $remove = $("#fq-blog-cat-header-remove");
+
+							function setPreview(url) {
+								$preview.empty();
+								if (url) {
+									$preview.append($("<img>").attr("src", url).css({maxWidth:"200px",height:"auto",borderRadius:"6px",display:"block"}));
+									$remove.show();
+								} else {
+									$remove.hide();
+								}
+							}
+
+							$upload.on("click", function(e) {
+								e.preventDefault();
+								var frame = wp.media({ title:"Seleccionar imagen", button:{text:"Usar esta imagen"}, multiple:false });
+								frame.on("select", function() {
+									var att = frame.state().get("selection").first().toJSON();
+									$input.val(att.url);
+									setPreview(att.url);
+								});
+								frame.open();
+							});
+
+							$remove.on("click", function(e) {
+								e.preventDefault();
+								$input.val("");
+								setPreview("");
+							});
+						});
+					})(window.jQuery);
+				');
+			}
 		}
 	}
 
@@ -4700,7 +4781,7 @@ JS;
 		$box = new_cmb2_box([
 			'id'           => 'fq_page_header_meta',
 			'title'        => __('Cabecera de página', 'farmacia-queiles'),
-			'object_types' => ['page'],
+			'object_types' => ['page', 'post'],
 			'context'      => 'side',
 			'priority'     => 'low',
 		]);
@@ -4798,6 +4879,59 @@ JS;
 			<span class="material-symbols-outlined" aria-hidden="true">favorite</span>
 		</button>
 		<?php
+	}
+
+	public function render_blog_cat_header_image_field(string $taxonomy): void
+	{
+		unset($taxonomy);
+		?>
+		<div class="form-field">
+			<label><?php esc_html_e('Imagen de fondo del hero', 'farmacia-queiles'); ?></label>
+			<p id="fq-blog-cat-header-preview" style="margin:0 0 6px;"></p>
+			<input type="hidden" name="fq_blog_cat_header_image" id="fq-blog-cat-header-image" value="">
+			<button type="button" class="button" id="fq-blog-cat-header-upload"><?php esc_html_e('Seleccionar imagen', 'farmacia-queiles'); ?></button>
+			<button type="button" class="button" id="fq-blog-cat-header-remove" style="display:none;"><?php esc_html_e('Eliminar', 'farmacia-queiles'); ?></button>
+			<p class="description"><?php esc_html_e('Imagen de fondo para el hero de esta categoría del blog.', 'farmacia-queiles'); ?></p>
+		</div>
+		<?php
+	}
+
+	public function render_blog_cat_header_image_edit_field(WP_Term $term): void
+	{
+		$image_url = (string) get_term_meta($term->term_id, '_fq_blog_cat_header_image', true);
+		?>
+		<tr class="form-field">
+			<th scope="row">
+				<label><?php esc_html_e('Imagen de fondo del hero', 'farmacia-queiles'); ?></label>
+			</th>
+			<td>
+				<p id="fq-blog-cat-header-preview" style="margin:0 0 6px;">
+					<?php if ('' !== $image_url) : ?>
+						<img src="<?php echo esc_url($image_url); ?>" style="max-width:200px;height:auto;border-radius:6px;display:block;">
+					<?php endif; ?>
+				</p>
+				<input type="hidden" name="fq_blog_cat_header_image" id="fq-blog-cat-header-image" value="<?php echo esc_attr($image_url); ?>">
+				<button type="button" class="button" id="fq-blog-cat-header-upload"><?php esc_html_e('Seleccionar imagen', 'farmacia-queiles'); ?></button>
+				<button type="button" class="button" id="fq-blog-cat-header-remove" style="<?php echo '' === $image_url ? 'display:none;' : ''; ?>"><?php esc_html_e('Eliminar', 'farmacia-queiles'); ?></button>
+				<p class="description"><?php esc_html_e('Imagen de fondo para el hero de esta categoría del blog.', 'farmacia-queiles'); ?></p>
+			</td>
+		</tr>
+		<?php
+	}
+
+	public function save_blog_cat_header_image(int $term_id): void
+	{
+		if (!isset($_POST['fq_blog_cat_header_image'])) {
+			return;
+		}
+
+		$image_url = esc_url_raw((string) $_POST['fq_blog_cat_header_image']);
+
+		if ('' === $image_url) {
+			delete_term_meta($term_id, '_fq_blog_cat_header_image');
+		} else {
+			update_term_meta($term_id, '_fq_blog_cat_header_image', $image_url);
+		}
 	}
 }
 

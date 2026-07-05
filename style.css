@@ -1948,6 +1948,16 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 
 /* ===== FIN: Contact Page - WhatsApp SVG ===== */
 
+/* ===== INICIO: SP Menu Movil - Colores del Tema ===== */
+/* Definimos las variables CSS del plugin sp_menu_movil usando los colores del tema */
+:root {
+	--sp_color_negro: var(--surface);       /* #ffffff - fondo del panel */
+	--sp_color_blanco: var(--text-dark);    /* #383e42 - texto */
+	--sp_color_naranja: var(--primary);     /* #52b2e1 - hover botones atrás/cerrar */
+	--sp_color_gris_medio: #e5e7eb;         /* borde del header */
+}
+/* ===== FIN: SP Menu Movil - Colores del Tema ===== */
+
 /* ==========================================================================
    BANNER PARA PÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂGINAS SECUNDARIAS
    ========================================================================== */
