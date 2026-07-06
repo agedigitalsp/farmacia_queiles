@@ -442,6 +442,29 @@ body.single .container {
     flex-direction: column;
     gap: 12px;
   }
+
+  .related-posts .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .related-posts .blog-card .blog-card__title {
+    font-size: 0.8rem;
+  }
+
+  .related-posts .blog-card .blog-card__excerpt {
+    display: -webkit-box;
+  }
+
+  .related-posts .blog-card .blog-card__link {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .related-posts .blog-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {

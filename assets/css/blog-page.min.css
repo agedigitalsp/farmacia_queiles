@@ -282,6 +282,7 @@
 .blog-sidebar .widget.widget_search form,
 .blog-sidebar .widget_search form {
   display: flex;
+  align-items: center;
   gap: 6px;
 }
 
@@ -428,7 +429,9 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+}
 
+@media (max-width: 899px) {
   .blog-sidebar {
     position: fixed;
     top: 0;

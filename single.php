@@ -74,7 +74,7 @@ get_header();
 											<?php if (has_post_thumbnail()): ?>
 												<?php the_post_thumbnail('medium'); ?>
 											<?php else: ?>
-												<img class="blog-card__default-img" src="http://localhost:10059/wp-content/uploads/2026/06/cropped-favicon-farmacia-queiles-300x300.png" alt="" loading="lazy">
+												<img class="blog-card__default-img" src="<?php echo content_url('/uploads/2026/06/cropped-favicon-farmacia-queiles-300x300.png'); ?>" alt="" loading="lazy">
 											<?php endif; ?>
 										</span>
 
