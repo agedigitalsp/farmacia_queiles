@@ -155,7 +155,7 @@ final class Farmacia_Queiles_Theme
 		add_action('deleted_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('trashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('untrashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
-		
+		add_filter( 'woocommerce_my_account_my_orders_actions', [$this, 'agregar_boton_repetir_pedido_en_lista'], 10, 2 );
 		add_filter('excerpt_length', function ($length) {
 			return 12;
 		});
@@ -172,6 +172,8 @@ final class Farmacia_Queiles_Theme
 		add_action('category_edit_form_fields', [$this, 'render_blog_cat_header_image_edit_field']);
 		add_action('created_category', [$this, 'save_blog_cat_header_image']);
 		add_action('edited_category', [$this, 'save_blog_cat_header_image']);
+
+
 
 
 		// ===== INICIO: Deshabilitar Coming Soon de WooCommerce =====
@@ -1035,6 +1037,18 @@ final class Farmacia_Queiles_Theme
 				]
 			);
 		}
+	}
+	
+	# REPETIR PEDIDO
+	function agregar_boton_repetir_pedido_en_lista( $actions, $order ) {
+		// Si el pedido está completado, añadimos la acción de volver a pedir a la lista
+		if ( $order->has_status( 'completed' ) ) {
+			$actions['order-again'] = array(
+				'url'  => wp_nonce_url( add_query_arg( 'order_again', $order->get_id(), wc_get_cart_url() ), 'woocommerce-order_again' ),
+				'name' => __( 'Volver a pedir', 'woocommerce' ),
+			);
+		}
+		return $actions;
 	}
 
 	private function get_cmb2_theme_options_fields(): array
