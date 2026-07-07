@@ -337,14 +337,11 @@
         width: auto
     }
 
-    .fp-card {
-        width: calc(33.333vw - 24px)
-    }
+    
 }
 
 @media(min-width:1024px) {
     .fp-card {
-        width: calc(25% - 15px);
         min-width: calc(25% - 15px)
     }
 }
@@ -377,9 +374,7 @@
         gap: .5rem
     }
 
-    .fp-card {
-        width: calc(50vw - 20px)
-    }
+    
 
     .fp-card__image {
         padding: .375rem
