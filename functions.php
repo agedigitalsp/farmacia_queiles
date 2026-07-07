@@ -145,7 +145,8 @@ final class Farmacia_Queiles_Theme
 		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
 		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
 		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
-		add_action('save_post_promociones', [$this, 'maybe_regenerate_home_promotions_json'], 20, 3);
+		add_action('save_post_promociones', [$this, 'save_promociones_meta'], 10, 2);
+		add_action('save_post_promociones', [$this, 'maybe_regenerate_home_promotions_json'], 30, 3);
 		add_action('deleted_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('trashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
 		add_action('untrashed_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
@@ -3881,12 +3882,16 @@ final class Farmacia_Queiles_Theme
 			return;
 		}
 
-		$subtitle = isset($_POST['fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['fq_promo_subtitle']) : '';
-		$description = isset($_POST['fq_promo_description']) ? sanitize_textarea_field((string) $_POST['fq_promo_description']) : '';
+		// Subtitle: meta box nativo usa name="fq_promo_subtitle", CMB2 usa name="_fq_promo_subtitle"
+		$subtitle = isset($_POST['fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['fq_promo_subtitle'])
+		          : (isset($_POST['_fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['_fq_promo_subtitle']) : '');
+		$description = isset($_POST['fq_promo_description']) ? sanitize_textarea_field((string) $_POST['fq_promo_description'])
+		             : (isset($_POST['_fq_promo_description']) ? sanitize_textarea_field((string) $_POST['_fq_promo_description']) : '');
 		$product_cat = isset($_POST['fq_promo_product_cat']) ? sanitize_text_field((string) $_POST['fq_promo_product_cat']) : '';
 		$product_brand = isset($_POST['fq_promo_product_brand']) ? sanitize_text_field((string) $_POST['fq_promo_product_brand']) : '';
-		$featured_1 = isset($_POST['fq_promo_featured_1']) ? '1' : '';
-		$featured_2 = isset($_POST['fq_promo_featured_2']) ? '1' : '';
+		// Featured: meta box nativo usa "fq_promo_featured_1", CMB2 usa "_fq_promo_featured_1"
+		$featured_1 = (isset($_POST['fq_promo_featured_1']) || isset($_POST['_fq_promo_featured_1'])) ? '1' : '';
+		$featured_2 = (isset($_POST['fq_promo_featured_2']) || isset($_POST['_fq_promo_featured_2'])) ? '1' : '';
 		$products = isset($_POST['fq_promo_products']) && is_array($_POST['fq_promo_products']) ? array_map('intval', (array) $_POST['fq_promo_products']) : [];
 		$products = array_values(array_filter($products, static fn($id) => $id > 0));
 
