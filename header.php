@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -107,15 +107,33 @@ if (is_tax('product_cat')) {
 						<span class="preheader-item__text"><?php echo esc_html($schedule_text); ?></span>
 					</div>
 				</div>
-				<div class="site-preheader__right">
-					<a class="preheader-cta" href="<?php echo esc_url($contact_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($contact_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-																							?>>
-						<?php echo esc_html__('Contacto', 'farmacia-queiles'); ?>
-						<span class="material-symbols-outlined">arrow_forward</span>
+			<div class="site-preheader__right">
+				<div class="preheader-cta-desktop">
+					<a href="javascript:void(0);" class="preheader-cta" data-open-guardia-popup="true" aria-label="<?php echo esc_attr__('Ver farmacias de guardia', 'farmacia-queiles'); ?>">
+						<?php echo esc_html__('Farmacias de Guardia', 'farmacia-queiles'); ?>
+					</a>
+					<div class="preheader-separator"></div>
+					<a class="preheader-cta" href="<?php echo esc_url($contact_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($contact_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+																								?>>
+							<?php echo esc_html__('Contacto', 'farmacia-queiles'); ?>
+						</a>
+				</div>
+				<button class="preheader-cta-mobile-toggle" type="button" aria-label="<?php echo esc_attr__('Abrir contacto', 'farmacia-queiles'); ?>" aria-expanded="false">
+					<?php echo esc_html__('Contacto', 'farmacia-queiles'); ?>
+					<span class="material-symbols-outlined">expand_more</span>
+				</button>
+				<div class="preheader-cta-mobile-dropdown">
+					<a href="javascript:void(0);" class="preheader-cta-mobile-item" data-open-guardia-popup="true">
+						<?php echo esc_html__('Farmacias de Guardia', 'farmacia-queiles'); ?>
+					</a>
+					<a class="preheader-cta-mobile-item" href="<?php echo esc_url($contact_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($contact_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+																										?>>
+						<?php echo esc_html__('Contáctanos', 'farmacia-queiles'); ?>
 					</a>
 				</div>
 			</div>
-		</aside>
+		</div>
+	</aside>
 
 		<header class="site-header site-header--luxury">
 			<div class="site-header__top">
@@ -325,3 +343,7 @@ if (is_tax('product_cat')) {
 				</button>
 			<?php endif; ?>
 		</nav>
+
+
+
+

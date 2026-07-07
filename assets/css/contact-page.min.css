@@ -145,8 +145,16 @@ address {
 
 .contact-form-section__content {
     display: flex;
+    width: 80vw;
+    flex-direction: row;
+}
+.contact-form-section__content_text{
+    display: flex;
+    justify-content: center;
+    align-items: start;
     flex-direction: column;
-    gap: 24px
+    max-width: 500px;
+    padding-right: 40px;
 }
 
 .contact-form-section__sidebar {

@@ -109,9 +109,11 @@ a {
 
 .site-preheader__left {
 	display: flex;
-	flex-wrap: wrap;
-	gap: 24px;
+	flex-wrap: nowrap;
+	gap: 18px;
 	align-items: center;
+	min-width: 0;
+	flex: 1;
 }
 
 .preheader-item {
@@ -178,8 +180,8 @@ a {
 	align-items: center;
 	gap: 6px;
 	font-weight: 600;
-	text-transform: uppercase;
 	letter-spacing: 0.18em;
+	color: white;
 	text-decoration: none;
 	font-size: 12px;
 }
@@ -1201,7 +1203,19 @@ body.site-mobile-panel-open {
 	}
 
 	.site-preheader__left {
-		gap: 14px;
+		gap: 12px;
+	}
+
+	.site-preheader__right {
+		gap: 6px !important;
+	}
+
+	.preheader-separator {
+		margin: 0 6px !important;
+	}
+
+	a.preheader-cta {
+		font-size: 11px !important;
 	}
 
 	.site-preheader__left .preheader-item span:not(.material-symbols-outlined),
