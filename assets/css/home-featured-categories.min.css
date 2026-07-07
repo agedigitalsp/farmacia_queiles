@@ -55,8 +55,8 @@
 
 .home-featured-cats__controls {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     gap: 12px
 }
 
@@ -200,35 +200,6 @@
 
 @media(max-width:1100px) {
     .home-featured-cats__grid {
-        grid-template-columns: repeat(3, 1fr)
-    }
-
-    .home-featured-cats__grid .home-featured-cats__card:nth-child(n+4) {
-        display: none
-    }
-}
-
-@media(max-width:767px) {
-    .home-featured-cats {
-        padding: 120px 0 64px
-    }
-
-    .home-featured-cats__header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 24px
-    }
-
-    .home-featured-cats__title {
-        font-size: 24px
-    }
-
-    .home-featured-cats__arrows {
-        display: flex
-    }
-
-    .home-featured-cats__grid {
         display: none
     }
 
@@ -237,9 +208,13 @@
         overflow: hidden
     }
 
+    .home-featured-cats__arrows {
+        display: flex
+    }
+
     .home-featured-cats__track {
         display: flex;
-        gap: 70px;
+        gap: 16px;
         padding-top: 20px;
         padding-bottom: 50px;
         transition: transform .45s ease
@@ -256,8 +231,7 @@
         background: #e5eaed;
         text-decoration: none;
         border: 1px solid rgba(0, 0, 0, .05);
-        min-width: 160px;
-        max-width: 200px;
+        flex-basis: calc(33.333% - 11px);
         flex-shrink: 0;
         transition: box-shadow .4s ease, transform .4s ease
     }
@@ -306,14 +280,9 @@
         align-items: center;
         gap: 6px;
         color: #52b2e1;
-        opacity: 0;
-        transform: translateX(-8px);
-        transition: opacity .3s ease, transform .3s ease
-    }
-
-    .fc-card:hover .fc-card__cta {
         opacity: 1;
-        transform: translateX(0)
+        transform: translateX(0);
+        transition: opacity .3s ease, transform .3s ease
     }
 
     .fc-card__cta-label {
@@ -325,5 +294,28 @@
 
     .fc-card__cta .material-symbols-outlined {
         font-size: 18px
+    }
+}
+
+@media(max-width:767px) {
+    .home-featured-cats {
+        padding: 120px 0 64px
+    }
+
+    .home-featured-cats__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 24px
+    }
+
+    .home-featured-cats__title {
+        font-size: 24px
+    }
+
+    .fc-card {
+        flex-basis: calc(50% - 8px);
+        min-width: 0;
+        max-width: none;
     }
 }
