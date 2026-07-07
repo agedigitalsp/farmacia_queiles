@@ -3452,6 +3452,12 @@ final class Farmacia_Queiles_Theme
 
 			$short_desc = wp_strip_all_tags($product->get_short_description());
 
+			$cat_name = '';
+			$cat_terms = get_the_terms($post->ID, 'product_cat');
+			if (is_array($cat_terms) && !empty($cat_terms)) {
+				$cat_name = wp_strip_all_tags($cat_terms[0]->name);
+			}
+
 			$products[] = [
 				'id'              => (int) $post->ID,
 				'name'            => wp_strip_all_tags(get_the_title($post)),
@@ -3459,6 +3465,7 @@ final class Farmacia_Queiles_Theme
 				'image'           => $image_url,
 				'brand'           => implode(', ', $brands),
 				'description'     => $short_desc,
+				'category'        => $cat_name,
 				'regular_price'   => $regular_price,
 				'sale_price'      => $sale_price,
 				'is_on_sale'      => $is_on_sale,

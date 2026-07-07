@@ -101,8 +101,18 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 					<article class="fp-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="fp-card__image-wrap">
-							<?php if ($item['is_on_sale']) : ?>
-								<span class="fp-card__badge"><?php echo esc_html__('Oferta', 'farmacia-queiles'); ?></span>
+							<?php
+							$badge_cat = '';
+							$badge_slug = '';
+							if ($item['is_on_sale']) {
+								$terms = get_the_terms($item['id'], 'product_cat');
+								if (is_array($terms) && !empty($terms)) {
+									$badge_cat = esc_html($terms[0]->name);
+									$badge_slug = esc_attr($terms[0]->slug);
+								}
+							}
+							if ('' !== $badge_cat) : ?>
+								<span class="fp-card__badge" data-cat-slug="<?php echo $badge_slug; ?>"><?php echo $badge_cat; ?></span>
 							<?php endif; ?>
 							<img class="fp-card__image"
 							     src="<?php echo esc_url($item['image']); ?>"
@@ -114,19 +124,15 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 						</div>
 
 						<div class="fp-card__body">
-							<?php if ('' !== $item['brand']) : ?>
-								<div class="fp-card__brand-wrap">
-									<span class="fp-card__brand"><?php echo esc_html($item['brand']); ?></span>
-								</div>
-							<?php endif; ?>
+							<div class="fp-card__brand-wrap">
+								<span class="fp-card__brand"><?php echo esc_html($item['brand'] ?? ''); ?></span>
+							</div>
 
 							<h3 class="fp-card__name">
 								<a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['name']); ?></a>
 							</h3>
 
-							<?php if ('' !== ($item['description'] ?? '')) : ?>
-								<p class="fp-card__desc"><?php echo esc_html($item['description']); ?></p>
-							<?php endif; ?>
+							<p class="fp-card__desc"><?php echo esc_html($item['description'] ?? ''); ?></p>
 
 							<div class="fp-card__price-wrap">
 								<div class="fp-card__price-row">
