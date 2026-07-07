@@ -271,6 +271,21 @@ final class Farmacia_Queiles_Theme
 			true
 		);
 
+		// SP Popup - CSS y JS para el popup de farmacias de guardia
+		wp_enqueue_style(
+			'sp-popup',
+			get_template_directory_uri() . '/assets/css/sp-popup.css',
+			['farmacia-queiles-style'],
+			time()
+		);
+		wp_enqueue_script(
+			'sp-popup',
+			get_template_directory_uri() . '/assets/js/sp-popup.js',
+			['jquery'],
+			time(),
+			true
+		);
+
 		if (is_front_page()) {
 			wp_enqueue_style(
 				'farmacia-queiles-home-hero',
