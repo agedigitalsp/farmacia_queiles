@@ -26,13 +26,14 @@ get_header();
 ?>
 
 <div class="content">
-	<div class="container">
+	
+	<div class="container container--wide">
 		<?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
 	</div>
 
+
 	<header class="entry-header" style="<?php echo esc_attr($header_style); ?>">
 		<div class="container">
-			<span class="entry-badge"><?php echo esc_html(get_the_category()[0]->name ?? ''); ?></span>
 			<h1 class="entry-title"><?php the_title(); ?></h1>
 		</div>
 	</header>
@@ -79,13 +80,13 @@ get_header();
 										</span>
 
 
-										<div class="blog-card__body">
-											<h2 class="blog-card__title"><?php the_title(); ?></h2>
-											<p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
-											<span class="blog-card__link">
-												Leer más <span class="material-symbols-outlined">arrow_forward</span>
-											</span>
-										</div>
+                                        <div class="blog-card__body">
+                                            <h2 class="blog-card__title"><?php the_title(); ?></h2>
+                                            <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
+                                            <span class="blog-card__link">
+                                                Leer más <span class="material-symbols-outlined">arrow_forward</span>
+                                            </span>
+                                        </div>
 									</a>
 								</article>
 							<?php endwhile; ?>

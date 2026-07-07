@@ -1057,10 +1057,10 @@ body.site-mobile-panel-open {
 .mobile-bottom-bar__badge.is-empty {
 	display: none;
 }
-
+/* 
 .content {
 	padding: 24px 0;
-}
+} */
 
 .entry-title {
 	margin: 0 0 10px;
@@ -1285,14 +1285,28 @@ body.site-mobile-panel-open {
 	}
 }
 
-@media (min-width: 1025px) {
-	.util-link--menu,
-	.site-mobile-search,
-	.site-mobile-menu,
-	.mobile-bottom-bar {
-		display: none;
+/* Hide footer dropdown behavior and icon on desktop and tablet */
+@media (min-width: 768px) {
+    .footer-toggle__icon {
+        display: none !important;
+    }
+
+    .footer-toggle__summary {
+        pointer-events: none !important;
 	}
 }
+
+/* Ocultar el dropdown de desktop y tablet */
+@media (min-width: 768px) {
+    .footer-toggle__icon {
+        display: none;
+    }
+
+    .footer-toggle__summary {
+        pointer-events: none;
+    }
+}
+
 
 .error-404 {
 	padding: 56px 0;
@@ -2099,12 +2113,8 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
     }
 	.hamburger-toggle span {
         display: none !important;
-    }
+	}
 }
-
-/* ==========================================================================
-   MIGAS DE PAN — FIN
-   ========================================================================== */
 
 
 /* ==========================================================================

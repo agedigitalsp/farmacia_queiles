@@ -1,16 +1,11 @@
-.content {
-  padding: 48px 0 80px;
-}
 
 body.single .container {
   max-width: 1450px;
 }
 
 .entry-header {
-  padding: 42px 0 36px;
   background-size: cover;
   background-position: center;
-  margin-bottom: 40px;
   text-align: center;
 }
 
@@ -31,7 +26,7 @@ body.single .container {
 .entry-header .entry-title {
   margin: 0 0 10px;
   font-size: clamp(30px, 3vw, 48px);
-  line-height: 1.15;
+  line-height: 3.0;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--primary, #52b2e1);
@@ -317,6 +312,7 @@ body.single .container {
 
 .related-posts .blog-grid {
   gap: 16px;
+  padding-bottom: 50px;
 }
 
 .related-posts .blog-card:hover {

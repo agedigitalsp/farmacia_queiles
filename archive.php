@@ -60,14 +60,14 @@ get_header()
                                 <?php endif; ?>
                             </span>
 
-                            <div class="blog-card__body">
-                                <h2 class="blog-card__title"><?php the_title(); ?></h2>
-                                <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
-                                <span class="blog-card__link">
-                                    Leer más
-                                    <span class="material-symbols-outlined">arrow_forward</span>
-                                </span>
-                            </div>
+                             <div class="blog-card__body">
+                                 <h2 class="blog-card__title"><?php the_title(); ?></h2>
+                                 <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
+                                 <span class="blog-card__link">
+                                     Leer más
+                                     <span class="material-symbols-outlined">arrow_forward</span>
+                                 </span>
+                             </div>
                         </a>
                     </article>
                 <?php endwhile; ?>
