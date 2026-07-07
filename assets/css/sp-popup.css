@@ -258,6 +258,7 @@ a.preheader-cta {
 /* Mobile dropdown button */
 .preheader-cta-mobile-toggle {
     display: none !important;
+    font-family: 'Poppins';
     background: none !important;
     border: none !important;
     color: #fff !important;
@@ -271,8 +272,7 @@ a.preheader-cta {
     justify-content: center !important;
     gap: 4px !important;
     display: inline-flex !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.18em !important;
+    letter-spacing: 0.1em !important;
     transition: opacity 0.2s ease !important;
 }
 

@@ -180,8 +180,8 @@ a {
 	align-items: center;
 	gap: 6px;
 	font-weight: 600;
-	text-transform: uppercase;
 	letter-spacing: 0.18em;
+	color: white;
 	text-decoration: none;
 	font-size: 12px;
 }

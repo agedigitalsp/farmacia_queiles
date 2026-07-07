@@ -128,7 +128,7 @@ if (is_tax('product_cat')) {
 					</a>
 					<a class="preheader-cta-mobile-item" href="<?php echo esc_url($contact_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($contact_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 																										?>>
-						<?php echo esc_html__('Contacto', 'farmacia-queiles'); ?>
+						<?php echo esc_html__('Contáctanos', 'farmacia-queiles'); ?>
 					</a>
 				</div>
 			</div>
