@@ -150,6 +150,7 @@ final class Farmacia_Queiles_Theme
 		add_filter('wp_insert_post_data', [$this, 'validate_promociones_subtitle'], 10, 2);
 		add_filter('redirect_post_location', [$this, 'add_promociones_subtitle_notice']);
 		add_action('admin_notices', [$this, 'render_promociones_subtitle_notice']);
+		add_action('add_meta_boxes', [$this, 'register_promociones_featured_meta_box']);
 		add_action('save_post_promociones', [$this, 'save_promociones_meta'], 10, 2);
 		add_action('save_post_promociones', [$this, 'maybe_regenerate_home_promotions_json'], 30, 3);
 		add_action('deleted_post', [$this, 'maybe_regenerate_home_promotions_json_on_delete'], 10, 2);
@@ -3670,20 +3671,7 @@ final class Farmacia_Queiles_Theme
 				'sanitization_cb' => 'sanitize_textarea_field',
 			]
 		);
-		$box->add_field(
-			[
-				'name' => __('Promo destacada 1', 'farmacia-queiles'),
-				'id' => '_fq_promo_featured_1',
-				'type' => 'checkbox',
-			]
-		);
-		$box->add_field(
-			[
-				'name' => __('Promo destacada 2', 'farmacia-queiles'),
-				'id' => '_fq_promo_featured_2',
-				'type' => 'checkbox',
-			]
-		);
+		// Los checkboxes featured_1/2 se gestionan en un meta box nativo separado (register_promociones_featured_meta_box)
 
 		if (taxonomy_exists('product_cat')) {
 			$box->add_field(
@@ -3832,6 +3820,40 @@ final class Farmacia_Queiles_Theme
 	public function escape_product_ids_array($value): array
 	{
 		return $this->sanitize_product_ids_array($value);
+	}
+
+	public function register_promociones_featured_meta_box(): void
+	{
+		add_meta_box(
+			'fq_promo_featured_box',
+			__('Posición destacada en portada', 'farmacia-queiles'),
+			[$this, 'render_promociones_featured_meta_box'],
+			'promociones',
+			'side',
+			'high'
+		);
+	}
+
+	public function render_promociones_featured_meta_box(WP_Post $post): void
+	{
+		wp_nonce_field('fq_promo_featured_save', 'fq_promo_featured_nonce');
+		$featured_1 = (bool) get_post_meta($post->ID, '_fq_promo_featured_1', true);
+		$featured_2 = (bool) get_post_meta($post->ID, '_fq_promo_featured_2', true);
+		?>
+		<p style="margin:0 0 8px">
+			<label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+				<input type="checkbox" name="fq_promo_featured_1" value="1" <?php checked($featured_1); ?>>
+				<strong><?php esc_html_e('Destacada 1 (lateral izquierda)', 'farmacia-queiles'); ?></strong>
+			</label>
+		</p>
+		<p style="margin:0">
+			<label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+				<input type="checkbox" name="fq_promo_featured_2" value="1" <?php checked($featured_2); ?>>
+				<strong><?php esc_html_e('Destacada 2 (lateral derecha)', 'farmacia-queiles'); ?></strong>
+			</label>
+		</p>
+		<p style="margin:8px 0 0;font-size:11px;color:#666"><?php esc_html_e('Solo una promoción puede ocupar cada posición destacada.', 'farmacia-queiles'); ?></p>
+		<?php
 	}
 
 	public function register_promociones_meta_boxes(): void
@@ -4030,34 +4052,15 @@ final class Farmacia_Queiles_Theme
 			return;
 		}
 
-		if (!isset($_POST['farmacia_queiles_promociones_nonce']) || !wp_verify_nonce((string) $_POST['farmacia_queiles_promociones_nonce'], 'farmacia_queiles_promociones_save')) {
-			return;
-		}
-
 		if (!current_user_can('edit_post', $post_id)) {
 			return;
 		}
 
-		// Subtitle: meta box nativo usa name="fq_promo_subtitle", CMB2 usa name="_fq_promo_subtitle"
-		$subtitle = isset($_POST['fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['fq_promo_subtitle'])
-		          : (isset($_POST['_fq_promo_subtitle']) ? sanitize_text_field((string) $_POST['_fq_promo_subtitle']) : '');
-		$description = isset($_POST['fq_promo_description']) ? sanitize_textarea_field((string) $_POST['fq_promo_description'])
-		             : (isset($_POST['_fq_promo_description']) ? sanitize_textarea_field((string) $_POST['_fq_promo_description']) : '');
-		$product_cat = isset($_POST['fq_promo_product_cat']) ? sanitize_text_field((string) $_POST['fq_promo_product_cat']) : '';
-		$product_brand = isset($_POST['fq_promo_product_brand']) ? sanitize_text_field((string) $_POST['fq_promo_product_brand']) : '';
-		// Featured: meta box nativo usa "fq_promo_featured_1", CMB2 usa "_fq_promo_featured_1"
-		$featured_1 = (isset($_POST['fq_promo_featured_1']) || isset($_POST['_fq_promo_featured_1'])) ? '1' : '';
-		$featured_2 = (isset($_POST['fq_promo_featured_2']) || isset($_POST['_fq_promo_featured_2'])) ? '1' : '';
-		$products = isset($_POST['fq_promo_products']) && is_array($_POST['fq_promo_products']) ? array_map('intval', (array) $_POST['fq_promo_products']) : [];
-		$products = array_values(array_filter($products, static fn($id) => $id > 0));
-
-		update_post_meta($post_id, '_fq_promo_subtitle', $subtitle);
-		update_post_meta($post_id, '_fq_promo_description', $description);
-		update_post_meta($post_id, '_fq_promo_product_cat', $product_cat);
-		update_post_meta($post_id, '_fq_promo_product_brand', $product_brand);
-		update_post_meta($post_id, '_fq_promo_featured_1', $featured_1);
-		update_post_meta($post_id, '_fq_promo_featured_2', $featured_2);
-		update_post_meta($post_id, '_fq_promo_products', $products);
+		// Guardar featured_1 y featured_2 desde el meta box nativo (sidebar)
+		if (isset($_POST['fq_promo_featured_nonce']) && wp_verify_nonce((string) $_POST['fq_promo_featured_nonce'], 'fq_promo_featured_save')) {
+			update_post_meta($post_id, '_fq_promo_featured_1', isset($_POST['fq_promo_featured_1']) ? '1' : '');
+			update_post_meta($post_id, '_fq_promo_featured_2', isset($_POST['fq_promo_featured_2']) ? '1' : '');
+		}
 	}
 
 	public function validate_promociones_subtitle(array $data, array $postarr): array
