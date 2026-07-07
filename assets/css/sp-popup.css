@@ -1,7 +1,7 @@
 /* =========================================================
-   SP POPUP CORE - OVERLAY
+   SP POPUP CORE - OVERLAY (SOLO PARA POPUP DEL TEMA)
 ========================================================= */
-.sp-popup-overlay {
+#fq-guardia-popup-overlay {
     display: none;
     position: fixed;
     inset: 0;
@@ -14,15 +14,15 @@
     backdrop-filter: blur(2px);
 }
 
-.sp-popup-overlay--visible {
+#fq-guardia-popup-overlay.fq-guardia-popup-overlay--visible {
     display: flex;
 }
 
 
 /* =========================================================
-   SP POPUP CORE - POPUP CAJA PRINCIPAL
+   SP POPUP CORE - POPUP CAJA PRINCIPAL (SOLO PARA POPUP DEL TEMA)
 ========================================================= */
-.sp-popup-overlay .sp-popup {
+#fq-guardia-popup-overlay .fq-guardia-popup {
     background: #fff !important;
     border-radius: 12px !important;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 16px 48px -4px rgba(0,0,0,0.14) !important;
@@ -40,12 +40,12 @@
     box-sizing: border-box !important;
 }
 
-.sp-popup-overlay .sp-popup--visible {
+#fq-guardia-popup-overlay .fq-guardia-popup--visible {
     opacity: 1 !important;
     transform: translateY(0) scale(1) !important;
 }
 
-.sp-popup__head {
+.fq-guardia-popup__head {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -54,7 +54,7 @@
     flex-shrink: 0 !important;
 }
 
-.sp-popup__title {
+.fq-guardia-popup__title {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
@@ -63,7 +63,7 @@
     letter-spacing: -0.01em;
 }
 
-.sp-popup__close {
+.fq-guardia-popup__close {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,12 +79,12 @@
     transition: color 0.15s, background 0.15s;
 }
 
-.sp-popup__close:hover {
+.fq-guardia-popup__close:hover {
     color: #111827;
     background: #f3f4f6;
 }
 
-.sp-popup__body {
+.fq-guardia-popup__body {
     padding: 0 !important;
     transition: opacity 0.15s ease !important;
     flex: 1 !important;
@@ -92,7 +92,7 @@
     display: flex !important;
 }
 
-.sp-popup__body iframe {
+.fq-guardia-popup__body iframe {
     width: 100% !important;
     height: 100% !important;
     border: none !important;
@@ -110,7 +110,7 @@
 /* =========================================================
    SP POPUP CORE - BANNER DE ERROR INLINE
 ========================================================= */
-.sp-popup-error-banner {
+.fq-guardia-popup-error-banner {
     display: none;
     align-items: flex-start;
     gap: 8px;
@@ -128,17 +128,17 @@
     margin-bottom: 0;
 }
 
-.sp-popup-error-banner + .sp-popup__body {
+.fq-guardia-popup-error-banner + .fq-guardia-popup__body {
     padding-top: 14px;
 }
 
-.sp-popup-error-banner svg {
+.fq-guardia-popup-error-banner svg {
     flex-shrink: 0;
     margin-top: 1px;
     color: #ef4444;
 }
 
-.sp-popup-error-banner--visible {
+.fq-guardia-popup-error-banner--visible {
     opacity: 1;
     transform: translateY(0);
     display: flex !important;
@@ -178,33 +178,33 @@
 /* =========================================================
    DARK THEME
 ========================================================= */
-body.sp-wsv-theme-dark .sp-popup-overlay {
+body.sp-wsv-theme-dark #fq-guardia-popup-overlay {
     background: rgba(0, 0, 0, 0.6);
 }
 
-body.sp-wsv-theme-dark .sp-popup {
+body.sp-wsv-theme-dark .fq-guardia-popup {
     background: #1f2937;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 16px 48px -4px rgba(0,0,0,0.5);
 }
 
-body.sp-wsv-theme-dark .sp-popup__head {
+body.sp-wsv-theme-dark .fq-guardia-popup__head {
     border-bottom-color: #374151;
 }
 
-body.sp-wsv-theme-dark .sp-popup__title {
+body.sp-wsv-theme-dark .fq-guardia-popup__title {
     color: #f9fafb;
 }
 
-body.sp-wsv-theme-dark .sp-popup__close {
+body.sp-wsv-theme-dark .fq-guardia-popup__close {
     color: #9ca3af;
 }
 
-body.sp-wsv-theme-dark .sp-popup__close:hover {
+body.sp-wsv-theme-dark .fq-guardia-popup__close:hover {
     color: #f9fafb;
     background: #374151;
 }
 
-body.sp-wsv-theme-dark .sp-popup-error-banner {
+body.sp-wsv-theme-dark .fq-guardia-popup-error-banner {
     background: #450a0a;
     border-color: #7f1d1d;
     color: #fca5a5;

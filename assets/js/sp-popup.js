@@ -1,19 +1,18 @@
 // fq-guardia-popup.js
 (function ($) {
 
-    var SP_OVERLAY_ID = 'sp-global-overlay';
+    var FQ_OVERLAY_ID = 'fq-guardia-popup-overlay';
     var errorTimer    = null;
 
-    function sp_get_overlay() {
-        var $overlay = $('#' + SP_OVERLAY_ID);
+    function fq_get_overlay() {
+        var $overlay = $('#' + FQ_OVERLAY_ID);
         if (!$overlay.length) {
-            $overlay = $('<div id="' + SP_OVERLAY_ID + '" class="fq-guardia-popup-overlay"></div>');
+            $overlay = $('<div id="' + FQ_OVERLAY_ID + '" class="fq-guardia-popup-overlay"></div>');
             $('body').append($overlay);
             $overlay.on('click', function (e) {
                 if ($(e.target).is($overlay)) {
                     $('.fq-guardia-popup--visible').each(function () {
-                        // BUG FIX: era window.SP_Popup.cerrar() — no existía ese método
-                        window.SP_Popup.cerrar_sp_popup($(this).data('fq-guardia-popup-id'));
+                        window.FQ_Guardia_Popup.cerrar_guardia_popup($(this).data('fq-guardia-popup-id'));
                     });
                 }
             });
@@ -22,11 +21,11 @@
     }
 
     // Objeto global — se define ANTES de los aliases para garantizar que exista
-    window.SP_Popup = {
+    window.FQ_Guardia_Popup = {
 
-        crear_sp_popup: function (id, titulo, htmlContenido, callbackOnReady) {
+        crear_guardia_popup: function (id, titulo, htmlContenido, callbackOnReady) {
             $('#fq-guardia-popup-' + id).remove();
-            var $overlay = sp_get_overlay();
+            var $overlay = fq_get_overlay();
 
             var $popup = $(
                 '<div class="fq-guardia-popup" id="fq-guardia-popup-' + id + '" data-fq-guardia-popup-id="' + id + '">' +
@@ -43,32 +42,31 @@
             $overlay.addClass('fq-guardia-popup-overlay--visible');
             setTimeout(function () { $popup.addClass('fq-guardia-popup--visible'); }, 10);
 
-            // BUG FIX: era window.SP_Popup.cerrar(id) — método inexistente
             $popup.find('.fq-guardia-popup__close').on('click', function () {
-                window.SP_Popup.cerrar_sp_popup(id);
+                window.FQ_Guardia_Popup.cerrar_guardia_popup(id);
             });
 
-            $(document).off('keydown.sp_popup_' + id).on('keydown.sp_popup_' + id, function (e) {
-                if (e.key === 'Escape') window.SP_Popup.cerrar_sp_popup(id);
+            $(document).off('keydown.fq_guardia_' + id).on('keydown.fq_guardia_' + id, function (e) {
+                if (e.key === 'Escape') window.FQ_Guardia_Popup.cerrar_guardia_popup(id);
             });
 
             if (typeof callbackOnReady === 'function') callbackOnReady();
         },
 
-        cerrar_sp_popup: function (id) {
+        cerrar_guardia_popup: function (id) {
             var $popup = $('#fq-guardia-popup-' + id);
             if (!$popup.length) return;
             $popup.removeClass('fq-guardia-popup--visible');
-            $(document).off('keydown.sp_popup_' + id);
+            $(document).off('keydown.fq_guardia_' + id);
             setTimeout(function () {
                 $popup.remove();
                 if ($('.fq-guardia-popup--visible').length === 0) {
-                    sp_get_overlay().removeClass('fq-guardia-popup-overlay--visible');
+                    fq_get_overlay().removeClass('fq-guardia-popup-overlay--visible');
                 }
             }, 220);
         },
 
-        sp_actualizar_popup: function (id, titulo, htmlContenido, callback) {
+        actualizar_guardia_popup: function (id, titulo, htmlContenido, callback) {
             var $popup = $('#fq-guardia-popup-' + id);
             if (!$popup.length) return;
 
@@ -85,7 +83,7 @@
             }, 150);
         },
 
-        sp_mostrar_error: function (id, mensaje) {
+        mostrar_error_guardia: function (id, mensaje) {
             var $popup = $('#fq-guardia-popup-' + id);
             if (!$popup.length) return;
 
@@ -103,12 +101,6 @@
             }, 4000);
         }
     };
-
-    // Aliases globales — se definen DESPUÉS de SP_Popup para garantizar que existan
-    window.crear_sp_popup      = function (id, titulo, html, cb) { window.SP_Popup.crear_sp_popup(id, titulo, html, cb); };
-    window.cerrar_sp_popup     = function (id)                   { window.SP_Popup.cerrar_sp_popup(id); };
-    window.sp_actualizar_popup = function (titulo, html, cb)     { window.SP_Popup.sp_actualizar_popup('principal', titulo, html, cb); };
-    window.sp_mostrar_error    = function (msg)                  { window.SP_Popup.sp_mostrar_error('principal', msg); };
 
     // Mobile dropdown toggle
     $(function() {
@@ -141,7 +133,7 @@
         $(document).on('click', '[data-open-guardia-popup="true"]', function(e) {
             e.preventDefault();
             var iframeHtml = '<iframe src="https://farmaciasguardia.farmaceuticos.com/web_guardias/publico/Provincia_pNew.asp?id=50"></iframe>';
-            window.SP_Popup.crear_sp_popup('guardia', 'Farmacias de Guardia', iframeHtml);
+            window.FQ_Guardia_Popup.crear_guardia_popup('guardia', 'Farmacias de Guardia', iframeHtml);
         });
     });
 
