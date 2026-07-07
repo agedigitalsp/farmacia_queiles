@@ -63,8 +63,18 @@ $add_to_cart_classes = implode(
 <li <?php wc_product_class( '', $product ); ?>>
 	<article class="fp-card">
 		<div class="fp-card__image-wrap">
-			<?php if ( $is_on_sale ) : ?>
-				<span class="fp-card__badge"><?php echo esc_html__( 'Oferta', 'farmacia-queiles' ); ?></span>
+			<?php
+			$badge_cat = '';
+			$badge_slug = '';
+			if ( $is_on_sale ) {
+				$terms = get_the_terms( $product_id, 'product_cat' );
+				if ( is_array( $terms ) && ! empty( $terms ) ) {
+					$badge_cat = esc_html( $terms[0]->name );
+					$badge_slug = esc_attr( $terms[0]->slug );
+				}
+			}
+			if ( '' !== $badge_cat ) : ?>
+				<span class="fp-card__badge" data-cat-slug="<?php echo $badge_slug; ?>"><?php echo $badge_cat; ?></span>
 			<?php endif; ?>
 			<a href="<?php echo esc_url( $product_url ); ?>" aria-label="<?php echo esc_attr( $product_name ); ?>">
 				<img class="fp-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $product_name ); ?>" loading="lazy">
@@ -75,19 +85,15 @@ $add_to_cart_classes = implode(
 		</div>
 
 		<div class="fp-card__body">
-			<?php if ( '' !== $brand ) : ?>
-				<div class="fp-card__brand-wrap">
-					<span class="fp-card__brand"><?php echo esc_html( $brand ); ?></span>
-				</div>
-			<?php endif; ?>
+			<div class="fp-card__brand-wrap">
+				<span class="fp-card__brand"><?php echo esc_html( $brand ?? '' ); ?></span>
+			</div>
 
 			<h2 class="fp-card__name">
 				<a href="<?php echo esc_url( $product_url ); ?>"><?php echo esc_html( $product_name ); ?></a>
 			</h2>
 
-			<?php if ( '' !== $description ) : ?>
-				<p class="fp-card__desc"><?php echo esc_html( $description ); ?></p>
-			<?php endif; ?>
+			<p class="fp-card__desc"><?php echo esc_html( $description ?? '' ); ?></p>
 
 			<div class="fp-card__price-wrap">
 				<div class="fp-card__price-row">

@@ -109,19 +109,15 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 						</div>
 
 						<div class="bs-card__body">
-							<?php if ('' !== $item['brand']) : ?>
-								<div class="bs-card__brand-wrap">
-									<span class="bs-card__brand"><?php echo esc_html($item['brand']); ?></span>
-								</div>
-							<?php endif; ?>
+							<div class="bs-card__brand-wrap">
+								<span class="bs-card__brand"><?php echo esc_html($item['brand'] ?? ''); ?></span>
+							</div>
 
 							<h3 class="bs-card__name">
 								<a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['name']); ?></a>
 							</h3>
 
-							<?php if ('' !== ($item['description'] ?? '')) : ?>
-								<p class="bs-card__desc"><?php echo esc_html($item['description']); ?></p>
-							<?php endif; ?>
+							<p class="bs-card__desc"><?php echo esc_html($item['description'] ?? ''); ?></p>
 
 							<div class="bs-card__price-wrap">
 								<div class="bs-card__price-row">

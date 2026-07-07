@@ -316,29 +316,7 @@ body.single .container {
 }
 
 .related-posts .blog-grid {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  align-items: start;
-}
-
-.related-posts .blog-card .blog-card__title {
-  font-size: 0.7rem;
-  margin-top: 4px;
-  padding-left: 0;
-  line-height: 1.2;
-}
-
-.related-posts .blog-card .blog-card__body {
-  padding: 4px 6px 8px;
-  gap: 2px;
-}
-
-.related-posts .blog-card .blog-card__excerpt {
-  display: none;
-}
-
-.related-posts .blog-card .blog-card__link {
-  font-size: 0.55rem;
+  gap: 16px;
 }
 
 .related-posts .blog-card:hover {
