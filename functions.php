@@ -135,6 +135,7 @@ final class Farmacia_Queiles_Theme
 			remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
 			add_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 10);
 		});
+		add_filter('woocommerce_related_products', [$this, 'maybe_use_manual_related_products'], 10, 3);
 		add_action('rest_api_init', [$this, 'register_promociones_rest_routes']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_promociones_admin_assets']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_term_featured_admin_assets']);
@@ -3670,6 +3671,7 @@ final class Farmacia_Queiles_Theme
 		$this->register_theme_options_cmb2_boxes();
 		$this->register_product_tabs_cmb2_box();
 		$this->register_product_rutina_cmb2_box();
+		$this->register_product_related_meta_box();
 		$this->register_page_header_cmb2_box();
 	}
 
@@ -4808,6 +4810,121 @@ JS;
 			</div>
 		</section>
 		<?php
+	}
+
+	// ── Productos relacionados manuales ──────────────────────────────
+
+	public function maybe_use_manual_related_products(array $related_ids, int $product_id, array $args): array
+	{
+		$manual_ids = get_post_meta($product_id, '_fq_related_productos', true);
+		$manual_ids = is_array($manual_ids) ? array_filter(array_map('intval', $manual_ids)) : [];
+
+		if (!empty($manual_ids)) {
+			return $manual_ids;
+		}
+
+		return $related_ids;
+	}
+
+	private function register_product_related_meta_box(): void
+	{
+		add_meta_box(
+			'fq_product_related_meta',
+			__('Productos relacionados (manual)', 'farmacia-queiles'),
+			[$this, 'render_related_meta_box'],
+			'product',
+			'normal',
+			'low'
+		);
+		add_action('save_post_product', [$this, 'save_related_meta'], 20);
+	}
+
+	public function render_related_meta_box(\WP_Post $post): void
+	{
+		wp_nonce_field('fq_related_save', 'fq_related_nonce');
+
+		$sel_ids = get_post_meta($post->ID, '_fq_related_productos', true);
+		$sel_ids = is_array($sel_ids) ? array_filter(array_map('intval', $sel_ids)) : [];
+
+		$selected_products = [];
+		foreach ($sel_ids as $pid) {
+			$t = get_the_title($pid);
+			if ($t) {
+				$selected_products[$pid] = $t;
+			}
+		}
+		?>
+		<div class="fq-related-admin">
+			<p>
+				<label for="fq_related_productos"><strong><?php echo esc_html__('Selecciona productos relacionados manualmente', 'farmacia-queiles'); ?></strong></label><br>
+				<span class="description"><?php echo esc_html__('Si añades productos aquí, reemplazarán a los relacionados automáticos de WooCommerce. Déjalo vacío para usar los automáticos.', 'farmacia-queiles'); ?></span>
+			</p>
+			<select
+				id="fq_related_productos"
+				name="fq_related_productos[]"
+				class="fq-related-products-select widefat"
+				multiple
+				data-rest-url="<?php echo esc_url(rest_url('farmacia-queiles/v1/products-search')); ?>"
+				data-rest-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>"
+				data-placeholder="<?php echo esc_attr__('Busca y selecciona productos...', 'farmacia-queiles'); ?>">
+				<?php foreach ($selected_products as $pid => $label) : ?>
+					<option value="<?php echo esc_attr((string) $pid); ?>" selected>
+						<?php echo esc_html($label); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<script>
+		(function($){
+			if (typeof $.fn.select2 !== 'function') return;
+			var $sel = $('#fq_related_productos');
+			if (!$sel.length) return;
+			$sel.select2({
+				width: '100%',
+				placeholder: $sel.data('placeholder') || 'Busca productos...',
+				allowClear: true,
+				ajax: {
+					url: $sel.data('rest-url'),
+					dataType: 'json',
+					delay: 250,
+					headers: { 'X-WP-Nonce': $sel.data('rest-nonce') },
+					data: function(p) {
+						return { search: p.term || '', page: p.page || 1 };
+					},
+					processResults: function(d) {
+						return { results: d.results || [], pagination: d.pagination || { more: false } };
+					},
+					cache: true
+				},
+				minimumInputLength: 0,
+				language: {
+					noResults: function() { return 'Sin resultados'; },
+					searching: function() { return 'Buscando...'; },
+					loadingMore: function() { return 'Cargando más resultados...'; }
+				}
+			});
+		})(jQuery);
+		</script>
+		<?php
+	}
+
+	public function save_related_meta(int $post_id): void
+	{
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return;
+		}
+		if (!isset($_POST['fq_related_nonce']) || !wp_verify_nonce((string) $_POST['fq_related_nonce'], 'fq_related_save')) {
+			return;
+		}
+		if (!current_user_can('edit_post', $post_id)) {
+			return;
+		}
+
+		$ids_raw = isset($_POST['fq_related_productos']) && is_array($_POST['fq_related_productos'])
+			? array_values(array_filter(array_map('intval', (array) $_POST['fq_related_productos'])))
+			: [];
+
+		update_post_meta($post_id, '_fq_related_productos', $ids_raw);
 	}
 
 	// ── Imagen de cabecera para páginas secundarias ──────────────────
