@@ -199,23 +199,24 @@ a {
 
 .contenedor_filtros_superior {
 	gap: 0 !important;
+	padding: 0 16px;
 }
 
 .sp-filter-sidebar-header {
     display: none !important;
 }
 
-.tax-product_cat .sp-filter-main {
+.woocommerce  .sp-filter-main {
     max-width: 1450px;
     margin: 0 auto;
 }
 
-.tax-product_cat .fq-filter-card--filters .slider-tooltip {
+.woocommerce  .fq-filter-card--filters .slider-tooltip {
     top: 30px;
     background-color: #52b2e1;
 }
 
-.tax-product_cat .fq-filter-card--filters #sp-price-slider {
+.woocommerce  .fq-filter-card--filters #sp-price-slider {
     margin-bottom: 60px;
 }
 
@@ -1196,7 +1197,7 @@ body.site-mobile-panel-open {
 
 @media (max-width: 1024px) {
 	body {
-		padding-bottom: 72px;
+		padding-bottom: 65px;
 	}
 
 	.site-preheader__left {
@@ -1363,6 +1364,79 @@ body.site-mobile-panel-open {
 .error-404__search input[type="submit"]:focus {
 	border-color: var(--primary);
 	color: var(--primary);
+}
+
+
+/* ── Sin productos — mensaje de SuperPlus ────────────────────── */
+/* Cuando no hay productos el contenedor lateral debe ocupar el 100% */
+.sp-filter-wrapper--lateral:has(> .sp-filter-products-container p.woocommerce-info) .sp-filter-products-container {
+	width: 100%;
+}
+
+#sp-filter-products-list > p.woocommerce-info,
+.sp-filter-products-container p.woocommerce-info {
+	width: calc(100% - 30px);
+	margin-left: 16px;
+	margin-right: 16px;
+	box-sizing: border-box;
+	max-width: calc(100% - 30px);
+}
+
+/* ── Sin productos (WooCommerce) ─────────────────────────────── */
+.fq-no-products {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 80px 24px;
+	gap: 12px;
+}
+
+.fq-no-products__icon .material-symbols-outlined {
+	font-size: 64px;
+	color: #d1d5db;
+}
+
+.fq-no-products__title {
+	font-size: 22px;
+	font-weight: 300;
+	color: var(--text-dark, #383e42);
+	margin: 0;
+	letter-spacing: -0.02em;
+}
+
+.fq-no-products__text {
+	font-size: 14px;
+	color: var(--text-muted, #6b7280);
+	margin: 0;
+}
+
+.fq-no-products__actions {
+	margin-top: 8px;
+}
+
+.fq-no-products__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 46px;
+	padding: 0 28px;
+	border-radius: 999px;
+	background: var(--primary);
+	border: 1px solid var(--primary);
+	color: #fff;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	transition: opacity 0.2s;
+}
+
+.fq-no-products__button:hover,
+.fq-no-products__button:focus {
+	opacity: 0.88;
 }
 
 .footer-brand__name {
@@ -1752,6 +1826,7 @@ body.site-mobile-panel-open {
 	font-weight: 600 !important;
 	letter-spacing: 0.04em !important;
 	line-height: 1.2 !important;
+	color: #fff !important;
 }
 
 .mobile-bottom-bar .header-cart-icon .cart-count-fragment {
@@ -1872,6 +1947,16 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 }
 
 /* ===== FIN: Contact Page - WhatsApp SVG ===== */
+
+/* ===== INICIO: SP Menu Movil - Colores del Tema ===== */
+/* Definimos las variables CSS del plugin sp_menu_movil usando los colores del tema */
+:root {
+	--sp_color_negro: var(--surface);       /* #ffffff - fondo del panel */
+	--sp_color_blanco: var(--text-dark);    /* #383e42 - texto */
+	--sp_color_naranja: var(--primary);     /* #52b2e1 - hover botones atrás/cerrar */
+	--sp_color_gris_medio: #e5e7eb;         /* borde del header */
+}
+/* ===== FIN: SP Menu Movil - Colores del Tema ===== */
 
 /* ==========================================================================
    BANNER PARA PÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂGINAS SECUNDARIAS
@@ -1998,6 +2083,9 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
         font-size: 10px;
         letter-spacing: 0.2em;
     }
+	.hamburger-toggle span {
+        display: none !important;
+    }
 }
 
 /* ==========================================================================
@@ -2059,8 +2147,233 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
         padding-top: 28px;
         padding-bottom: 40px;
     }
+	.contenedor_filtros_superior {
+		margin-bottom: -10px !important;
+	}
 }
 
 /* ==========================================================================
    PÁGINAS SECUNDARIAS — FIN
    ========================================================================== */
+
+
+/* ==========================================================================
+   MENÚ MÓVIL SUPERPLUS — DISEÑO HEREDADO DEL MENÚ ANTERIOR
+   ========================================================================== 
+*/
+
+.menu_movil .hamburger-container {
+	max-width: min(380px, 100%);
+	padding: 0;
+	background: #fff;
+}
+
+.menu_movil .overlay {
+	background: rgba(17, 24, 39, 0.46);
+}
+
+.menu_movil .menu-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 16px;
+	border-bottom: 1px solid #e5e7eb;
+	margin: 0;
+}
+
+.menu_movil .menu-header__brand {
+	display: flex;
+	align-items: center;
+}
+
+.menu_movil .menu-header__brand .custom-logo-link {
+	display: flex;
+}
+
+.menu_movil .menu-header__brand .custom-logo {
+	max-width: 350px;
+	height: auto;
+}
+
+.menu_movil .menu-title {
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-dark);
+}
+
+.menu_movil .back-arrow {
+	position: static;
+	order: -1;
+	gap: 0;
+}
+
+.menu_movil .back-arrow .txt_cerrar {
+	display: none;
+}
+
+.menu_movil .back-arrow .icono_cerrar {
+	width: 40px;
+	height: 40px;
+	border: 0;
+	border-radius: 999px;
+	background: #f3f4f6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: none;
+}
+
+.menu_movil .menu-close {
+	position: static;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border: 0;
+	border-radius: 999px;
+	background: #f3f4f6;
+	color: var(--text-dark);
+	cursor: pointer;
+	padding: 0;
+}
+
+.menu_movil .menu-close .txt_cerrar {
+	display: none;
+}
+
+.menu_movil .menu-close .icono_cerrar {
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 0;
+	margin-bottom: 2px;
+	color: var(--text-dark);
+}
+
+.menu_movil .menu-content {
+	padding: 20px 16px 120px;
+	position: static;
+}
+
+.menu_movil .menu-categories {
+	margin-bottom: 28px;
+}
+
+.menu_movil .menu-categories__title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-dark);
+}
+
+.menu_movil .menu-categories__list {
+	list-style: none;
+	margin: 14px 0 0;
+	padding: 0;
+}
+
+.menu_movil .menu-categories__list li + li {
+	margin-top: 8px;
+}
+
+.menu_movil .menu-categories__link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: #f8fafc;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--text-dark);
+	transition: background 0.2s, color 0.2s;
+}
+
+.menu_movil .menu-categories__link.is-current,
+.menu_movil .menu-categories__link:hover,
+.menu_movil .menu-categories__link:focus {
+	background: rgba(82, 178, 225, 0.1);
+	color: var(--primary);
+}
+
+.menu_movil .sp-hamburger-menu,
+.menu_movil .sp-hamburger-menu ul {
+	position: static;
+}
+
+.menu_movil .sp-hamburger-menu li {
+	padding: 0;
+	margin: 0;
+}
+
+.menu_movil .sp-hamburger-menu li + li {
+	margin-top: 8px;
+}
+
+.menu_movil .sp-hamburger-menu li a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: #f8fafc;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--text-dark);
+	transition: background 0.2s, color 0.2s;
+}
+
+.menu_movil .sp-hamburger-menu li a:hover,
+.menu_movil .sp-hamburger-menu li a:focus {
+	background: rgba(82, 178, 225, 0.1);
+	color: var(--primary);
+}
+
+.menu_movil .sp-hamburger-menu .submenu-indicator {
+	float: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 0;
+	width: 24px;
+	height: 24px;
+}
+
+@media (min-width: 1025px) {
+	.hamburger-toggle,
+	.menu_movil {
+		display: none;
+	}
+}
+
+/* ── Simetría de iconos en utils del header (≤1024px) ────────── */
+@media (max-width: 1024px) {
+	.site-header__utils {
+		gap: 20px;
+	}
+
+	.site-header__utils .mi-cuenta-icono-logueado .icono-mi-cuenta,
+	.site-header__utils .mi-cuenta-icono-no-logueado .icono-mi-cuenta {
+		font-size: 28px !important;
+	}
+
+	.site-header__utils .hamburger-toggle .user_icon_header {
+		width: 28px !important;
+		height: 28px !important;
+		background-size: contain !important;
+	}
+
+	.site-header__utils .site-navigation-woo > ul > li > a,
+	.site-header__utils .hamburger-toggle {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+}

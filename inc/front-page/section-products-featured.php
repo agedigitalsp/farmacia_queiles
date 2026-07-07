@@ -98,7 +98,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 		<div class="home-featured-products__viewport" data-fp-carousel>
 			<div class="home-featured-products__track" data-fp-track>
 				<?php foreach ($products as $item) : ?>
-					<article class="fp-card">
+					<article class="fp-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="fp-card__image-wrap">
 							<?php if ($item['is_on_sale']) : ?>
@@ -108,6 +108,9 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 							     src="<?php echo esc_url($item['image']); ?>"
 							     alt="<?php echo esc_attr($item['name']); ?>"
 							     loading="lazy">
+							<button class="fq-fav-btn" type="button" data-fq-fav="<?php echo esc_attr((string) $item['id']); ?>" aria-pressed="false" aria-label="<?php echo esc_attr__('Guardar en favoritos', 'farmacia-queiles'); ?>">
+								<span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+							</button>
 						</div>
 
 						<div class="fp-card__body">
