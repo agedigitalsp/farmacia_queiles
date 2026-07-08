@@ -7,6 +7,19 @@ Template posts: post
 if (!defined('ABSPATH')) {
     exit;
 }
+
+$blog_page_id  = (int) get_option('page_for_posts');
+$header_image_url = (string) get_post_meta($blog_page_id, '_fq_page_header_image', true);
+if ('' === $header_image_url) {
+    $thumb_id = (int) get_post_thumbnail_id($blog_page_id);
+    if ($thumb_id > 0) {
+        $header_image_url = (string) wp_get_attachment_image_url($thumb_id, 'full');
+    }
+}
+$header_style = '' !== $header_image_url
+    ? "background-image:linear-gradient(rgba(255,255,255,0.72),rgba(255,255,255,0.72)),url('" . esc_url($header_image_url) . "');"
+    : '';
+
 get_header();
 ?>
 
@@ -14,7 +27,7 @@ get_header();
     <?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
 </div>
 
-<section class="blog-hero">
+<section class="blog-hero"<?php echo '' !== $header_style ? ' style="' . esc_attr($header_style) . '"' : ''; ?>>
     <div class="container container--wide">
         <div class="blog-hero__card entry-header">
             <div class="blog-hero__content">
