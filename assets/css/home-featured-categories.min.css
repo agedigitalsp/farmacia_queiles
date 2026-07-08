@@ -200,52 +200,6 @@
 
 @media(max-width:1100px) {
     .home-featured-cats__grid {
-        grid-template-columns: repeat(3, 1fr)
-    }
-
-    .home-featured-cats__grid .home-featured-cats__card:nth-child(n+4) {
-        display: none
-    }
-}
-
-@media(max-width:767px) {
-    .home-featured-cats {
-        padding: 120px 0 64px
-    }
-
-    .home-featured-cats__header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 16px
-    }
-
-    .home-featured-cats__header-right {
-        width: 100%
-    }
-
-    .home-featured-cats__controls {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        width: 100%
-    }
-
-    .home-featured-cats__all-link {
-        order: 1
-    }
-
-    .home-featured-cats__title {
-        font-size: 24px
-    }
-
-    .home-featured-cats__arrows {
-        display: flex;
-        order: 2
-    }
-
-    .home-featured-cats__grid {
         display: none
     }
 
@@ -277,8 +231,8 @@
         background: #e5eaed;
         text-decoration: none;
         border: 1px solid rgba(0, 0, 0, .05);
-        width: calc(50vw - 28px);
-        min-width: calc(50vw - 28px);
+        width: calc(33.33vw - 28px);
+        min-width: calc(33.33vw - 28px);
         flex-shrink: 0;
         transition: box-shadow .4s ease, transform .4s ease
     }
@@ -341,5 +295,48 @@
 
     .fc-card__cta .material-symbols-outlined {
         font-size: 18px
+    }
+}
+
+@media(max-width:767px) {
+    .home-featured-cats {
+        padding: 120px 0 64px
+    }
+
+    .home-featured-cats__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 16px
+    }
+
+    .home-featured-cats__header-right {
+        width: 100%
+    }
+
+    .home-featured-cats__controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%
+    }
+
+    .home-featured-cats__all-link {
+        order: 1
+    }
+
+    .home-featured-cats__title {
+        font-size: 24px
+    }
+
+    .home-featured-cats__arrows {
+        display: flex;
+        order: 2
+    }
+
+    .fc-card {
+        width: calc(50vw - 28px);
+        min-width: calc(50vw - 28px);
     }
 }.home-featured-cats__kicker{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}

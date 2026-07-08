@@ -108,10 +108,17 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 					<article class="fp-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="fp-card__image-wrap">
-							<?php if ( $item['is_on_sale'] && '' !== $item['regular_price'] && '' !== $item['sale_price'] && (float) $item['regular_price'] > 0 ) :
-								$discount_pct = round( ( 1 - (float) $item['sale_price'] / (float) $item['regular_price'] ) * 100 );
+							<?php
+								$fq_cat_terms = get_the_terms( $item['id'], 'product_cat' );
+								$fq_category = '';
+								$fq_category_slug = '';
+								if ( is_array( $fq_cat_terms ) && ! empty( $fq_cat_terms ) ) {
+									$fq_category = wp_strip_all_tags( $fq_cat_terms[0]->name );
+									$fq_category_slug = $fq_cat_terms[0]->slug;
+								}
 							?>
-								<span class="fp-card__badge fp-card__badge--discount">-<?php echo $discount_pct; ?>%</span>
+							<?php if ( '' !== $fq_category ) : ?>
+								<span class="fp-card__badge" data-cat-slug="<?php echo esc_attr( $fq_category_slug ); ?>"><?php echo esc_html( $fq_category ); ?></span>
 							<?php endif; ?>
 							<img class="fp-card__image"
 							     src="<?php echo esc_url($item['image']); ?>"
