@@ -94,7 +94,7 @@
 }
 
 .home-featured-products__all-link:hover {
-    text-decoration: underline
+    opacity: .75
 }
 
 .home-featured-products__all-link .material-symbols-outlined {
