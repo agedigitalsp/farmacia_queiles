@@ -195,6 +195,18 @@ a {
 	opacity: 0.85;
 }
 
+.preheader-cta__icon {
+	font-size: 18px;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.preheader-cta-mobile-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .site-header--luxury {
 	background: #fff;
 	position: sticky;
