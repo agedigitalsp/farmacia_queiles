@@ -43,11 +43,14 @@ a {
 	border-bottom: 0;
 }
 
+.content.home-content{
+	overflow: hidden;
+}
+
 .container {
 	max-width: 1450px;
 	margin: 0 auto;
 	padding: 0 16px;
-	overflow: hidden;
 }
 
 .container--wide {
