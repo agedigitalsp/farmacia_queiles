@@ -384,7 +384,7 @@ final class Farmacia_Queiles_Theme
 			);
 		}
 
-		if (class_exists('WooCommerce') && (is_tax('product_cat') || is_tax('product_brand') || is_shop())) {
+		if (class_exists('WooCommerce') && (is_front_page() || is_account_page() || is_tax('product_cat') || is_tax('product_brand') || is_shop())) {
 			wp_enqueue_style(
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
@@ -501,8 +501,8 @@ final class Farmacia_Queiles_Theme
 			'logged' => is_user_logged_in() ? '1' : '0',
 		]);
 
-		// Favoritos: CSS y estilos solo donde hay cards/ficha/página
-		if (class_exists('WooCommerce') && (is_front_page() || is_singular('product') || is_tax('product_cat') || is_tax('product_brand') || is_shop() || is_page_template('page-favoritos.php'))) {
+		// Favoritos: CSS global (el popup de búsqueda aparece en cualquier página)
+		if (class_exists('WooCommerce')) {
 			wp_enqueue_style(
 				'farmacia-queiles-fq-favorites',
 				get_template_directory_uri() . '/assets/css/fq-favorites.min.css',
