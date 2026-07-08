@@ -199,3 +199,897 @@
   "jsonrpc": "2.0",
   "method": "notifications/initialized"
 }
+2026-07-03T11:34:19.572Z [INFO] [SYSTEM] Using native fetch API
+2026-07-03T11:34:19.574Z [INFO] [SYSTEM] Using native fetch API
+2026-07-03T11:34:19.583Z [DEBUG] [PROXY] System proxy support disabled (USE_SYSTEM_PROXY=false)
+2026-07-03T11:34:19.582Z [DEBUG] [PROXY] System proxy support disabled (USE_SYSTEM_PROXY=false)
+2026-07-03T11:34:19.583Z [INFO] [PROXY] Starting WordPress MCP Proxy with enhanced authentication
+2026-07-03T11:34:19.584Z [INFO] [PROXY] Starting WordPress MCP Proxy with enhanced authentication
+2026-07-03T11:34:19.592Z [INFO] [PROXY] MCP server connected to transport successfully
+2026-07-03T11:34:19.595Z [INFO] [PROXY] MCP server connected to transport successfully
+2026-07-03T11:34:19.597Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "initialize",
+  "id": 0,
+  "hasParams": true,
+  "messageType": "request"
+}
+2026-07-03T11:34:19.598Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "roots": {},
+      "elicitation": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "description": "Anthropic's agentic coding tool",
+      "websiteUrl": "https://claude.com/claude-code"
+    }
+  }
+}
+2026-07-03T11:34:19.600Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "initialize",
+  "id": 0,
+  "hasParams": true,
+  "messageType": "request"
+}
+2026-07-03T11:34:19.601Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "roots": {},
+      "elicitation": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "description": "Anthropic's agentic coding tool",
+      "websiteUrl": "https://claude.com/claude-code"
+    }
+  }
+}
+2026-07-03T11:34:19.606Z [INFO] [INIT] 📩 Client Initialize Request received
+2026-07-03T11:34:19.606Z [DEBUG] [INIT] Initialize request details:
+{
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool"
+    }
+  }
+}
+2026-07-03T11:34:19.606Z [INFO] [INIT] 🔄 Initializing WordPress connection with client parameters
+2026-07-03T11:34:19.607Z [INFO] [TRANSPORT_DETECT] 🔍 Starting transport detection and WordPress API initialization...
+2026-07-03T11:34:19.608Z [INFO] [TRANSPORT_DETECT] 📋 Added proxy information to clientInfo
+{
+  "originalClient": "claude-code",
+  "proxyName": "@automattic/mcp-wordpress-remote",
+  "proxyVersion": "0.3.5"
+}
+2026-07-03T11:34:19.608Z [INFO] [TRANSPORT_DETECT] 📡 Attempting JSON-RPC transport...
+2026-07-03T11:34:19.608Z [DEBUG] [SESSION] MCP JSON-RPC message being sent to WordPress:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "original_mcp_id": "none",
+  "session_id": "not-yet-obtained"
+}
+2026-07-03T11:34:19.609Z [INFO] [TRANSPORT_DETECT] Sending initialization message via JSON-RPC:
+{
+  "method": "initialize",
+  "id": 1,
+  "jsonrpc": "2.0",
+  "hasParams": true
+}
+2026-07-03T11:34:19.609Z [DEBUG] [TRANSPORT_DETECT] Complete JSON-RPC init message:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool",
+      "proxied": {
+        "name": "@automattic/mcp-wordpress-remote",
+        "version": "0.3.5"
+      }
+    },
+    "_proxy_request_id": 1
+  }
+}
+2026-07-03T11:34:19.610Z [INFO] [INIT] 📩 Client Initialize Request received
+2026-07-03T11:34:19.610Z [DEBUG] [INIT] Initialize request details:
+{
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool"
+    }
+  }
+}
+2026-07-03T11:34:19.611Z [INFO] [INIT] 🔄 Initializing WordPress connection with client parameters
+2026-07-03T11:34:19.611Z [INFO] [TRANSPORT_DETECT] 🔍 Starting transport detection and WordPress API initialization...
+2026-07-03T11:34:19.612Z [INFO] [TRANSPORT_DETECT] 📋 Added proxy information to clientInfo
+{
+  "originalClient": "claude-code",
+  "proxyName": "@automattic/mcp-wordpress-remote",
+  "proxyVersion": "0.3.5"
+}
+2026-07-03T11:34:19.611Z [INFO] [API] Request method: initialize (JSON-RPC)
+2026-07-03T11:34:19.612Z [INFO] [TRANSPORT_DETECT] 📡 Attempting JSON-RPC transport...
+2026-07-03T11:34:19.611Z [DEBUG] [API] JSON-RPC message: {"jsonrpc":"2.0","method":"initialize","id":1,"params":{"protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}},"_proxy_request_id":1}}
+2026-07-03T11:34:19.613Z [DEBUG] [SESSION] MCP JSON-RPC message being sent to WordPress:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "original_mcp_id": "none",
+  "session_id": "not-yet-obtained"
+}
+2026-07-03T11:34:19.612Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T11:34:19.613Z [INFO] [TRANSPORT_DETECT] Sending initialization message via JSON-RPC:
+{
+  "method": "initialize",
+  "id": 1,
+  "jsonrpc": "2.0",
+  "hasParams": true
+}
+2026-07-03T11:34:19.612Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T11:34:19.613Z [DEBUG] [API] Environment: development
+2026-07-03T11:34:19.614Z [DEBUG] [TRANSPORT_DETECT] Complete JSON-RPC init message:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool",
+      "proxied": {
+        "name": "@automattic/mcp-wordpress-remote",
+        "version": "0.3.5"
+      }
+    },
+    "_proxy_request_id": 1
+  }
+}
+2026-07-03T11:34:19.614Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T11:34:19.614Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.614Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T11:34:19.615Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T11:34:19.616Z [INFO] [API] Request method: initialize (JSON-RPC)
+2026-07-03T11:34:19.615Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.616Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T11:34:19.617Z [DEBUG] [API] JSON-RPC message: {"jsonrpc":"2.0","method":"initialize","id":1,"params":{"protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}},"_proxy_request_id":1}}
+2026-07-03T11:34:19.617Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T11:34:19.617Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T11:34:19.618Z [DEBUG] [API] Environment: development
+2026-07-03T11:34:19.618Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T11:34:19.618Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.619Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T11:34:19.619Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T11:34:19.619Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.620Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T11:34:19.643Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T11:34:19.644Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T11:34:19.645Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T11:34:19.645Z [WARN] [TRANSPORT_DETECT] ⚠️  JSON-RPC transport failed, trying simple transport...
+2026-07-03T11:34:19.646Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T11:34:19.645Z [DEBUG] [TRANSPORT_DETECT] JSON-RPC error details:
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59177:26)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T11:34:19.647Z [WARN] [TRANSPORT_DETECT] ⚠️  JSON-RPC transport failed, trying simple transport...
+2026-07-03T11:34:19.646Z [INFO] [TRANSPORT_DETECT] Sending initialization message via Simple transport:
+{
+  "method": "initialize",
+  "hasParams": true
+}
+2026-07-03T11:34:19.648Z [DEBUG] [TRANSPORT_DETECT] JSON-RPC error details:
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59177:26)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T11:34:19.647Z [DEBUG] [TRANSPORT_DETECT] Complete Simple init message:
+{
+  "method": "initialize",
+  "protocolVersion": "2025-11-25",
+  "capabilities": {
+    "elicitation": {
+      "form": {}
+    },
+    "roots": {}
+  },
+  "clientInfo": {
+    "name": "claude-code",
+    "title": "Claude Code",
+    "version": "2.1.199",
+    "websiteUrl": "https://claude.com/claude-code",
+    "description": "Anthropic's agentic coding tool",
+    "proxied": {
+      "name": "@automattic/mcp-wordpress-remote",
+      "version": "0.3.5"
+    }
+  }
+}
+2026-07-03T11:34:19.648Z [INFO] [TRANSPORT_DETECT] Sending initialization message via Simple transport:
+{
+  "method": "initialize",
+  "hasParams": true
+}
+2026-07-03T11:34:19.648Z [INFO] [API] Request method: initialize (Simple)
+2026-07-03T11:34:19.649Z [DEBUG] [TRANSPORT_DETECT] Complete Simple init message:
+{
+  "method": "initialize",
+  "protocolVersion": "2025-11-25",
+  "capabilities": {
+    "elicitation": {
+      "form": {}
+    },
+    "roots": {}
+  },
+  "clientInfo": {
+    "name": "claude-code",
+    "title": "Claude Code",
+    "version": "2.1.199",
+    "websiteUrl": "https://claude.com/claude-code",
+    "description": "Anthropic's agentic coding tool",
+    "proxied": {
+      "name": "@automattic/mcp-wordpress-remote",
+      "version": "0.3.5"
+    }
+  }
+}
+2026-07-03T11:34:19.648Z [DEBUG] [API] Simple request: {"method":"initialize","protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}}}
+2026-07-03T11:34:19.649Z [INFO] [API] Request method: initialize (Simple)
+2026-07-03T11:34:19.648Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T11:34:19.650Z [DEBUG] [API] Simple request: {"method":"initialize","protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}}}
+2026-07-03T11:34:19.649Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T11:34:19.650Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T11:34:19.649Z [DEBUG] [API] Environment: development
+2026-07-03T11:34:19.650Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T11:34:19.650Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T11:34:19.651Z [DEBUG] [API] Environment: development
+2026-07-03T11:34:19.650Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.651Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T11:34:19.650Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T11:34:19.651Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.652Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T11:34:19.651Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T11:34:19.651Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.652Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T11:34:19.652Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T11:34:19.653Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:34:19.653Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T11:34:19.660Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T11:34:19.660Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T11:34:19.661Z [ERROR] [TRANSPORT_DETECT] ❌ Both JSON-RPC and simple transports failed
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59205:28)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T11:34:19.661Z [ERROR] [INIT] ❌ Failed to initialize WordPress connection with client parameters
+{
+  "name": "Error",
+  "message": "Unable to establish connection with either transport type",
+  "stack": "Error: Unable to establish connection with either transport type\n    at detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59212:31)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "cause": {
+    "name": "APIError",
+    "statusCode": 0,
+    "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+    "code": "ECONNREFUSED"
+  }
+}
+2026-07-03T11:34:19.662Z [ERROR] [INIT] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T11:34:19.663Z [WARN] [INIT] ⚠️ Using fallback initialize response
+2026-07-03T11:34:19.671Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "notifications/initialized",
+  "id": "none",
+  "hasParams": false,
+  "messageType": "request"
+}
+2026-07-03T11:34:19.671Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/initialized"
+}
+2026-07-03T11:41:04.655Z [INFO] [SYSTEM] Using native fetch API
+2026-07-03T11:41:04.657Z [DEBUG] [PROXY] System proxy support disabled (USE_SYSTEM_PROXY=false)
+2026-07-03T11:41:04.657Z [INFO] [PROXY] Starting WordPress MCP Proxy with enhanced authentication
+2026-07-03T11:41:04.666Z [INFO] [PROXY] MCP server connected to transport successfully
+2026-07-03T11:41:04.671Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "initialize",
+  "id": 0,
+  "hasParams": true,
+  "messageType": "request"
+}
+2026-07-03T11:41:04.672Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "roots": {},
+      "elicitation": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "description": "Anthropic's agentic coding tool",
+      "websiteUrl": "https://claude.com/claude-code"
+    }
+  }
+}
+2026-07-03T11:41:04.677Z [INFO] [INIT] 📩 Client Initialize Request received
+2026-07-03T11:41:04.678Z [DEBUG] [INIT] Initialize request details:
+{
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool"
+    }
+  }
+}
+2026-07-03T11:41:04.678Z [INFO] [INIT] 🔄 Initializing WordPress connection with client parameters
+2026-07-03T11:41:04.678Z [INFO] [TRANSPORT_DETECT] 🔍 Starting transport detection and WordPress API initialization...
+2026-07-03T11:41:04.679Z [INFO] [TRANSPORT_DETECT] 📋 Added proxy information to clientInfo
+{
+  "originalClient": "claude-code",
+  "proxyName": "@automattic/mcp-wordpress-remote",
+  "proxyVersion": "0.3.5"
+}
+2026-07-03T11:41:04.679Z [INFO] [TRANSPORT_DETECT] 📡 Attempting JSON-RPC transport...
+2026-07-03T11:41:04.679Z [DEBUG] [SESSION] MCP JSON-RPC message being sent to WordPress:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "original_mcp_id": "none",
+  "session_id": "not-yet-obtained"
+}
+2026-07-03T11:41:04.680Z [INFO] [TRANSPORT_DETECT] Sending initialization message via JSON-RPC:
+{
+  "method": "initialize",
+  "id": 1,
+  "jsonrpc": "2.0",
+  "hasParams": true
+}
+2026-07-03T11:41:04.680Z [DEBUG] [TRANSPORT_DETECT] Complete JSON-RPC init message:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool",
+      "proxied": {
+        "name": "@automattic/mcp-wordpress-remote",
+        "version": "0.3.5"
+      }
+    },
+    "_proxy_request_id": 1
+  }
+}
+2026-07-03T11:41:04.681Z [INFO] [API] Request method: initialize (JSON-RPC)
+2026-07-03T11:41:04.681Z [DEBUG] [API] JSON-RPC message: {"jsonrpc":"2.0","method":"initialize","id":1,"params":{"protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}},"_proxy_request_id":1}}
+2026-07-03T11:41:04.681Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T11:41:04.681Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T11:41:04.682Z [DEBUG] [API] Environment: development
+2026-07-03T11:41:04.682Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T11:41:04.682Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:41:04.683Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T11:41:04.683Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T11:41:04.683Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:41:04.683Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T11:41:04.706Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T11:41:04.707Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T11:41:04.707Z [WARN] [TRANSPORT_DETECT] ⚠️  JSON-RPC transport failed, trying simple transport...
+2026-07-03T11:41:04.707Z [DEBUG] [TRANSPORT_DETECT] JSON-RPC error details:
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59177:26)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T11:41:04.708Z [INFO] [TRANSPORT_DETECT] Sending initialization message via Simple transport:
+{
+  "method": "initialize",
+  "hasParams": true
+}
+2026-07-03T11:41:04.708Z [DEBUG] [TRANSPORT_DETECT] Complete Simple init message:
+{
+  "method": "initialize",
+  "protocolVersion": "2025-11-25",
+  "capabilities": {
+    "elicitation": {
+      "form": {}
+    },
+    "roots": {}
+  },
+  "clientInfo": {
+    "name": "claude-code",
+    "title": "Claude Code",
+    "version": "2.1.199",
+    "websiteUrl": "https://claude.com/claude-code",
+    "description": "Anthropic's agentic coding tool",
+    "proxied": {
+      "name": "@automattic/mcp-wordpress-remote",
+      "version": "0.3.5"
+    }
+  }
+}
+2026-07-03T11:41:04.708Z [INFO] [API] Request method: initialize (Simple)
+2026-07-03T11:41:04.708Z [DEBUG] [API] Simple request: {"method":"initialize","protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}}}
+2026-07-03T11:41:04.709Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T11:41:04.709Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T11:41:04.709Z [DEBUG] [API] Environment: development
+2026-07-03T11:41:04.709Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T11:41:04.709Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:41:04.710Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T11:41:04.710Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T11:41:04.710Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T11:41:04.710Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T14:28:31.295Z [INFO] [SYSTEM] Using native fetch API
+2026-07-03T14:28:31.297Z [DEBUG] [PROXY] System proxy support disabled (USE_SYSTEM_PROXY=false)
+2026-07-03T14:28:31.297Z [INFO] [PROXY] Starting WordPress MCP Proxy with enhanced authentication
+2026-07-03T14:28:31.299Z [INFO] [SYSTEM] Using native fetch API
+2026-07-03T14:28:31.301Z [DEBUG] [PROXY] System proxy support disabled (USE_SYSTEM_PROXY=false)
+2026-07-03T14:28:31.302Z [INFO] [PROXY] Starting WordPress MCP Proxy with enhanced authentication
+2026-07-03T14:28:31.304Z [INFO] [PROXY] MCP server connected to transport successfully
+2026-07-03T14:28:31.308Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "initialize",
+  "id": 0,
+  "hasParams": true,
+  "messageType": "request"
+}
+2026-07-03T14:28:31.308Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "roots": {},
+      "elicitation": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "description": "Anthropic's agentic coding tool",
+      "websiteUrl": "https://claude.com/claude-code"
+    }
+  }
+}
+2026-07-03T14:28:31.310Z [INFO] [PROXY] MCP server connected to transport successfully
+2026-07-03T14:28:31.314Z [INFO] [INIT] 📩 Client Initialize Request received
+2026-07-03T14:28:31.314Z [DEBUG] [INIT] Initialize request details:
+{
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool"
+    }
+  }
+}
+2026-07-03T14:28:31.314Z [INFO] [INIT] 🔄 Initializing WordPress connection with client parameters
+2026-07-03T14:28:31.315Z [INFO] [TRANSPORT_DETECT] 🔍 Starting transport detection and WordPress API initialization...
+2026-07-03T14:28:31.315Z [INFO] [TRANSPORT_DETECT] 📋 Added proxy information to clientInfo
+{
+  "originalClient": "claude-code",
+  "proxyName": "@automattic/mcp-wordpress-remote",
+  "proxyVersion": "0.3.5"
+}
+2026-07-03T14:28:31.315Z [INFO] [TRANSPORT_DETECT] 📡 Attempting JSON-RPC transport...
+2026-07-03T14:28:31.316Z [DEBUG] [SESSION] MCP JSON-RPC message being sent to WordPress:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "original_mcp_id": "none",
+  "session_id": "not-yet-obtained"
+}
+2026-07-03T14:28:31.316Z [INFO] [TRANSPORT_DETECT] Sending initialization message via JSON-RPC:
+{
+  "method": "initialize",
+  "id": 1,
+  "jsonrpc": "2.0",
+  "hasParams": true
+}
+2026-07-03T14:28:31.317Z [DEBUG] [TRANSPORT_DETECT] Complete JSON-RPC init message:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool",
+      "proxied": {
+        "name": "@automattic/mcp-wordpress-remote",
+        "version": "0.3.5"
+      }
+    },
+    "_proxy_request_id": 1
+  }
+}
+2026-07-03T14:28:31.315Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "initialize",
+  "id": 0,
+  "hasParams": true,
+  "messageType": "request"
+}
+2026-07-03T14:28:31.316Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "roots": {},
+      "elicitation": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "description": "Anthropic's agentic coding tool",
+      "websiteUrl": "https://claude.com/claude-code"
+    }
+  }
+}
+2026-07-03T14:28:31.318Z [INFO] [API] Request method: initialize (JSON-RPC)
+2026-07-03T14:28:31.319Z [DEBUG] [API] JSON-RPC message: {"jsonrpc":"2.0","method":"initialize","id":1,"params":{"protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}},"_proxy_request_id":1}}
+2026-07-03T14:28:31.319Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T14:28:31.319Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T14:28:31.320Z [DEBUG] [API] Environment: development
+2026-07-03T14:28:31.320Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T14:28:31.320Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.320Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T14:28:31.321Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T14:28:31.321Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.322Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T14:28:31.323Z [INFO] [INIT] 📩 Client Initialize Request received
+2026-07-03T14:28:31.323Z [DEBUG] [INIT] Initialize request details:
+{
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool"
+    }
+  }
+}
+2026-07-03T14:28:31.323Z [INFO] [INIT] 🔄 Initializing WordPress connection with client parameters
+2026-07-03T14:28:31.324Z [INFO] [TRANSPORT_DETECT] 🔍 Starting transport detection and WordPress API initialization...
+2026-07-03T14:28:31.324Z [INFO] [TRANSPORT_DETECT] 📋 Added proxy information to clientInfo
+{
+  "originalClient": "claude-code",
+  "proxyName": "@automattic/mcp-wordpress-remote",
+  "proxyVersion": "0.3.5"
+}
+2026-07-03T14:28:31.324Z [INFO] [TRANSPORT_DETECT] 📡 Attempting JSON-RPC transport...
+2026-07-03T14:28:31.325Z [DEBUG] [SESSION] MCP JSON-RPC message being sent to WordPress:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "original_mcp_id": "none",
+  "session_id": "not-yet-obtained"
+}
+2026-07-03T14:28:31.325Z [INFO] [TRANSPORT_DETECT] Sending initialization message via JSON-RPC:
+{
+  "method": "initialize",
+  "id": 1,
+  "jsonrpc": "2.0",
+  "hasParams": true
+}
+2026-07-03T14:28:31.325Z [DEBUG] [TRANSPORT_DETECT] Complete JSON-RPC init message:
+{
+  "jsonrpc": "2.0",
+  "method": "initialize",
+  "id": 1,
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {
+      "elicitation": {
+        "form": {}
+      },
+      "roots": {}
+    },
+    "clientInfo": {
+      "name": "claude-code",
+      "title": "Claude Code",
+      "version": "2.1.199",
+      "websiteUrl": "https://claude.com/claude-code",
+      "description": "Anthropic's agentic coding tool",
+      "proxied": {
+        "name": "@automattic/mcp-wordpress-remote",
+        "version": "0.3.5"
+      }
+    },
+    "_proxy_request_id": 1
+  }
+}
+2026-07-03T14:28:31.326Z [INFO] [API] Request method: initialize (JSON-RPC)
+2026-07-03T14:28:31.327Z [DEBUG] [API] JSON-RPC message: {"jsonrpc":"2.0","method":"initialize","id":1,"params":{"protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}},"_proxy_request_id":1}}
+2026-07-03T14:28:31.327Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T14:28:31.327Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T14:28:31.327Z [DEBUG] [API] Environment: development
+2026-07-03T14:28:31.328Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T14:28:31.328Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.328Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T14:28:31.329Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T14:28:31.329Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.329Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T14:28:31.343Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T14:28:31.344Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T14:28:31.344Z [WARN] [TRANSPORT_DETECT] ⚠️  JSON-RPC transport failed, trying simple transport...
+2026-07-03T14:28:31.344Z [DEBUG] [TRANSPORT_DETECT] JSON-RPC error details:
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59177:26)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T14:28:31.345Z [INFO] [TRANSPORT_DETECT] Sending initialization message via Simple transport:
+{
+  "method": "initialize",
+  "hasParams": true
+}
+2026-07-03T14:28:31.346Z [DEBUG] [TRANSPORT_DETECT] Complete Simple init message:
+{
+  "method": "initialize",
+  "protocolVersion": "2025-11-25",
+  "capabilities": {
+    "elicitation": {
+      "form": {}
+    },
+    "roots": {}
+  },
+  "clientInfo": {
+    "name": "claude-code",
+    "title": "Claude Code",
+    "version": "2.1.199",
+    "websiteUrl": "https://claude.com/claude-code",
+    "description": "Anthropic's agentic coding tool",
+    "proxied": {
+      "name": "@automattic/mcp-wordpress-remote",
+      "version": "0.3.5"
+    }
+  }
+}
+2026-07-03T14:28:31.346Z [INFO] [API] Request method: initialize (Simple)
+2026-07-03T14:28:31.346Z [DEBUG] [API] Simple request: {"method":"initialize","protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}}}
+2026-07-03T14:28:31.347Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T14:28:31.347Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T14:28:31.347Z [DEBUG] [API] Environment: development
+2026-07-03T14:28:31.347Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T14:28:31.347Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.348Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T14:28:31.348Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T14:28:31.348Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.348Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T14:28:31.352Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T14:28:31.353Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T14:28:31.353Z [WARN] [TRANSPORT_DETECT] ⚠️  JSON-RPC transport failed, trying simple transport...
+2026-07-03T14:28:31.353Z [DEBUG] [TRANSPORT_DETECT] JSON-RPC error details:
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59177:26)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T14:28:31.354Z [INFO] [TRANSPORT_DETECT] Sending initialization message via Simple transport:
+{
+  "method": "initialize",
+  "hasParams": true
+}
+2026-07-03T14:28:31.354Z [DEBUG] [TRANSPORT_DETECT] Complete Simple init message:
+{
+  "method": "initialize",
+  "protocolVersion": "2025-11-25",
+  "capabilities": {
+    "elicitation": {
+      "form": {}
+    },
+    "roots": {}
+  },
+  "clientInfo": {
+    "name": "claude-code",
+    "title": "Claude Code",
+    "version": "2.1.199",
+    "websiteUrl": "https://claude.com/claude-code",
+    "description": "Anthropic's agentic coding tool",
+    "proxied": {
+      "name": "@automattic/mcp-wordpress-remote",
+      "version": "0.3.5"
+    }
+  }
+}
+2026-07-03T14:28:31.355Z [INFO] [API] Request method: initialize (Simple)
+2026-07-03T14:28:31.355Z [DEBUG] [API] Simple request: {"method":"initialize","protocolVersion":"2025-11-25","capabilities":{"elicitation":{"form":{}},"roots":{}},"clientInfo":{"name":"claude-code","title":"Claude Code","version":"2.1.199","websiteUrl":"https://claude.com/claude-code","description":"Anthropic's agentic coding tool","proxied":{"name":"@automattic/mcp-wordpress-remote","version":"0.3.5"}}}
+2026-07-03T14:28:31.356Z [INFO] [AUTH] Using JWT token authentication
+2026-07-03T14:28:31.356Z [DEBUG] [AUTH] Token length: 9
+2026-07-03T14:28:31.356Z [DEBUG] [API] Environment: development
+2026-07-03T14:28:31.356Z [DEBUG] [API] Base API URL: http://localhost:10053
+2026-07-03T14:28:31.357Z [DEBUG] [API] Final requesting URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.357Z [DEBUG] [API] Using Authorization header for authentication
+2026-07-03T14:28:31.357Z [INFO] [API] Sending request to WordPress API...
+2026-07-03T14:28:31.357Z [DEBUG] [API] Request URL: http://localhost:10053/?rest_route=/wp/v2/wpmcp
+2026-07-03T14:28:31.358Z [DEBUG] [API] Request method: POST (timeout 25000ms)
+2026-07-03T14:28:31.361Z [ERROR] [API] Error in wpRequest: fetch failed (ECONNREFUSED)
+2026-07-03T14:28:31.362Z [ERROR] [API] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T14:28:31.362Z [ERROR] [TRANSPORT_DETECT] ❌ Both JSON-RPC and simple transports failed
+{
+  "name": "APIError",
+  "message": "fetch failed",
+  "stack": "APIError: fetch failed\n    at executeWordPressRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:58975:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async wpRequest (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59025:20)\n    at async detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59205:28)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "statusCode": 0,
+  "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+  "code": "ECONNREFUSED"
+}
+2026-07-03T14:28:31.363Z [ERROR] [INIT] ❌ Failed to initialize WordPress connection with client parameters
+{
+  "name": "Error",
+  "message": "Unable to establish connection with either transport type",
+  "stack": "Error: Unable to establish connection with either transport type\n    at detectTransportType (file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59212:31)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///C:/Users/andri/AppData/Local/npm-cache/_npx/d036eb0573a6a23a/node_modules/@automattic/mcp-wordpress-remote/dist/proxy.js:59445:30",
+  "cause": {
+    "name": "APIError",
+    "statusCode": 0,
+    "endpoint": "http://localhost:10053/?rest_route=/wp/v2/wpmcp",
+    "code": "ECONNREFUSED"
+  }
+}
+2026-07-03T14:28:31.363Z [ERROR] [INIT] The connection was refused. Check that WP_API_URL points to a running server and the right port.
+2026-07-03T14:28:31.363Z [WARN] [INIT] ⚠️ Using fallback initialize response
+2026-07-03T14:28:31.365Z [INFO] [TRANSPORT] 📥 Raw client message received
+{
+  "method": "notifications/initialized",
+  "id": "none",
+  "hasParams": false,
+  "messageType": "request"
+}
+2026-07-03T14:28:31.366Z [DEBUG] [TRANSPORT] Complete raw message:
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/initialized"
+}

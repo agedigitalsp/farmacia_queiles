@@ -72,11 +72,18 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 					$rp_brand = (string) $rp_brand_terms[0]->name;
 				}
 			}
+
+			/* Categoría principal */
+			$rp_category = '';
+			$rp_cat_terms = get_the_terms( $rp_id, 'product_cat' );
+			if ( is_array( $rp_cat_terms ) && ! empty( $rp_cat_terms ) ) {
+				$rp_category = (string) $rp_cat_terms[0]->name;
+			}
 		?>
 		<article class="fp-card fq-sp-related__item">
 			<div class="fp-card__image-wrap">
-				<?php if ( $rp_on_sale ) : ?>
-					<span class="fp-card__badge"><?php echo esc_html__( 'Oferta', 'farmacia-queiles' ); ?></span>
+				<?php if ( '' !== $rp_category ) : ?>
+					<span class="fp-card__badge"><?php echo esc_html( $rp_category ); ?></span>
 				<?php endif; ?>
 				<a href="<?php echo esc_url( $rp_url ); ?>" aria-label="<?php echo esc_attr( $rp_name ); ?>">
 					<img class="fp-card__image" src="<?php echo esc_url( $rp_image_url ); ?>" alt="<?php echo esc_attr( $rp_image_alt ); ?>" loading="lazy">

@@ -7,12 +7,15 @@ if (!defined('ABSPATH')) {
 $cached_payload = class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Theme::get_home_best_sellers_cached_payload() : null;
 $products = is_array($cached_payload['products'] ?? null) ? $cached_payload['products'] : [];
 
+$fq_bs_limit = (int) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_bestsellers_limit', 10 );
+$fq_bs_limit = max( 4, min( 20, $fq_bs_limit ) );
+
 if (empty($products)) {
 	$products_raw = wc_get_products([
 		'orderby'  => 'meta_value_num',
 		'meta_key' => 'total_sales',
 		'order'    => 'DESC',
-		'limit'    => 12,
+		'limit'    => $fq_bs_limit,
 		'status'   => 'publish',
 	]);
 
@@ -71,8 +74,12 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
 		<div class="home-best-sellers__header">
 			<div class="home-best-sellers__header-left">
-				<span class="home-best-sellers__kicker"><?php echo esc_html__('Los más populares', 'farmacia-queiles'); ?></span>
-				<h2 class="home-best-sellers__title"><?php echo esc_html__('Más Vendidos', 'farmacia-queiles'); ?></h2>
+				<?php
+				$fq_bs_kicker = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_bestsellers_kicker', __( 'Los más populares', 'farmacia-queiles' ) );
+				$fq_bs_title  = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_bestsellers_title', __( 'Más Vendidos', 'farmacia-queiles' ) );
+				?>
+				<span class="home-best-sellers__kicker"><?php echo esc_html( $fq_bs_kicker ); ?></span>
+				<h2 class="home-best-sellers__title"><?php echo esc_html( $fq_bs_title ); ?></h2>
 			</div>
 			<div class="home-best-sellers__header-right">
 				<div class="home-best-sellers__controls">
@@ -95,7 +102,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 		<div class="home-best-sellers__viewport" data-bs-carousel>
 			<div class="home-best-sellers__track" data-bs-track>
 				<?php foreach ($products as $item) : ?>
-					<article class="bs-card">
+					<article class="bs-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="bs-card__image-wrap">
 							<span class="bs-card__badge">TOP</span>
@@ -103,22 +110,21 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 							     src="<?php echo esc_url($item['image']); ?>"
 							     alt="<?php echo esc_attr($item['name']); ?>"
 							     loading="lazy">
+							<button class="fq-fav-btn" type="button" data-fq-fav="<?php echo esc_attr((string) $item['id']); ?>" aria-pressed="false" aria-label="<?php echo esc_attr__('Guardar en favoritos', 'farmacia-queiles'); ?>">
+								<span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+							</button>
 						</div>
 
 						<div class="bs-card__body">
-							<?php if ('' !== $item['brand']) : ?>
-								<div class="bs-card__brand-wrap">
-									<span class="bs-card__brand"><?php echo esc_html($item['brand']); ?></span>
-								</div>
-							<?php endif; ?>
+							<div class="bs-card__brand-wrap">
+								<span class="bs-card__brand"><?php echo esc_html($item['brand'] ?? ''); ?></span>
+							</div>
 
 							<h3 class="bs-card__name">
 								<a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['name']); ?></a>
 							</h3>
 
-							<?php if ('' !== ($item['description'] ?? '')) : ?>
-								<p class="bs-card__desc"><?php echo esc_html($item['description']); ?></p>
-							<?php endif; ?>
+							<p class="bs-card__desc"><?php echo esc_html($item['description'] ?? ''); ?></p>
 
 							<div class="bs-card__price-wrap">
 								<div class="bs-card__price-row">

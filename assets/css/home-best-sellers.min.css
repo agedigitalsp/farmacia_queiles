@@ -1,5 +1,5 @@
-.home-best-sellers {
-    padding: 72px 0 80px;
+﻿.home-best-sellers {
+    padding: 64px 0;
     background: #fff
 }
 
@@ -10,8 +10,7 @@
     margin-bottom: 40px
 }
 
-/*ver carrito para que no se muestre en los productos destacados ni prodcutos mas vendidos*/
-.added_to_cart {display:none}
+.added_to_cart {display: none}
 
 @media(min-width:768px) {
     .home-best-sellers__header {
@@ -28,12 +27,12 @@
     letter-spacing: .18em;
     text-transform: uppercase;
     color: #52b2e1;
-    margin-bottom: 6px
+    margin-bottom: 4px
 }
 
 .home-best-sellers__title {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 300;
     color: #383e42;
     line-height: 1.2
@@ -41,20 +40,21 @@
 
 @media(min-width:768px) {
     .home-best-sellers__title {
-        font-size: 2rem
+        font-size: 1.875rem
     }
 }
 
 .home-best-sellers__header-right {
     display: flex;
-    align-items: flex-end
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 .home-best-sellers__controls {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px
+    flex-direction: row;
+    align-items: center;
+    gap: 16px
 }
 
 .home-best-sellers__arrows {
@@ -97,7 +97,7 @@
 }
 
 .home-best-sellers__all-link:hover {
-    text-decoration: underline
+    opacity: .75
 }
 
 .home-best-sellers__all-link .material-symbols-outlined {
@@ -111,28 +111,26 @@
 .home-best-sellers__track {
     display: flex;
     gap: 20px;
-    padding-bottom: 50px;
-    transition: transform .45s ease
+    padding-bottom: 32px;
+    transition: transform .45s ease;
 }
 
 .bs-card {
     background: #fff;
     border-radius: 12px;
     border: 1px solid transparent;
-    box-shadow: 0 1px 4px rgba(56, 62, 66, .07);
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    min-width: 200px;
-    max-width: 260px;
     flex-shrink: 0;
     transition: box-shadow .4s ease, transform .4s ease, border-color .4s ease
 }
 
 .bs-card:hover {
-    box-shadow: 0 20px 40px -12px rgba(56, 62, 66, .18);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1);
     transform: translateY(-4px);
-    border-color: rgba(82, 178, 225, .12)
+    border-color: rgba(82,178,225,.12)
 }
 
 .bs-card__image-wrap {
@@ -155,7 +153,7 @@
 }
 
 .bs-card:hover .bs-card__image {
-    transform: scale(1.05)
+    transform: scale(1.1)
 }
 
 .bs-card__badge {
@@ -174,10 +172,11 @@
 }
 
 .bs-card__body {
-    padding: 14px 16px 18px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    flex: 1
+    flex: 1;
+    gap: 6px
 }
 
 .bs-card__brand-wrap {
@@ -185,8 +184,20 @@
     border: 1px solid #f0f0f0;
     border-radius: 4px;
     padding: 2px 6px;
-    margin-bottom: 8px;
-    width: fit-content
+    margin-bottom: 0.7rem;
+    width: fit-content;
+    min-height: 22px;
+    box-sizing: border-box
+}
+
+.bs-card__brand:empty {
+    visibility: hidden
+}
+
+.bs-card__brand-wrap:has(.bs-card__brand:empty) {
+    visibility: hidden;
+    min-height: 30px;
+
 }
 
 .bs-card__brand {
@@ -199,15 +210,15 @@
 
 .bs-card__name {
     margin: 0;
-    font-size: .8rem;
+    font-size: .8125rem;
     font-weight: 700;
     color: #383e42;
-    line-height: 1.35;
+    line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 2.4em
+    min-height: 2.2rem;
 }
 
 .bs-card__name a {
@@ -220,22 +231,29 @@
 }
 
 .bs-card__desc {
-    font-size: .72rem;
+    font-size: 10px;
     color: #a3a3a3;
     font-weight: 300;
-    line-height: 1.5;
-    margin: 6px 0 0;
+    line-height: 1.4;
+    margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-style: italic
+    font-style: normal;
+    min-height: 14px
+}
+
+.bs-card__desc:empty {
+    visibility: hidden;
+    min-height: 2px
 }
 
 .bs-card__price-wrap {
     display: flex;
     flex-direction: column;
-    margin: 10px 0
+    margin: 0;
+    margin-top: auto
 }
 
 .bs-card__price-row {
@@ -245,7 +263,7 @@
 }
 
 .bs-card__price-current {
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-weight: 800;
     color: #383e42
 }
@@ -258,8 +276,7 @@
 
 .bs-card__price-old {
     font-size: .75rem;
-    color: #9ca3af;
-    margin-left: 4px
+    color: #9ca3af
 }
 
 .bs-card__price-old .woocommerce-Price-amount {
@@ -278,8 +295,8 @@
 .bs-card__cta {
     display: block;
     width: 100%;
-    margin-top: 10px;
-    padding: 7px;
+    margin-top: auto;
+    padding: 8px 0;
     border: 2px solid #52b2e1;
     border-radius: 999px;
     background: #52b2e1;
@@ -290,12 +307,42 @@
     text-transform: uppercase;
     text-align: center;
     text-decoration: none;
-    transition: background .25s, color .25s
+    transition: background .25s, color .25s;
+    line-height: 1.4
 }
 
 .bs-card__cta:hover {
     background: #fff;
     color: #52b2e1
+}
+
+.bs-card__image-wrap .fq-fav-btn {
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    top: 12px;
+    right: 12px
+}
+
+.bs-card__image-wrap .fq-fav-btn:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,.12)
+}
+
+@media(min-width:768px) and (max-width:1023px) {
+    .home-best-sellers__track {
+        width: auto
+    }
+
+    .bs-card {
+        width: calc(33.333vw - 24px)
+    }
+}
+
+@media(min-width:1024px) {
+    .bs-card {
+        width: calc(25% - 15px);
+        min-width: calc(25% - 15px)
+    }
 }
 
 @media(max-width:767px) {
@@ -311,15 +358,99 @@
         font-size: 1.5rem
     }
 
+    .home-best-sellers__header-right {
+        width: 100%
+    }
+
     .home-best-sellers__controls {
-        align-items: flex-start
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .home-best-sellers__arrows {
+        order: 2
+    }
+
+    .home-best-sellers__all-link {
+        order: 1
+    }
+
+    .home-best-sellers__track {
+        width: auto;
+        gap: .5rem
     }
 
     .bs-card {
-        min-width: 170px
+        width: calc(50vw - 20px)
+    }
+
+    .bs-card__image {
+        padding: .375rem
+    }
+
+    .bs-card__badge {
+        font-size: .5rem;
+        padding: .25rem .375rem;
+        top: .375rem;
+        left: .375rem;
+        border-radius: 4px
     }
 
     .bs-card__body {
-        padding: 12px 14px 16px
+        padding: .75rem
+    }
+
+    .bs-card__brand-wrap {
+        padding: .125rem .25rem;
+        min-height: 1rem
+    }
+
+    .bs-card__brand {
+        font-size: .5rem
+    }
+
+    .bs-card__name {
+        font-size: .7rem;
+        min-height: 1.6rem
+    }
+
+    .bs-card__desc {
+        font-size: .6rem;
+        line-height: 1.3;
+        min-height: .75rem
+    }
+
+    .bs-card__price-wrap {
+        margin: 0
+    }
+
+    .bs-card__price-current {
+        font-size: .875rem
+    }
+
+    .bs-card__price-old {
+        font-size: .6rem
+    }
+
+    .bs-card__price-tax {
+        font-size: .5rem
+    }
+
+    .bs-card__cta {
+        font-size: .6rem;
+        padding: .375rem 0
+    }
+
+    .bs-card__image-wrap .fq-fav-btn {
+        width: 1.75rem;
+        height: 1.75rem;
+        top: .375rem;
+        right: .375rem
+    }
+
+    .bs-card__image-wrap .fq-fav-btn .material-symbols-outlined {
+        font-size: .875rem
     }
 }

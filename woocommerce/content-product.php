@@ -63,28 +63,29 @@ $add_to_cart_classes = implode(
 <li <?php wc_product_class( '', $product ); ?>>
 	<article class="fp-card">
 		<div class="fp-card__image-wrap">
-			<?php if ( $is_on_sale ) : ?>
-				<span class="fp-card__badge"><?php echo esc_html__( 'Oferta', 'farmacia-queiles' ); ?></span>
+			<?php if ( $is_on_sale && '' !== $regular_price && '' !== $sale_price && (float) $regular_price > 0 ) :
+				$discount_pct = round( ( 1 - (float) $sale_price / (float) $regular_price ) * 100 );
+			?>
+				<span class="fp-card__badge fp-card__badge--discount">-<?php echo $discount_pct; ?>%</span>
 			<?php endif; ?>
 			<a href="<?php echo esc_url( $product_url ); ?>" aria-label="<?php echo esc_attr( $product_name ); ?>">
 				<img class="fp-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $product_name ); ?>" loading="lazy">
 			</a>
+			<button class="fq-fav-btn" type="button" data-fq-fav="<?php echo esc_attr( (string) $product_id ); ?>" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Guardar en favoritos', 'farmacia-queiles' ); ?>">
+				<span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+			</button>
 		</div>
 
 		<div class="fp-card__body">
-			<?php if ( '' !== $brand ) : ?>
-				<div class="fp-card__brand-wrap">
-					<span class="fp-card__brand"><?php echo esc_html( $brand ); ?></span>
-				</div>
-			<?php endif; ?>
+			<div class="fp-card__brand-wrap">
+				<span class="fp-card__brand"><?php echo esc_html( $brand ?? '' ); ?></span>
+			</div>
 
 			<h2 class="fp-card__name">
 				<a href="<?php echo esc_url( $product_url ); ?>"><?php echo esc_html( $product_name ); ?></a>
 			</h2>
 
-			<?php if ( '' !== $description ) : ?>
-				<p class="fp-card__desc"><?php echo esc_html( $description ); ?></p>
-			<?php endif; ?>
+			<p class="fp-card__desc"><?php echo esc_html( $description ?? '' ); ?></p>
 
 			<div class="fp-card__price-wrap">
 				<div class="fp-card__price-row">
@@ -110,3 +111,10 @@ $add_to_cart_classes = implode(
 		</div>
 	</article>
 </li>
+
+
+
+
+
+
+

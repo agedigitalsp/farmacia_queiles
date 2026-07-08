@@ -85,7 +85,59 @@ if (empty($hero_slides) && empty(array_filter($side_promotions))) {
 	return;
 }
 ?>
+<?php
+// Construir lista unificada para el slider móvil: destacados primero, luego generales
+$mobile_slides = [];
+foreach ( array_filter( $side_promotions ) as $promo ) {
+	$mobile_slides[] = array_merge( $promo, [ 'is_featured' => true ] );
+}
+foreach ( $hero_slides as $slide ) {
+	$mobile_slides[] = array_merge( $slide, [ 'is_featured' => false ] );
+}
+$mobile_total = count( $mobile_slides );
+?>
 <section class="home-hero-promotions">
+
+	<!-- ── SLIDER MÓVIL (solo visible en ≤767px) ───────────────── -->
+	<?php if ( $mobile_total > 0 ) : ?>
+	<div class="home-hero-promotions__mobile-slider" data-mobile-slider>
+		<?php foreach ( $mobile_slides as $i => $slide ) : ?>
+			<article class="home-hero-promotions__mobile-slide<?php echo 0 === $i ? ' is-active' : ''; ?><?php echo $slide['is_featured'] ? ' is-featured' : ''; ?>" data-mobile-slide>
+				<?php if ( ! empty( $slide['image'] ) ) : ?>
+					<img class="home-hero-promotions__image" src="<?php echo esc_url( $slide['image'] ); ?>" alt="<?php echo esc_attr( $slide['title'] ); ?>" loading="lazy">
+				<?php endif; ?>
+				<div class="home-hero-promotions__overlay">
+					<?php if ( ! empty( $slide['subtitle'] ) ) : ?>
+						<span class="home-hero-promotions__eyebrow"><?php echo esc_html( $slide['subtitle'] ); ?></span>
+					<?php endif; ?>
+					<div class="home-hero-promotions__content">
+						<h2 class="home-hero-promotions__title"><?php echo esc_html( $slide['title'] ); ?></h2>
+						<a class="home-hero-promotions__button" href="<?php echo esc_url( $slide['url'] ); ?>">
+							<?php esc_html_e( 'Ver promoción', 'farmacia-queiles' ); ?>
+						</a>
+					</div>
+				</div>
+			</article>
+		<?php endforeach; ?>
+		<?php if ( $mobile_total > 1 ) : ?>
+		<div class="home-hero-promotions__nav">
+			<button class="home-hero-promotions__arrow" type="button" data-mobile-prev aria-label="<?php esc_attr_e( 'Anterior', 'farmacia-queiles' ); ?>">
+				<span class="material-symbols-outlined">chevron_left</span>
+			</button>
+			<div class="home-hero-promotions__dots" data-mobile-dots>
+				<?php for ( $d = 0; $d < $mobile_total; $d++ ) : ?>
+					<button class="home-hero-promotions__dot<?php echo 0 === $d ? ' is-active' : ''; ?>" type="button" data-mobile-dot="<?php echo $d; ?>" aria-label="Slide <?php echo $d + 1; ?>"></button>
+				<?php endfor; ?>
+			</div>
+			<button class="home-hero-promotions__arrow" type="button" data-mobile-next aria-label="<?php esc_attr_e( 'Siguiente', 'farmacia-queiles' ); ?>">
+				<span class="material-symbols-outlined">chevron_right</span>
+			</button>
+		</div>
+		<?php endif; ?>
+	</div>
+	<?php endif; ?>
+
+	<!-- ── GRID ESCRITORIO (oculto en ≤767px) ──────────────────── -->
 	<div class="home-hero-promotions__grid">
 		<div class="home-hero-promotions__main">
 			<?php if (!empty($hero_slides)) : ?>
@@ -95,19 +147,15 @@ if (empty($hero_slides) && empty(array_filter($side_promotions))) {
 							<?php if (!empty($slide['image'])) : ?>
 								<img class="home-hero-promotions__image" src="<?php echo esc_url($slide['image']); ?>" alt="<?php echo esc_attr($slide['title']); ?>">
 							<?php endif; ?>
-
 							<div class="home-hero-promotions__overlay">
 								<?php if (!empty($slide['subtitle'])) : ?>
 									<span class="home-hero-promotions__eyebrow"><?php echo esc_html($slide['subtitle']); ?></span>
 								<?php endif; ?>
-
 								<div class="home-hero-promotions__content">
 									<h2 class="home-hero-promotions__title"><?php echo esc_html($slide['title']); ?></h2>
-
 									<?php if (!empty($slide['description'])) : ?>
 										<p class="home-hero-promotions__description"><?php echo esc_html($slide['description']); ?></p>
 									<?php endif; ?>
-
 									<a class="home-hero-promotions__button" href="<?php echo esc_url($slide['url']); ?>">
 										<?php echo esc_html__('Ver promoción', 'farmacia-queiles'); ?>
 									</a>
@@ -115,7 +163,6 @@ if (empty($hero_slides) && empty(array_filter($side_promotions))) {
 							</div>
 						</article>
 					<?php endforeach; ?>
-
 					<?php if (count($hero_slides) > 1) : ?>
 						<div class="home-hero-promotions__nav">
 							<button class="home-hero-promotions__arrow" type="button" data-hero-prev aria-label="<?php echo esc_attr__('Anterior promoción', 'farmacia-queiles'); ?>">
@@ -129,12 +176,9 @@ if (empty($hero_slides) && empty(array_filter($side_promotions))) {
 				</div>
 			<?php endif; ?>
 		</div>
-
 		<div class="home-hero-promotions__side">
 			<?php foreach ($side_promotions as $index => $promotion) : ?>
-				<?php if (!$promotion) : ?>
-					<?php continue; ?>
-				<?php endif; ?>
+				<?php if (!$promotion) : continue; endif; ?>
 				<article class="home-hero-promotions__card home-hero-promotions__card--<?php echo 0 === $index ? 'featured-1' : 'featured-2'; ?>">
 					<?php if (!empty($promotion['image'])) : ?>
 						<img class="home-hero-promotions__card-image" src="<?php echo esc_url($promotion['image']); ?>" alt="<?php echo esc_attr($promotion['title']); ?>">
