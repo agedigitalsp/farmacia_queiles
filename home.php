@@ -45,13 +45,13 @@ get_header();
                                 <?php if (has_post_thumbnail()): ?>
                                     <?php the_post_thumbnail('medium'); ?>
                                 <?php else: ?>
-                                    <img class="blog-card__default-img" src="<?php echo content_url('/uploads/2026/06/cropped-favicon-farmacia-queiles-300x300.png'); ?>" alt="" loading="lazy">
+<img class="blog-card__default-img" src="<?php echo content_url('/uploads/2026/07/ChatGPT-Image-8-jul-2026-01_08_23-600x400.png'); ?>" alt="" loading="lazy">
                                 <?php endif; ?>
                             </span>
 
                              <div class="blog-card__body">
                                  <h2 class="blog-card__title"><?php the_title(); ?></h2>
-                                 <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
+                                 <p class="blog-card__excerpt"><?php echo esc_html( get_the_excerpt() ); ?></p>
                                  <span class="blog-card__link">
                                      Leer más
                                      <span class="material-symbols-outlined">arrow_forward</span>
