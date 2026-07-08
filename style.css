@@ -195,6 +195,18 @@ a {
 	opacity: 0.85;
 }
 
+.preheader-cta__icon {
+	font-size: 18px;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.preheader-cta-mobile-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .site-header--luxury {
 	background: #fff;
 	position: sticky;
@@ -434,6 +446,95 @@ a {
 .header-categories__link:hover::after,
 .header-categories__link:focus::after {
 	width: 100%;
+}
+
+/* ── Mega-menú de subcategorías (categorías con hijos) ── */
+.header-categories__item--has-children {
+	position: relative;
+}
+
+.header-categories__link-arrow {
+	font-size: 18px;
+	transition: transform 0.2s ease;
+}
+
+.header-categories__megamenu {
+	position: absolute;
+	top: calc(100% + 32px);
+	left: 0;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 16px;
+	box-shadow: 0 20px 50px rgba(17, 24, 39, 0.12);
+	padding: 20px 24px;
+	z-index: 40;
+	min-width: 260px;
+	max-width: 94vw;
+	width: max-content;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(8px);
+	transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+/* Puente invisible para que el ratón no "caiga" al bajar del enlace al panel */
+.header-categories__megamenu::before {
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: 0;
+	width: 100%;
+	height: 12px;
+}
+
+.header-categories__item--has-children:hover .header-categories__megamenu,
+.header-categories__item--has-children:focus-within .header-categories__megamenu {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.header-categories__item--has-children:hover .header-categories__link-arrow,
+.header-categories__item--has-children:focus-within .header-categories__link-arrow {
+	transform: rotate(180deg);
+}
+
+.header-categories__megamenu-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	/* Máximo 4 items por columna; al llegar a 4 se crea una columna nueva.
+	   Ancho de columna fijo para que el texto largo quepa y el hover ocupe
+	   toda la columna sin pegarse al borde. */
+	grid-template-rows: repeat(4, auto);
+	grid-auto-flow: column;
+	grid-auto-columns: 240px;
+	gap: 4px 16px;
+}
+
+.header-categories__megamenu-item {
+	margin: 0;
+}
+
+.header-categories__megamenu-link {
+	display: block;
+	padding: 8px 14px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 14px;
+	color: var(--text-dark);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.header-categories__megamenu-link:hover,
+.header-categories__megamenu-link:focus,
+.header-categories__megamenu-item.is-current .header-categories__megamenu-link {
+	background: var(--bg-ref);
+	color: var(--primary);
 }
 
 .header-categories__item--dropdown {

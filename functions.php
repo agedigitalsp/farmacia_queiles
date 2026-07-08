@@ -2759,9 +2759,27 @@ final class Farmacia_Queiles_Theme
 			)
 		);
 
+		// Adjuntamos las subcategorías (hijos directos) a cada categoría padre,
+		// para poder mostrar un mega-desplegable en el menú.
+		$attach_children = static function (array $parents): array {
+			foreach ($parents as $parent) {
+				$children = get_terms(
+					[
+						'taxonomy'   => 'product_cat',
+						'hide_empty' => false,
+						'parent'     => (int) $parent->term_id,
+						'orderby'    => 'name',
+						'order'      => 'ASC',
+					]
+				);
+				$parent->fq_children = (is_wp_error($children) || empty($children)) ? [] : $children;
+			}
+			return $parents;
+		};
+
 		return [
-			'featured' => $featured_terms,
-			'more' => $remaining_terms,
+			'featured' => $attach_children($featured_terms),
+			'more'     => $attach_children($remaining_terms),
 		];
 	}
 

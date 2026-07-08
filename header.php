@@ -110,24 +110,28 @@ if (is_tax('product_cat')) {
 			<div class="site-preheader__right">
 				<div class="preheader-cta-desktop">
 					<a href="javascript:void(0);" class="preheader-cta" data-open-guardia-popup="true" aria-label="<?php echo esc_attr__('Ver farmacias de guardia', 'farmacia-queiles'); ?>">
+						<span class="material-symbols-outlined preheader-cta__icon" aria-hidden="true">local_pharmacy</span>
 						<?php echo esc_html__('Farmacias de Guardia', 'farmacia-queiles'); ?>
 					</a>
 					<div class="preheader-separator"></div>
 					<a class="preheader-cta" href="<?php echo esc_url($contact_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($contact_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 																								?>>
+							<span class="material-symbols-outlined preheader-cta__icon" aria-hidden="true">mail</span>
 							<?php echo esc_html__('Contacto', 'farmacia-queiles'); ?>
 						</a>
 				</div>
-				<button class="preheader-cta-mobile-toggle" type="button" aria-label="<?php echo esc_attr__('Abrir contacto', 'farmacia-queiles'); ?>" aria-expanded="false">
-					<?php echo esc_html__('Contacto', 'farmacia-queiles'); ?>
+				<button class="preheader-cta-mobile-toggle" type="button" aria-label="<?php echo esc_attr__('Abrir farmacias de guardia y contacto', 'farmacia-queiles'); ?>" aria-expanded="false">
+					<?php echo esc_html__('Guardia y contacto', 'farmacia-queiles'); ?>
 					<span class="material-symbols-outlined">expand_more</span>
 				</button>
 				<div class="preheader-cta-mobile-dropdown">
 					<a href="javascript:void(0);" class="preheader-cta-mobile-item" data-open-guardia-popup="true">
+						<span class="material-symbols-outlined preheader-cta__icon" aria-hidden="true">local_pharmacy</span>
 						<?php echo esc_html__('Farmacias de Guardia', 'farmacia-queiles'); ?>
 					</a>
 					<a class="preheader-cta-mobile-item" href="<?php echo esc_url($contact_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($contact_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 																										?>>
+						<span class="material-symbols-outlined preheader-cta__icon" aria-hidden="true">mail</span>
 						<?php echo esc_html__('Contáctanos', 'farmacia-queiles'); ?>
 					</a>
 				</div>
@@ -201,11 +205,31 @@ if (is_tax('product_cat')) {
 					<div class="site-header__nav-left">
 						<?php if (!empty($header_categories['featured']) || !empty($header_categories['more'])) : ?>
 							<ul class="header-categories" role="list">
-								<?php foreach ($header_categories['featured'] as $category) : ?>
-									<li class="header-categories__item<?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>">
-										<a class="header-categories__link" href="<?php echo esc_url(get_term_link($category)); ?>">
+								<?php
+								foreach ($header_categories['featured'] as $category) :
+									$fq_children = !empty($category->fq_children) ? $category->fq_children : [];
+									$fq_has_children = !empty($fq_children);
+								?>
+									<li class="header-categories__item<?php echo $fq_has_children ? ' header-categories__item--has-children' : ''; ?><?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>">
+										<a class="header-categories__link" href="<?php echo esc_url(get_term_link($category)); ?>"<?php echo $fq_has_children ? ' aria-haspopup="true"' : ''; ?>>
 											<?php echo esc_html($category->name); ?>
+											<?php if ($fq_has_children) : ?>
+												<span class="material-symbols-outlined header-categories__link-arrow" aria-hidden="true">expand_more</span>
+											<?php endif; ?>
 										</a>
+										<?php if ($fq_has_children) : ?>
+											<div class="header-categories__megamenu">
+												<ul class="header-categories__megamenu-list" role="list">
+													<?php foreach ($fq_children as $child) : ?>
+														<li class="header-categories__megamenu-item<?php echo (int) $child->term_id === $current_category_id ? ' is-current' : ''; ?>">
+															<a class="header-categories__megamenu-link" href="<?php echo esc_url(get_term_link($child)); ?>">
+																<?php echo esc_html($child->name); ?>
+															</a>
+														</li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										<?php endif; ?>
 									</li>
 								<?php endforeach; ?>
 
