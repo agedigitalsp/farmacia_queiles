@@ -7,7 +7,6 @@ Template posts: post
 if (!defined('ABSPATH')) {
     exit;
 }
-
 get_header();
 ?>
 
@@ -17,10 +16,9 @@ get_header();
 
 <section class="blog-hero">
     <div class="container container--wide">
-        <div class="blog-hero__card">
+        <div class="blog-hero__card entry-header">
             <div class="blog-hero__content">
-                <span class="sp-faqs-home-label blog-hero__kicker">Blog</span>
-                <h1 class="sp-faqs-home-title blog-hero__heading">Noticias de Nuestra Farmacia</h1>
+                <h1 class="sp-faqs-home-title blog-hero__heading"><?php single_post_title(); ?></h1>
             </div>
         </div>
     </div>
@@ -51,14 +49,14 @@ get_header();
                                 <?php endif; ?>
                             </span>
 
-                            <div class="blog-card__body">
-                                <h2 class="blog-card__title"><?php the_title(); ?></h2>
-                                <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
-                                <span class="blog-card__link">
-                                    Leer más
-                                    <span class="material-symbols-outlined">arrow_forward</span>
-                                </span>
-                            </div>
+                             <div class="blog-card__body">
+                                 <h2 class="blog-card__title"><?php the_title(); ?></h2>
+                                 <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
+                                 <span class="blog-card__link">
+                                     Leer más
+                                     <span class="material-symbols-outlined">arrow_forward</span>
+                                 </span>
+                             </div>
                         </a>
                     </article>
                 <?php endwhile; ?>

@@ -56,8 +56,8 @@
 
 .home-featured-cats__controls {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     gap: 12px
 }
 
@@ -139,8 +139,8 @@
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 72px;
-    height: 72px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
     opacity: .35;
     transition: transform .6s ease, opacity .4s ease
@@ -255,6 +255,10 @@
         overflow: hidden
     }
 
+    .home-featured-cats__arrows {
+        display: flex
+    }
+
     .home-featured-cats__track {
         display: flex;
         gap: 12px;
@@ -324,14 +328,9 @@
         align-items: center;
         gap: 6px;
         color: #52b2e1;
-        opacity: 0;
-        transform: translateX(-8px);
-        transition: opacity .3s ease, transform .3s ease
-    }
-
-    .fc-card:hover .fc-card__cta {
         opacity: 1;
-        transform: translateX(0)
+        transform: translateX(0);
+        transition: opacity .3s ease, transform .3s ease
     }
 
     .fc-card__cta-label {

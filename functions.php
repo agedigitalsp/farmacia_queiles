@@ -174,6 +174,8 @@ final class Farmacia_Queiles_Theme
 			return '<span class="yoast-breadcrumb__separator">&gt;</span>';
 		});
 
+		add_filter('wpseo_breadcrumb_links', [$this, 'forzar_yoast_seo']);
+
 		add_action('category_add_form_fields', [$this, 'render_blog_cat_header_image_field']);
 		add_action('category_edit_form_fields', [$this, 'render_blog_cat_header_image_edit_field']);
 		add_action('created_category', [$this, 'save_blog_cat_header_image']);
@@ -342,6 +344,7 @@ final class Farmacia_Queiles_Theme
 				$this->version,
 				true
 			);
+			
 			wp_enqueue_script(
 				'farmacia-queiles-home-labs',
 				get_template_directory_uri() . '/assets/js/home-labs-stories.min.js',
@@ -1162,6 +1165,34 @@ final class Farmacia_Queiles_Theme
 		}
 		return $actions;
 	}
+
+	 	function forzar_yoast_seo( $links ) {
+			// Solo modificamos la ruta si estamos dentro de una entrada de blog individual
+			if ( is_single() && get_post_type() === 'post' ) {
+				$categories = get_the_category();
+				
+				if ( ! empty( $categories ) ) {
+					// Evitamos categorías por defecto de WordPress
+					$valid_categories = array_values(array_filter($categories, function($cat) {
+						return !in_array($cat->slug, ['uncategorized', 'sin-categoria']);
+					}));
+
+					if ( ! empty( $valid_categories ) ) {
+						// Tomamos la primera categoría asignada
+						$main_category = $valid_categories[0];
+						
+						$category_link = array(
+							'url'  => get_category_link( $main_category->term_id ),
+							'text' => $main_category->name,
+						);
+
+						// La inyectamos en la penúltima posición (antes del título de la entrada)
+						array_splice( $links, -1, 0, array($category_link) );
+					}
+				}
+			}
+			return $links;
+		}
 
 	private function get_cmb2_theme_options_fields(): array
 	{
