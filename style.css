@@ -466,10 +466,11 @@ a {
 	border: 1px solid #e5e7eb;
 	border-radius: 16px;
 	box-shadow: 0 20px 50px rgba(17, 24, 39, 0.12);
-	padding: 20px 32px;
+	padding: 20px 24px;
 	z-index: 40;
 	min-width: 260px;
-	max-width: min(900px, 92vw);
+	max-width: 94vw;
+	width: max-content;
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(8px);
@@ -503,11 +504,13 @@ a {
 	margin: 0;
 	padding: 0;
 	display: grid;
-	/* Máximo 4 items por columna; al llegar a 4 se crea una columna nueva */
+	/* Máximo 4 items por columna; al llegar a 4 se crea una columna nueva.
+	   Ancho de columna fijo para que el texto largo quepa y el hover ocupe
+	   toda la columna sin pegarse al borde. */
 	grid-template-rows: repeat(4, auto);
 	grid-auto-flow: column;
-	grid-auto-columns: minmax(180px, max-content);
-	gap: 4px 32px;
+	grid-auto-columns: 240px;
+	gap: 4px 16px;
 }
 
 .header-categories__megamenu-item {
@@ -515,13 +518,15 @@ a {
 }
 
 .header-categories__megamenu-link {
-	display: inline-block;
+	display: block;
 	padding: 8px 14px;
 	border-radius: 8px;
 	text-decoration: none;
 	font-size: 14px;
 	color: var(--text-dark);
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	transition: background 0.15s ease, color 0.15s ease;
 }
 
