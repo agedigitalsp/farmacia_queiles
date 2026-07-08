@@ -1,4 +1,4 @@
-.home-featured-products {
+﻿.home-featured-products {
     padding: 64px 0;
     background: #fff
 }
@@ -110,7 +110,6 @@
     gap: 20px;
     padding-bottom: 32px;
     transition: transform .45s ease;
-    width: 70rem;
 }
 
 .fp-card {
@@ -372,6 +371,14 @@
         align-items: center
     }
 
+    .home-featured-products__arrows {
+        order: 2
+    }
+
+    .home-featured-products__all-link {
+        order: 1
+    }
+
     .home-featured-products__track {
         width: auto;
         gap: .5rem
@@ -447,4 +454,4 @@
     .fp-card__image-wrap .fq-fav-btn .material-symbols-outlined {
         font-size: .875rem
     }
-}
+}.fp-card__badge--discount{background:#e53935}

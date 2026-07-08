@@ -58,9 +58,14 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 <section class="home-featured-cats">
 	<div class="container container--wide">
 
+		<?php
+		$fq_cats_title  = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_cats_title', __( 'Categorías Destacadas', 'farmacia-queiles' ) );
+		$fq_cats_kicker = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_cats_kicker', __( 'Explora nuestra selección', 'farmacia-queiles' ) );
+		?>
 		<div class="home-featured-cats__header">
 			<div class="home-featured-cats__header-left">
-				<h2 class="home-featured-cats__title"><?php echo esc_html__('Categorías Destacadas', 'farmacia-queiles'); ?></h2>
+				<?php if ( $fq_cats_kicker ) : ?><span class="home-featured-cats__kicker"><?php echo esc_html( $fq_cats_kicker ); ?></span><?php endif; ?>
+				<h2 class="home-featured-cats__title"><?php echo esc_html( $fq_cats_title ); ?></h2>
 			</div>
 			<div class="home-featured-cats__header-right">
 				<div class="home-featured-cats__controls">

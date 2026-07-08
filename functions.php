@@ -64,6 +64,10 @@ final class Farmacia_Queiles_Theme
 
 		add_action('after_setup_theme', [$this, 'setup']);
 		add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+		add_action('wp_enqueue_scripts', static function () {
+			wp_dequeue_style('sp-item-product-filter-css');
+			wp_deregister_style('sp-item-product-filter-css');
+		}, 99);
 		add_action('widgets_init', [$this, 'widgets_init']);
 		add_action('customize_register', [$this, 'customize_register']);
 		add_action('customize_controls_enqueue_scripts', [$this, 'enqueue_customizer_control_assets']);
@@ -612,6 +616,30 @@ final class Farmacia_Queiles_Theme
 			]
 		);
 		$wp_customize->add_section(
+			'farmacia_queiles_home_cats',
+			[
+				'title' => __('Home - Categorías Destacadas', 'farmacia-queiles'),
+				'priority' => 32,
+				'active_callback' => [$this, 'is_front_page_customizer'],
+			]
+		);
+		$wp_customize->add_section(
+			'farmacia_queiles_home_bestsellers',
+			[
+				'title' => __('Home - Más Vendidos', 'farmacia-queiles'),
+				'priority' => 32,
+				'active_callback' => [$this, 'is_front_page_customizer'],
+			]
+		);
+		$wp_customize->add_section(
+			'farmacia_queiles_home_featured_products',
+			[
+				'title' => __('Home - Productos Destacados', 'farmacia-queiles'),
+				'priority' => 32,
+				'active_callback' => [$this, 'is_front_page_customizer'],
+			]
+		);
+		$wp_customize->add_section(
 			'farmacia_queiles_home_labs',
 			[
 				'title' => __('Home - Laboratorios de confianza', 'farmacia-queiles'),
@@ -813,6 +841,73 @@ final class Farmacia_Queiles_Theme
 					'type' => $args['type'] ?? ('url' === substr($setting_id, -3) ? 'url' : 'text'),
 				]
 			);
+		}
+
+		$home_cats_settings = [
+			'farmacia_queiles_home_cats_kicker' => [
+				'label'             => __('Texto superior (kicker)', 'farmacia-queiles'),
+				'default'           => __('Explora nuestra selección', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+			],
+			'farmacia_queiles_home_cats_title' => [
+				'label'             => __('Título de la sección', 'farmacia-queiles'),
+				'default'           => __('Categorías Destacadas', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+			],
+		];
+		foreach ($home_cats_settings as $setting_id => $args) {
+			$wp_customize->add_setting($setting_id, ['default' => $args['default'], 'sanitize_callback' => $args['sanitize_callback']]);
+			$wp_customize->add_control($setting_id, ['label' => $args['label'], 'section' => 'farmacia_queiles_home_cats', 'type' => 'text']);
+		}
+
+		$home_bestsellers_settings = [
+			'farmacia_queiles_home_bestsellers_kicker' => [
+				'label'             => __('Texto superior (kicker)', 'farmacia-queiles'),
+				'default'           => __('Los más populares', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+				'type'              => 'text',
+			],
+			'farmacia_queiles_home_bestsellers_title' => [
+				'label'             => __('Título de la sección', 'farmacia-queiles'),
+				'default'           => __('Más Vendidos', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+				'type'              => 'text',
+			],
+			'farmacia_queiles_home_bestsellers_limit' => [
+				'label'             => __('Número de productos (4–20)', 'farmacia-queiles'),
+				'default'           => 10,
+				'sanitize_callback' => 'absint',
+				'type'              => 'number',
+			],
+		];
+		foreach ($home_bestsellers_settings as $setting_id => $args) {
+			$wp_customize->add_setting($setting_id, ['default' => $args['default'], 'sanitize_callback' => $args['sanitize_callback']]);
+			$wp_customize->add_control($setting_id, ['label' => $args['label'], 'section' => 'farmacia_queiles_home_bestsellers', 'type' => $args['type'] ?? 'text']);
+		}
+
+		$home_featured_products_settings = [
+			'farmacia_queiles_home_featured_products_kicker' => [
+				'label'             => __('Texto superior (kicker)', 'farmacia-queiles'),
+				'default'           => __('Lo mejor para ti', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+				'type'              => 'text',
+			],
+			'farmacia_queiles_home_featured_products_title' => [
+				'label'             => __('Título de la sección', 'farmacia-queiles'),
+				'default'           => __('Productos Destacados', 'farmacia-queiles'),
+				'sanitize_callback' => [$this, 'sanitize_text'],
+				'type'              => 'text',
+			],
+			'farmacia_queiles_home_featured_products_limit' => [
+				'label'             => __('Número de productos (4–20)', 'farmacia-queiles'),
+				'default'           => 10,
+				'sanitize_callback' => 'absint',
+				'type'              => 'number',
+			],
+		];
+		foreach ($home_featured_products_settings as $setting_id => $args) {
+			$wp_customize->add_setting($setting_id, ['default' => $args['default'], 'sanitize_callback' => $args['sanitize_callback']]);
+			$wp_customize->add_control($setting_id, ['label' => $args['label'], 'section' => 'farmacia_queiles_home_featured_products', 'type' => $args['type'] ?? 'text']);
 		}
 
 		$home_labs_settings = [
@@ -3418,10 +3513,11 @@ final class Farmacia_Queiles_Theme
 			'products'     => [],
 		];
 
+		$fp_limit = max( 4, min( 20, (int) self::get_setting( 'farmacia_queiles_home_featured_products_limit', 10 ) ) );
 		$posts = get_posts([
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
-			'posts_per_page' => 12,
+			'posts_per_page' => $fp_limit,
 			'meta_query'     => [
 				[
 					'key'   => '_fq_featured_product',
@@ -3540,11 +3636,12 @@ final class Farmacia_Queiles_Theme
 			'products'     => [],
 		];
 
+		$bs_limit = max( 4, min( 20, (int) self::get_setting( 'farmacia_queiles_home_bestsellers_limit', 10 ) ) );
 		$products = wc_get_products([
 			'orderby'  => 'meta_value_num',
 			'meta_key' => 'total_sales',
 			'order'    => 'DESC',
-			'limit'    => 12,
+			'limit'    => $bs_limit,
 			'status'   => 'publish',
 		]);
 

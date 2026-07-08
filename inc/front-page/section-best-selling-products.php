@@ -7,12 +7,15 @@ if (!defined('ABSPATH')) {
 $cached_payload = class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Theme::get_home_best_sellers_cached_payload() : null;
 $products = is_array($cached_payload['products'] ?? null) ? $cached_payload['products'] : [];
 
+$fq_bs_limit = (int) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_bestsellers_limit', 10 );
+$fq_bs_limit = max( 4, min( 20, $fq_bs_limit ) );
+
 if (empty($products)) {
 	$products_raw = wc_get_products([
 		'orderby'  => 'meta_value_num',
 		'meta_key' => 'total_sales',
 		'order'    => 'DESC',
-		'limit'    => 12,
+		'limit'    => $fq_bs_limit,
 		'status'   => 'publish',
 	]);
 
@@ -71,8 +74,12 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
 		<div class="home-best-sellers__header">
 			<div class="home-best-sellers__header-left">
-				<span class="home-best-sellers__kicker"><?php echo esc_html__('Los más populares', 'farmacia-queiles'); ?></span>
-				<h2 class="home-best-sellers__title"><?php echo esc_html__('Más Vendidos', 'farmacia-queiles'); ?></h2>
+				<?php
+				$fq_bs_kicker = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_bestsellers_kicker', __( 'Los más populares', 'farmacia-queiles' ) );
+				$fq_bs_title  = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_bestsellers_title', __( 'Más Vendidos', 'farmacia-queiles' ) );
+				?>
+				<span class="home-best-sellers__kicker"><?php echo esc_html( $fq_bs_kicker ); ?></span>
+				<h2 class="home-best-sellers__title"><?php echo esc_html( $fq_bs_title ); ?></h2>
 			</div>
 			<div class="home-best-sellers__header-right">
 				<div class="home-best-sellers__controls">

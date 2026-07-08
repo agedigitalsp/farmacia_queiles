@@ -7,11 +7,14 @@ if (!defined('ABSPATH')) {
 $cached_payload = class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Theme::get_home_featured_products_cached_payload() : null;
 $products = is_array($cached_payload['products'] ?? null) ? $cached_payload['products'] : [];
 
+$fq_fp_limit = (int) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_featured_products_limit', 10 );
+$fq_fp_limit = max( 4, min( 20, $fq_fp_limit ) );
+
 if (empty($products)) {
 	$posts = get_posts([
 		'post_type'           => 'product',
 		'post_status'         => 'publish',
-		'posts_per_page'      => 12,
+		'posts_per_page'      => $fq_fp_limit,
 		'meta_query'          => [[
 			'key'   => '_fq_featured_product',
 			'value' => '1',
@@ -74,8 +77,12 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
 		<div class="home-featured-products__header">
 			<div class="home-featured-products__header-left">
-				<span class="home-featured-products__kicker"><?php echo esc_html__('Lo mejor para ti', 'farmacia-queiles'); ?></span>
-				<h2 class="home-featured-products__title"><?php echo esc_html__('Productos Destacados', 'farmacia-queiles'); ?></h2>
+				<?php
+				$fq_fp_kicker = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_featured_products_kicker', __( 'Lo mejor para ti', 'farmacia-queiles' ) );
+				$fq_fp_title  = (string) Farmacia_Queiles_Theme::get_setting( 'farmacia_queiles_home_featured_products_title', __( 'Productos Destacados', 'farmacia-queiles' ) );
+				?>
+				<span class="home-featured-products__kicker"><?php echo esc_html( $fq_fp_kicker ); ?></span>
+				<h2 class="home-featured-products__title"><?php echo esc_html( $fq_fp_title ); ?></h2>
 			</div>
 			<div class="home-featured-products__header-right">
 				<div class="home-featured-products__controls">
@@ -101,18 +108,10 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 					<article class="fp-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="fp-card__image-wrap">
-							<?php
-							$badge_cat = '';
-							$badge_slug = '';
-							if ($item['is_on_sale']) {
-								$terms = get_the_terms($item['id'], 'product_cat');
-								if (is_array($terms) && !empty($terms)) {
-									$badge_cat = esc_html($terms[0]->name);
-									$badge_slug = esc_attr($terms[0]->slug);
-								}
-							}
-							if ('' !== $badge_cat) : ?>
-								<span class="fp-card__badge" data-cat-slug="<?php echo $badge_slug; ?>"><?php echo $badge_cat; ?></span>
+							<?php if ( $item['is_on_sale'] && '' !== $item['regular_price'] && '' !== $item['sale_price'] && (float) $item['regular_price'] > 0 ) :
+								$discount_pct = round( ( 1 - (float) $item['sale_price'] / (float) $item['regular_price'] ) * 100 );
+							?>
+								<span class="fp-card__badge fp-card__badge--discount">-<?php echo $discount_pct; ?>%</span>
 							<?php endif; ?>
 							<img class="fp-card__image"
 							     src="<?php echo esc_url($item['image']); ?>"

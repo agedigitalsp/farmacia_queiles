@@ -1,4 +1,4 @@
-.home-best-sellers {
+﻿.home-best-sellers {
     padding: 64px 0;
     background: #fff
 }
@@ -46,7 +46,8 @@
 
 .home-best-sellers__header-right {
     display: flex;
-    align-items: flex-end
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 .home-best-sellers__controls {
@@ -112,7 +113,6 @@
     gap: 20px;
     padding-bottom: 32px;
     transition: transform .45s ease;
-    width: 70rem;
 }
 
 .bs-card {
@@ -364,7 +364,16 @@
     .home-best-sellers__controls {
         flex-direction: row;
         justify-content: space-between;
-        align-items: center
+        align-items: center;
+        width: 100%;
+    }
+
+    .home-best-sellers__arrows {
+        order: 2
+    }
+
+    .home-best-sellers__all-link {
+        order: 1
     }
 
     .home-best-sellers__track {
