@@ -507,7 +507,7 @@ a {
 	grid-template-rows: repeat(4, auto);
 	grid-auto-flow: column;
 	grid-auto-columns: minmax(180px, max-content);
-	gap: 4px 24px;
+	gap: 4px 32px;
 }
 
 .header-categories__megamenu-item {
@@ -515,7 +515,7 @@ a {
 }
 
 .header-categories__megamenu-link {
-	display: block;
+	display: inline-block;
 	padding: 8px 14px;
 	border-radius: 8px;
 	text-decoration: none;
