@@ -44,16 +44,6 @@ if ( taxonomy_exists( 'product_brand' ) ) {
 	}
 }
 
-$category = '';
-$category_slug = '';
-if ( taxonomy_exists( 'product_cat' ) ) {
-	$cat_terms = get_the_terms( $product_id, 'product_cat' );
-	if ( is_array( $cat_terms ) && ! empty( $cat_terms ) ) {
-		$category = wp_strip_all_tags( $cat_terms[0]->name );
-		$category_slug = $cat_terms[0]->slug;
-	}
-}
-
 $is_on_sale = $product->is_on_sale();
 $regular_price = (string) $product->get_regular_price();
 $sale_price = (string) $product->get_sale_price();
@@ -73,8 +63,10 @@ $add_to_cart_classes = implode(
 <li <?php wc_product_class( '', $product ); ?>>
 	<article class="fp-card">
 		<div class="fp-card__image-wrap">
-			<?php if ( '' !== $category ) : ?>
-				<span class="fp-card__badge" data-cat-slug="<?php echo esc_attr( $category_slug ); ?>"><?php echo esc_html( $category ); ?></span>
+			<?php if ( $is_on_sale && '' !== $regular_price && '' !== $sale_price && (float) $regular_price > 0 ) :
+				$discount_pct = round( ( 1 - (float) $sale_price / (float) $regular_price ) * 100 );
+			?>
+				<span class="fp-card__badge fp-card__badge--discount">-<?php echo $discount_pct; ?>%</span>
 			<?php endif; ?>
 			<a href="<?php echo esc_url( $product_url ); ?>" aria-label="<?php echo esc_attr( $product_name ); ?>">
 				<img class="fp-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $product_name ); ?>" loading="lazy">
@@ -119,3 +111,10 @@ $add_to_cart_classes = implode(
 		</div>
 	</article>
 </li>
+
+
+
+
+
+
+
