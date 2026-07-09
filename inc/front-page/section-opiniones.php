@@ -117,7 +117,7 @@ $section_kicker = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles
 $section_title  = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_opiniones_title', __('Lo que dicen de nosotros', 'farmacia-queiles'));
 ?>
 
-<section class="home-labs-stories home-opiniones-stories" style="padding: 60px 0; background: #f9fbfd;">
+<section class="home-labs-stories home-opiniones-stories" style="padding: 30px 0; background: #f9fbfd;">
     <div class="container container--wide">
         
         <div class="home-opiniones-header-wrapper">

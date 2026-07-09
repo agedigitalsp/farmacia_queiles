@@ -7,7 +7,7 @@
     --labs-edge-pad: 14px;
     position: relative;
     z-index: 0;
-    padding: 96px 0;
+    padding: 48px 0;
     border-top: 1px solid #e5e7eb;
 }
 
@@ -195,7 +195,7 @@
         --labs-size: clamp(56px,18vw,68px);
         --labs-gap: 6px;
         --labs-edge-pad: 8px;
-        padding: 72px 0
+        padding: 36px 0
     }
 
     .home-labs-stories__header {

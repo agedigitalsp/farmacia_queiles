@@ -1,5 +1,5 @@
 .home-health-commitment {
-    padding: 128px 0 90px 0;
+    padding: 64px 0 45px 0;
     background: #fff;
     border-top: 1px solid #f1f5f9
 }
@@ -104,7 +104,7 @@
 
 @media (max-width:1024px) {
     .home-health-commitment {
-        padding: 96px 0
+        padding: 48px 0
     }
 
     .home-health-commitment__grid {
@@ -122,7 +122,7 @@
 
 @media (max-width:640px) {
     .home-health-commitment {
-        padding: 72px 0
+        padding: 36px 0
     }
 
     .home-health-commitment__header {

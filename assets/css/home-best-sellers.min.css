@@ -1,5 +1,5 @@
 ﻿.home-best-sellers {
-    padding: 64px 0;
+    padding: 32px 0;
     background: #fff
 }
 
@@ -347,7 +347,7 @@
 
 @media(max-width:767px) {
     .home-best-sellers {
-        padding: 48px 0 56px
+        padding: 24px 0 28px
     }
 
     .home-best-sellers__header {

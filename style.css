@@ -2576,3 +2576,20 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 		justify-content: center;
 	}
 }
+
+/* Reduce espaciado vertical de la sección de FAQs en la home (50% del plugin superplus) */
+.home-content .sp-faq-wrapper {
+	padding-top: 48px;
+	padding-bottom: 48px;
+}
+
+.home-content .sp-faq-heading {
+	margin-top: 0 !important;
+}
+
+@media (max-width: 767px) {
+	.home-content .sp-faq-wrapper {
+		padding-top: 36px;
+		padding-bottom: 36px;
+	}
+}
