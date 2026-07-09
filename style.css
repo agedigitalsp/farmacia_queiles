@@ -1299,7 +1299,7 @@ body.site-mobile-panel-open {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: flex-start;
 	gap: 4px;
 }
 
