@@ -90,10 +90,19 @@ $footer_legal_fallback = [
 					<h3 class="footer-newsletter__title"><?php echo esc_html($newsletter_title); ?></h3>
 					<p class="footer-newsletter__description"><?php echo esc_html($newsletter_text); ?></p>
 				</div>
-				<form class="footer-newsletter__form" action="<?php echo esc_url(home_url('/')); ?>" method="post">
-					<label class="screen-reader-text" for="footer-newsletter-email"><?php echo esc_html__('Email', 'farmacia-queiles'); ?></label>
-					<input id="footer-newsletter-email" class="footer-newsletter__input" type="email" name="email" placeholder="<?php echo esc_attr($newsletter_placeholder); ?>">
-					<button class="footer-newsletter__button" type="submit"><?php echo esc_html($newsletter_button); ?></button>
+				<form class="footer-newsletter__form" id="footer-newsletter-form" action="<?php echo esc_url(home_url('/')); ?>" method="post" novalidate>
+					<div class="footer-newsletter__row">
+						<label class="screen-reader-text" for="footer-newsletter-email"><?php echo esc_html__('Email', 'farmacia-queiles'); ?></label>
+						<input id="footer-newsletter-email" class="footer-newsletter__input" type="email" name="email" placeholder="<?php echo esc_attr($newsletter_placeholder); ?>">
+						<button class="footer-newsletter__button" type="submit"><?php echo esc_html($newsletter_button); ?></button>
+					</div>
+					<div class="footer-newsletter__consent">
+						<label class="footer-newsletter__checkbox-label" for="footer-newsletter-consent">
+							<input type="checkbox" id="footer-newsletter-consent" class="footer-newsletter__checkbox" name="consent">
+							<span><?php echo esc_html__('He leído y acepto los ', 'farmacia-queiles'); ?><a href="<?php echo esc_url(home_url('/politica-privacidad')); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('términos y condiciones', 'farmacia-queiles'); ?></a>.</span>
+						</label>
+						<p class="footer-newsletter__error" id="footer-newsletter-error" role="alert" hidden><?php echo esc_html__('Debes aceptar los términos y condiciones.', 'farmacia-queiles'); ?></p>
+					</div>
 				</form>
 			</div>
 
@@ -302,6 +311,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	syncFooterToggles();
 	window.addEventListener('resize', syncFooterToggles);
+
+	const newsletterForm = document.getElementById('footer-newsletter-form');
+
+	if (newsletterForm) {
+		const emailInput = document.getElementById('footer-newsletter-email');
+		const consentInput = document.getElementById('footer-newsletter-consent');
+		const errorMessage = document.getElementById('footer-newsletter-error');
+
+		consentInput.addEventListener('change', function () {
+			if (consentInput.checked) {
+				errorMessage.hidden = true;
+			}
+		});
+
+		newsletterForm.addEventListener('submit', function (event) {
+			if (!emailInput.value.trim()) {
+				event.preventDefault();
+				return;
+			}
+
+			if (!consentInput.checked) {
+				event.preventDefault();
+				errorMessage.hidden = false;
+				return;
+			}
+
+			errorMessage.hidden = true;
+		});
+	}
 });
 </script>
 <?php wp_footer(); ?>
