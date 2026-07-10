@@ -62,8 +62,6 @@ if (empty($labs)) {
 	return;
 }
 
-$is_slider = count($labs) > 8;
-$render_labs = $is_slider ? $labs : array_slice($labs, 0, 8);
 $section_kicker = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_labs_kicker', __('Nuestros laboratorios', 'farmacia-queiles'));
 $section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles_home_labs_title_html', 'Laboratorios de <span class="home-labs-stories__title-accent">Confianza</span>');
 ?>
@@ -74,31 +72,29 @@ $section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_que
 			<h2 class="home-labs-stories__title"><?php echo wp_kses($section_title_html, ['span' => ['class' => true], 'em' => [], 'strong' => [], 'b' => [], 'i' => [], 'br' => []]); ?></h2>
 		</header>
 
-		<div class="home-labs-stories__carousel<?php echo $is_slider ? ' is-slider' : ''; ?>"<?php echo $is_slider ? ' data-labs-carousel data-labs-delay="2000"' : ''; ?>>
-			<?php if ($is_slider) : ?>
-				<button class="home-labs-stories__arrow home-labs-stories__arrow--prev" type="button" data-labs-prev aria-label="<?php echo esc_attr__('Laboratorio anterior', 'farmacia-queiles'); ?>">
-					<span class="material-symbols-outlined">chevron_left</span>
-				</button>
-			<?php endif; ?>
+		<div class="home-labs-stories__carousel">
+			<button class="home-labs-stories__arrow home-labs-stories__arrow--prev" type="button" data-labs-prev aria-label="<?php echo esc_attr__('Laboratorio anterior', 'farmacia-queiles'); ?>">
+				<span class="material-symbols-outlined">chevron_left</span>
+			</button>
 
-			<div class="home-labs-stories__viewport">
-				<div class="home-labs-stories__track" data-labs-track>
-					<?php foreach ($render_labs as $lab) : ?>
-						<a class="lab-story" href="<?php echo esc_url($lab['url']); ?>" aria-label="<?php echo esc_attr($lab['name']); ?>">
+			<div class="home-labs-stories__viewport splide" data-labs-carousel>
+				<div class="home-labs-stories__track splide__track">
+					<div class="splide__list">
+					<?php foreach ($labs as $lab) : ?>
+						<a class="lab-story splide__slide" href="<?php echo esc_url($lab['url']); ?>" aria-label="<?php echo esc_attr($lab['name']); ?>">
 							<span class="lab-story__media">
 								<span class="lab-story__image" style="background-image:url('<?php echo esc_url($lab['home_image']); ?>');"></span>
 							</span>
 							<span class="lab-story__label"><?php echo esc_html($lab['name']); ?></span>
 						</a>
 					<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 
-			<?php if ($is_slider) : ?>
-				<button class="home-labs-stories__arrow home-labs-stories__arrow--next" type="button" data-labs-next aria-label="<?php echo esc_attr__('Siguiente laboratorio', 'farmacia-queiles'); ?>">
-					<span class="material-symbols-outlined">chevron_right</span>
-				</button>
-			<?php endif; ?>
+			<button class="home-labs-stories__arrow home-labs-stories__arrow--next" type="button" data-labs-next aria-label="<?php echo esc_attr__('Siguiente laboratorio', 'farmacia-queiles'); ?>">
+				<span class="material-symbols-outlined">chevron_right</span>
+			</button>
 		</div>
 	</div>
 </section>
