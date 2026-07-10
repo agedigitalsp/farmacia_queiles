@@ -147,7 +147,6 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 				</div>
 			</div>
 		</div>
-<<<<<<< HEAD
 
 		<div class="home-best-sellers__footer">
 			<a class="home-best-sellers__all-link" href="<?php echo esc_url($shop_url); ?>">
@@ -157,7 +156,5 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 			</a>
 		</div>
 
-=======
->>>>>>> a0659cd747a5aed80076435ed6348904a6840e43
 	</div>
 </section>
