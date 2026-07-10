@@ -102,10 +102,11 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 			</div>
 		</div>
 
-		<div class="home-featured-products__viewport" data-fp-carousel>
-			<div class="home-featured-products__track" data-fp-track>
+		<div class="home-featured-products__viewport splide" data-fp-carousel>
+			<div class="home-featured-products__track splide__track" data-fp-track>
+				<div class="splide__list">
 				<?php foreach ($products as $item) : ?>
-					<article class="fp-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
+					<article class="fp-card splide__slide" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="fp-card__image-wrap">
 							<?php if ( $item['is_on_sale'] && '' !== $item['regular_price'] && '' !== $item['sale_price'] && (float) $item['regular_price'] > 0 ) :
@@ -156,6 +157,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
 					</article>
 				<?php endforeach; ?>
+				</div>
 			</div>
 		</div>
 	</div>

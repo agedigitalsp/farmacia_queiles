@@ -454,3 +454,8 @@
         font-size: .875rem
     }
 }
+.home-best-sellers__track.splide__track{display:block;gap:0;padding:0 0 30px;transition:none}
+.home-best-sellers .container{padding:0}
+.home-best-sellers .splide{padding:0}
+.splide__list{align-items:stretch;height:auto}
+.bs-card.splide__slide{width:auto;min-width:0}

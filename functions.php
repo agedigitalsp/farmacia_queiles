@@ -296,6 +296,20 @@ final class Farmacia_Queiles_Theme
 
 		if (is_front_page()) {
 			wp_enqueue_style(
+				'splide',
+				get_template_directory_uri() . '/assets/vendor/splide/css/splide.min.css',
+				[],
+				'4.1.4'
+			);
+			wp_enqueue_script(
+				'splide',
+				get_template_directory_uri() . '/assets/vendor/splide/js/splide.min.js',
+				[],
+				'4.1.4',
+				true
+			);
+
+			wp_enqueue_style(
 				'farmacia-queiles-home-hero',
 				get_template_directory_uri() . '/assets/css/home-hero-promotions.min.css',
 				['farmacia-queiles-style'],
@@ -355,14 +369,14 @@ final class Farmacia_Queiles_Theme
 			wp_enqueue_script(
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/js/home-featured-products.min.js',
-				[],
+				['splide'],
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-best-sellers',
 				get_template_directory_uri() . '/assets/js/home-best-sellers.min.js',
-				[],
+				['splide'],
 				$this->version,
 				true
 			);
