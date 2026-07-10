@@ -72,13 +72,21 @@ if (!defined('ABSPATH')) {
         padding: 10px 5px;
     }
 
-    .home-opiniones-track {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 20px;
-        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+    .home-opiniones-viewport .splide__track {
+        padding: 0;
+        transition: none;
+    }
+
+    .home-opiniones-viewport .splide__list {
+        align-items: stretch;
         will-change: transform;
+        transition: transform .4s ease;
+    }
+
+    .tarjeta-test.splide__slide {
+        flex: 0 0 auto !important;
+        min-width: 0 !important;
+        width: auto;
     }
 
     /* RECUADROS DE OPINIÓN (4 columnas fijas) */
@@ -141,14 +149,15 @@ $section_title  = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles
         </div>
 
         <div class="home-opiniones-carousel">
-            <div class="home-opiniones-viewport">
-                <div class="home-opiniones-track" id="fq-track-opiniones">
+            <div class="home-opiniones-viewport splide" data-opiniones-carousel>
+                <div class="home-opiniones-track splide__track">
+                    <div class="splide__list">
                     
                     <?php 
                     if ( $opiniones_query->have_posts() ) :
                         while ( $opiniones_query->have_posts() ) : $opiniones_query->the_post(); 
                             ?>
-                            <div class="tarjeta-test">
+                            <div class="tarjeta-test splide__slide">
                                 <div>
                                     <div class="estrellas-test">
                                         <?php 
@@ -179,6 +188,7 @@ $section_title  = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles
                     ?>
 
                 </div>
+                </div>
             </div>
         </div>
 
@@ -187,47 +197,14 @@ $section_title  = (string) Farmacia_Queiles_Theme::get_setting('farmacia_queiles
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const track = document.getElementById('fq-track-opiniones');
-    const prevBtn = document.getElementById('fq-prev-opiniones');
-    const nextBtn = document.getElementById('fq-next-opiniones');
-    if (!track) return;
-
-    const cards = track.querySelectorAll('.tarjeta-test');
-    if (cards.length <= 4) return;
-
-    let currentIndex = 0;
-    const gap = 20;
-    const visibleCards = 4;
-    const maxIndex = cards.length - visibleCards;
-
-    function moverCarrusel() {
-        const cardWidth = cards[0].getBoundingClientRect().width;
-        const desplazamiento = currentIndex * (cardWidth + gap);
-        track.style.transform = `translateX(-${desplazamiento}px)`;
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function () {
-            if (currentIndex < maxIndex) {
-                currentIndex++;
-            } else {
-                currentIndex = 0;
-            }
-            moverCarrusel();
-        });
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function () {
-            if (currentIndex > 0) {
-                currentIndex--;
-            } else {
-                currentIndex = maxIndex;
-            }
-            moverCarrusel();
-        });
-    }
-
-    window.addEventListener('resize', moverCarrusel);
+    if (typeof Splide === 'undefined') return;
+    var e = document.querySelector('[data-opiniones-carousel]');
+    if (!e) return;
+    var s = new Splide(e, { type: 'slide', perPage: 4, perMove: 1, gap: '20px', arrows: false, pagination: false });
+    s.mount();
+    var p = document.getElementById('fq-prev-opiniones'),
+        n = document.getElementById('fq-next-opiniones');
+    if (p) p.addEventListener('click', function () { s.go('<') });
+    if (n) n.addEventListener('click', function () { s.go('>') });
 });
 </script>

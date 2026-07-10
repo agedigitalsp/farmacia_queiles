@@ -93,10 +93,11 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 			</div>
 		</div>
 
-		<div class="home-best-sellers__viewport" data-bs-carousel>
-			<div class="home-best-sellers__track" data-bs-track>
+		<div class="home-best-sellers__viewport splide" data-bs-carousel>
+			<div class="home-best-sellers__track splide__track" data-bs-track>
+				<div class="splide__list">
 				<?php foreach ($products as $item) : ?>
-					<article class="bs-card" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
+					<article class="bs-card splide__slide" data-fq-card-url="<?php echo esc_url($item['url']); ?>">
 
 						<div class="bs-card__image-wrap">
 							<span class="bs-card__badge">TOP</span>
@@ -143,8 +144,10 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
 					</article>
 				<?php endforeach; ?>
+				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 
 		<div class="home-best-sellers__footer">
 			<a class="home-best-sellers__all-link" href="<?php echo esc_url($shop_url); ?>">
@@ -154,5 +157,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 			</a>
 		</div>
 
+=======
+>>>>>>> a0659cd747a5aed80076435ed6348904a6840e43
 	</div>
 </section>

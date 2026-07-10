@@ -467,3 +467,8 @@
         font-size: .875rem
     }
 }.fp-card__badge--discount{background:#e53935}
+.home-featured-products__track.splide__track{display:block;gap:0;padding:0 0 30px;transition:none}
+.home-featured-products .container{padding:0}
+.home-featured-products .splide{padding:0}
+.splide__list{align-items:stretch;height:auto;will-change:transform;transition:transform .4s ease}
+.fp-card.splide__slide{width:auto;min-width:0}

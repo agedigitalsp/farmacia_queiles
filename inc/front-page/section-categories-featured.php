@@ -106,10 +106,11 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 		</div>
 
 		<!-- Carrusel: visible en mobile -->
-		<div class="home-featured-cats__viewport" data-fc-carousel>
-			<div class="home-featured-cats__track" data-fc-track>
+		<div class="home-featured-cats__viewport splide" data-fc-carousel>
+			<div class="home-featured-cats__track splide__track" data-fc-track>
+				<div class="splide__list">
 				<?php foreach ($cats as $cat) : ?>
-					<a class="fc-card"
+					<a class="fc-card splide__slide"
 					   href="<?php echo esc_url($cat['url']); ?>"
 					   aria-label="<?php echo esc_attr($cat['name']); ?>"
 					   style="background:linear-gradient(200deg,<?php echo esc_attr($cat['bg_color'] ?? '#dbeeff'); ?> 0%,<?php echo esc_attr($cat['bg_color2'] ?? '#ffffff'); ?> 100%)">

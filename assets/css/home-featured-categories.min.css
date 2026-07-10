@@ -346,4 +346,13 @@
         width: calc(50vw - 28px);
         min-width: calc(50vw - 28px);
     }
+<<<<<<< HEAD
 }.home-featured-cats__kicker{display:block;margin-bottom:8px;font-family:Poppins,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
+=======
+}.home-featured-cats__kicker{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
+.home-featured-cats__track.splide__track{display:block;gap:0;padding:0;transition:none}
+.home-featured-cats .container{padding:0}
+.home-featured-cats .splide{padding:0}
+.home-featured-cats .splide__list{align-items:stretch;height:auto;will-change:transform;transition:transform .4s ease}
+.fc-card.splide__slide{width:auto;min-width:0}
+>>>>>>> a0659cd747a5aed80076435ed6348904a6840e43

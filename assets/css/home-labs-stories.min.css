@@ -149,20 +149,6 @@
     min-height: 38px
 }
 
-.home-labs-stories__carousel:not(.is-slider) .home-labs-stories__viewport {
-    overflow: visible;
-    max-width: none
-}
-
-.home-labs-stories__carousel:not(.is-slider) .home-labs-stories__track {
-    justify-content: center;
-    flex-wrap: wrap
-}
-
-.home-labs-stories__carousel:not(.is-slider) .lab-story {
-    width: var(--labs-size)
-}
-
 @media (min-width: 1025px) {
     .lab-story:hover,.lab-story:focus-visible {
         transform:scale(1.05)
@@ -214,7 +200,8 @@
     .home-labs-stories__carousel {
         flex-wrap: wrap;
         justify-content: flex-end;
-        gap: 8px 6px
+        gap: 8px;
+        
     }
 
     .home-labs-stories__viewport {
@@ -247,4 +234,22 @@
         font-size: 11px;
         min-height: 28px
     }
+}
+
+.home-labs-stories .splide__track .splide{
+    display: block;
+    padding: 12px var(--labs-edge-pad) 100px;
+    transition: none
+}
+
+.home-labs-stories .splide__list {
+    align-items: stretch;
+    height: auto;
+    will-change: transform;
+    transition: transform .4s ease
+}
+
+.home-labs-stories .splide__slide {
+    width: auto;
+    min-width: 0
 }
