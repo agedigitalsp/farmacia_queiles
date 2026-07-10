@@ -85,19 +85,13 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 				<h2 class="home-featured-products__title"><?php echo esc_html( $fq_fp_title ); ?></h2>
 			</div>
 			<div class="home-featured-products__header-right">
-				<div class="home-featured-products__controls">
-					<div class="home-featured-products__arrows">
-						<button class="home-featured-products__arrow" type="button" data-fp-prev aria-label="<?php echo esc_attr__('Producto anterior', 'farmacia-queiles'); ?>">
-							<span class="material-symbols-outlined">chevron_left</span>
-						</button>
-						<button class="home-featured-products__arrow" type="button" data-fp-next aria-label="<?php echo esc_attr__('Siguiente producto', 'farmacia-queiles'); ?>">
-							<span class="material-symbols-outlined">chevron_right</span>
-						</button>
-					</div>
-					<a class="home-featured-products__all-link" href="<?php echo esc_url($shop_url); ?>">
-						<?php echo esc_html__('Ver todos los productos destacados', 'farmacia-queiles'); ?>
-						<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
-					</a>
+				<div class="home-featured-products__arrows">
+					<button class="home-featured-products__arrow" type="button" data-fp-prev aria-label="<?php echo esc_attr__('Producto anterior', 'farmacia-queiles'); ?>">
+						<span class="material-symbols-outlined">chevron_left</span>
+					</button>
+					<button class="home-featured-products__arrow" type="button" data-fp-next aria-label="<?php echo esc_attr__('Siguiente producto', 'farmacia-queiles'); ?>">
+						<span class="material-symbols-outlined">chevron_right</span>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -157,6 +151,14 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 					</article>
 				<?php endforeach; ?>
 			</div>
+		</div>
+
+		<div class="home-featured-products__footer">
+			<a class="home-featured-products__all-link" href="<?php echo esc_url($shop_url); ?>">
+				<span class="home-featured-products__all-link-text--full"><?php echo esc_html__('Ver todos los productos destacados', 'farmacia-queiles'); ?></span>
+				<span class="home-featured-products__all-link-text--short"><?php echo esc_html__('Ver más', 'farmacia-queiles'); ?></span>
+				<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+			</a>
 		</div>
 	</div>
 </section>

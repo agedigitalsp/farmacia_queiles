@@ -5,24 +5,19 @@
 
 .home-best-sellers__header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 16px;
     margin-bottom: 40px
 }
 
 .added_to_cart {display: none}
 
-@media(min-width:768px) {
-    .home-best-sellers__header {
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: space-between
-    }
-}
-
 .home-best-sellers__kicker {
     display: block;
-    font-size: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: .75rem;
     font-weight: 700;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -46,15 +41,7 @@
 
 .home-best-sellers__header-right {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-
-.home-best-sellers__controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px
+    align-items: flex-end
 }
 
 .home-best-sellers__arrows {
@@ -88,10 +75,12 @@
 .home-best-sellers__all-link {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    color: #52b2e1;
     font-size: 14px;
     font-weight: 600;
-    color: #52b2e1;
+    text-transform: uppercase;
+    letter-spacing: .1em;
     text-decoration: none;
     transition: opacity .2s
 }
@@ -101,11 +90,21 @@
 }
 
 .home-best-sellers__all-link .material-symbols-outlined {
-    font-size: 18px
+    font-size: 19px
+}
+
+.home-best-sellers__all-link-text--short {
+    display: none
 }
 
 .home-best-sellers__viewport {
     overflow: hidden
+}
+
+.home-best-sellers__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -12px
 }
 
 .home-best-sellers__track {
@@ -358,23 +357,32 @@
         font-size: 1.5rem
     }
 
+    .home-best-sellers__kicker {
+        font-size: .625rem
+    }
+
     .home-best-sellers__header-right {
-        width: 100%
-    }
-
-    .home-best-sellers__controls {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-
-    .home-best-sellers__arrows {
-        order: 2
+        width: auto
     }
 
     .home-best-sellers__all-link {
-        order: 1
+        font-size: .75rem
+    }
+
+    .home-best-sellers__all-link .material-symbols-outlined {
+        font-size: 16px
+    }
+
+    .home-best-sellers__all-link-text--full {
+        display: none
+    }
+
+    .home-best-sellers__all-link-text--short {
+        display: inline
+    }
+
+    .home-best-sellers__footer {
+        margin-top: -8px
     }
 
     .home-best-sellers__track {

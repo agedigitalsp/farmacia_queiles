@@ -20,17 +20,11 @@
 
 .home-featured-cats__header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 16px;
     margin-bottom: 40px
-}
-
-@media(min-width:768px) {
-    .home-featured-cats__header {
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: space-between
-    }
 }
 
 .home-featured-cats__title {
@@ -51,13 +45,6 @@
 .home-featured-cats__header-right {
     display: flex;
     align-items: flex-end
-}
-
-.home-featured-cats__controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px
 }
 
 .home-featured-cats__arrows {
@@ -107,6 +94,16 @@
 
 .home-featured-cats__all-link .material-symbols-outlined {
     font-size: 19px
+}
+
+.home-featured-cats__all-link-text--short {
+    display: none
+}
+
+.home-featured-cats__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px
 }
 
 .home-featured-cats__grid {
@@ -304,26 +301,17 @@
     }
 
     .home-featured-cats__header {
-        flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-end;
         gap: 8px;
         margin-bottom: 16px
     }
 
+    .home-featured-cats__kicker {
+        font-size: .625rem
+    }
+
     .home-featured-cats__header-right {
-        width: 100%
-    }
-
-    .home-featured-cats__controls {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        width: 100%
-    }
-
-    .home-featured-cats__all-link {
-        order: 1
+        width: auto
     }
 
     .home-featured-cats__title {
@@ -331,12 +319,31 @@
     }
 
     .home-featured-cats__arrows {
-        display: flex;
-        order: 2
+        display: flex
+    }
+
+    .home-featured-cats__all-link {
+        font-size: .75rem
+    }
+
+    .home-featured-cats__all-link .material-symbols-outlined {
+        font-size: 16px
+    }
+
+    .home-featured-cats__all-link-text--full {
+        display: none
+    }
+
+    .home-featured-cats__all-link-text--short {
+        display: inline
+    }
+
+    .home-featured-cats__footer {
+        margin-top: 8px
     }
 
     .fc-card {
         width: calc(50vw - 28px);
         min-width: calc(50vw - 28px);
     }
-}.home-featured-cats__kicker{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
+}.home-featured-cats__kicker{display:block;margin-bottom:8px;font-family:Poppins,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}

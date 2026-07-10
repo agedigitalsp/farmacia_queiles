@@ -5,22 +5,17 @@
 
 .home-featured-products__header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 16px;
     margin-bottom: 40px
 }
 
-@media(min-width:768px) {
-    .home-featured-products__header {
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: space-between
-    }
-}
-
 .home-featured-products__kicker {
     display: block;
-    font-size: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: .75rem;
     font-weight: 700;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -45,13 +40,6 @@
 .home-featured-products__header-right {
     display: flex;
     align-items: flex-end
-}
-
-.home-featured-products__controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px
 }
 
 .home-featured-products__arrows {
@@ -85,10 +73,12 @@
 .home-featured-products__all-link {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    color: #52b2e1;
     font-size: 14px;
     font-weight: 600;
-    color: #52b2e1;
+    text-transform: uppercase;
+    letter-spacing: .1em;
     text-decoration: none;
     transition: opacity .2s
 }
@@ -98,11 +88,21 @@
 }
 
 .home-featured-products__all-link .material-symbols-outlined {
-    font-size: 18px
+    font-size: 19px
+}
+
+.home-featured-products__all-link-text--short {
+    display: none
 }
 
 .home-featured-products__viewport {
     overflow: hidden
+}
+
+.home-featured-products__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -12px
 }
 
 .home-featured-products__track {
@@ -362,23 +362,33 @@
         font-size: 1.5rem
     }
 
+    .home-featured-products__kicker {
+        font-size: .625rem
+    }
+
 
     .home-featured-products__header-right {
-        width: 100%
+        width: auto
     }
 
-    .home-featured-products__controls {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center
-    }
-
-    .home-featured-products__arrows {
-        order: 2
+    .home-featured-products__footer {
+        margin-top: -8px
     }
 
     .home-featured-products__all-link {
-        order: 1
+        font-size: .75rem
+    }
+
+    .home-featured-products__all-link .material-symbols-outlined {
+        font-size: 16px
+    }
+
+    .home-featured-products__all-link-text--full {
+        display: none
+    }
+
+    .home-featured-products__all-link-text--short {
+        display: inline
     }
 
     .home-featured-products__track {
