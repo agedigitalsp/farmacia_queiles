@@ -4,7 +4,7 @@ Theme URI: https://agenciasp.com/
 Author: AgenciaSP
 Author URI: https://agenciasp.com/
 Description: Tema para Farmacias Queiles
-Version: 1.0.3
+Version: 1.0.4
 Requires at least: 7.0
 Requires PHP: 8.2
 Text Domain: farmacia-queiles
@@ -1417,8 +1417,7 @@ body.site-mobile-panel-open {
 	}
 
 	.site-header__brand .custom-logo {
-		height: 38px;
-		max-width: 180px;
+		height: 35px;
 	}
 
 	.site-header__utils {
@@ -1655,7 +1654,9 @@ body.site-mobile-panel-open {
 }
 
 .footer-toggle {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .footer-toggle__summary {
@@ -1724,7 +1725,7 @@ body.site-mobile-panel-open {
 }
 
 .footer-contact__icon--image {
-	width: 18px;
+	width: 24px;
 	height: 18px;
 	object-fit: contain;
 }
@@ -1751,8 +1752,10 @@ body.site-mobile-panel-open {
 
 .footer-contact__schedule-title {
 	margin: 0 0 6px;
-	font-size: 12px;
-	font-weight: 600;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
 	color: rgba(255, 255, 255, 0.85);
 }
 
@@ -1853,6 +1856,11 @@ body.site-mobile-panel-open {
 }
 
 @media (max-width: 640px) {
+	.site-header__brand .custom-logo {
+		height: 38px;
+		max-width: 200px;
+	}
+
 	.footer-newsletter {
 		flex-direction: column;
 		align-items: flex-start;
@@ -1905,6 +1913,7 @@ body.site-mobile-panel-open {
 	.footer-toggle {
 		border-top: 1px solid rgba(255, 255, 255, 0.08);
 		padding-top: 18px;
+		gap: 0px;
 	}
 
 	.footer-toggle__summary {
@@ -1931,7 +1940,7 @@ body.site-mobile-panel-open {
 	}
 
 	.footer-toggle__content {
-		padding-top: 24px;
+		padding-top: 10px;
 	}
 
 	.footer-toggle:not([open]) .footer-toggle__content {
@@ -2587,9 +2596,17 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 	margin-top: 0 !important;
 }
 
+.home-content .sp-faq-title-main {
+	font-size: 2rem;
+}
+
 @media (max-width: 767px) {
 	.home-content .sp-faq-wrapper {
 		padding-top: 36px;
 		padding-bottom: 36px;
+	}
+
+	.home-content .sp-faq-title-main {
+		font-size: 1.5rem;
 	}
 }

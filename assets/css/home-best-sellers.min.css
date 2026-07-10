@@ -32,7 +32,7 @@
 
 .home-best-sellers__title {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 300;
     color: #383e42;
     line-height: 1.2
@@ -40,7 +40,7 @@
 
 @media(min-width:768px) {
     .home-best-sellers__title {
-        font-size: 1.875rem
+        font-size: 2rem
     }
 }
 

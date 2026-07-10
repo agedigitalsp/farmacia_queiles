@@ -21,7 +21,7 @@
 
 .home-health-commitment__title {
     margin: 0;
-    font-size: 40px;
+    font-size: 2rem;
     line-height: 1.2;
     font-weight: 300;
     letter-spacing: -.02em;
@@ -130,7 +130,7 @@
     }
 
     .home-health-commitment__title {
-        font-size: 32px;
+        font-size: 1.5rem;
         line-height: 1.2
     }
 
