@@ -444,6 +444,18 @@ final class Farmacia_Queiles_Theme
 				$this->version
 			);
 			wp_enqueue_style(
+				'farmacia-queiles-product-cat-header',
+				get_template_directory_uri() . '/assets/css/product-cat-header.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-featured-products'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-product-cat-filters',
+				get_template_directory_uri() . '/assets/css/product-cat-filters.min.css',
+				['farmacia-queiles-product-cat-header'],
+				$this->version
+			);
+			wp_enqueue_style(
 				'farmacia-queiles-single-product',
 				get_template_directory_uri() . '/assets/css/single-product.min.css',
 				['farmacia-queiles-style', 'farmacia-queiles-home-featured-products'],
