@@ -508,8 +508,9 @@
 .woocommerce  .sp-filter-title{display:none!important}
 
 /* ── Paginación estilo diseño ───────────────────────────────────── */
-.woocommerce  #sp-filter-pagination.woocommerce-pagination{display:flex;align-items:center;justify-content:center;gap:6px;padding:32px 0 8px;margin:0;border:0!important}
+.woocommerce  #sp-filter-pagination.woocommerce-pagination{display:flex;align-items:center;justify-content:center;gap:6px;padding:32px 0 32px;margin:0;border:0!important}
 .woocommerce  #sp-filter-pagination .page-numbers{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;font-size:14px;font-weight:500;line-height:1;text-decoration:none;transition:background-color .2s ease,color .2s ease,border-color .2s ease;border:1px solid transparent;color:var(--text-muted);background:transparent}
+.woocommerce  #sp-filter-pagination .page-numbers:not(.current):not(.prev):not(.next):not(.dots){background:#f0f2f5;color:var(--text-muted)}
 .woocommerce  #sp-filter-pagination .page-numbers:hover{background:#f0f5fa;border-color:#e6edf5;color: var(--primary);}
 .woocommerce  #sp-filter-pagination .page-numbers.current{background:var(--primary)!important;color:#fff!important;border-color:var(--primary)!important;font-weight:600}
 .woocommerce  #sp-filter-pagination .page-numbers.prev,
