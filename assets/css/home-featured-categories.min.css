@@ -44,7 +44,8 @@
 
 .home-featured-cats__header-right {
     display: flex;
-    align-items: flex-end
+    align-items: center;
+    gap: 16px
 }
 
 .home-featured-cats__arrows {
@@ -101,9 +102,9 @@
 }
 
 .home-featured-cats__footer {
-    display: flex;
+    display: none;
     justify-content: flex-end;
-    margin-top: 16px
+    margin-top: 24px
 }
 
 .home-featured-cats__grid {
@@ -196,6 +197,10 @@
 }
 
 @media(max-width:1100px) {
+    .home-featured-cats::before {
+        margin-bottom: 28px
+    }
+
     .home-featured-cats__grid {
         display: none
     }
@@ -207,6 +212,15 @@
 
     .home-featured-cats__arrows {
         display: flex
+    }
+
+    .home-featured-cats__all-link--header {
+        display: none
+    }
+
+    .home-featured-cats__footer {
+        display: flex;
+        margin-top: 32px
     }
 
     .home-featured-cats__track {
@@ -300,6 +314,10 @@
         padding: 60px 0 32px
     }
 
+    .home-featured-cats::before {
+        margin-bottom: 20px
+    }
+
     .home-featured-cats__header {
         align-items: flex-end;
         gap: 8px;
@@ -339,20 +357,16 @@
     }
 
     .home-featured-cats__footer {
-        margin-top: 8px
+        margin-top: 28px
     }
 
     .fc-card {
         width: calc(50vw - 28px);
         min-width: calc(50vw - 28px);
     }
-<<<<<<< HEAD
 }.home-featured-cats__kicker{display:block;margin-bottom:8px;font-family:Poppins,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
-=======
-}.home-featured-cats__kicker{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
 .home-featured-cats__track.splide__track{display:block;gap:0;padding:0;transition:none}
 .home-featured-cats .container{padding:0}
 .home-featured-cats .splide{padding:0}
 .home-featured-cats .splide__list{align-items:stretch;height:auto;will-change:transform;transition:transform .4s ease}
 .fc-card.splide__slide{width:auto;min-width:0}
->>>>>>> a0659cd747a5aed80076435ed6348904a6840e43

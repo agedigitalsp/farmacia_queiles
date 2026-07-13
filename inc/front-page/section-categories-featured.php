@@ -68,6 +68,11 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 				<h2 class="home-featured-cats__title"><?php echo esc_html( $fq_cats_title ); ?></h2>
 			</div>
 			<div class="home-featured-cats__header-right">
+				<a class="home-featured-cats__all-link home-featured-cats__all-link--header" href="<?php echo esc_url($shop_url); ?>">
+					<span class="home-featured-cats__all-link-text--full"><?php echo esc_html__('Ver todas las categorías', 'farmacia-queiles'); ?></span>
+					<span class="home-featured-cats__all-link-text--short"><?php echo esc_html__('Ver todas', 'farmacia-queiles'); ?></span>
+					<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+				</a>
 				<div class="home-featured-cats__arrows">
 					<button class="home-featured-cats__arrow" type="button" data-fc-prev aria-label="<?php echo esc_attr__('Categoría anterior', 'farmacia-queiles'); ?>">
 						<span class="material-symbols-outlined">chevron_left</span>
@@ -135,7 +140,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 		</div>
 
 		<div class="home-featured-cats__footer">
-			<a class="home-featured-cats__all-link" href="<?php echo esc_url($shop_url); ?>">
+			<a class="home-featured-cats__all-link home-featured-cats__all-link--footer" href="<?php echo esc_url($shop_url); ?>">
 				<span class="home-featured-cats__all-link-text--full"><?php echo esc_html__('Ver todas las categorías', 'farmacia-queiles'); ?></span>
 				<span class="home-featured-cats__all-link-text--short"><?php echo esc_html__('Ver todas', 'farmacia-queiles'); ?></span>
 				<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
