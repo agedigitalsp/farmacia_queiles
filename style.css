@@ -4,7 +4,7 @@ Theme URI: https://agenciasp.com/
 Author: AgenciaSP
 Author URI: https://agenciasp.com/
 Description: Tema para Farmacias Queiles
-Version: 1.0.4
+Version: 1.0.5
 Requires at least: 7.0
 Requires PHP: 8.2
 Text Domain: farmacia-queiles
@@ -1756,7 +1756,7 @@ body.site-mobile-panel-open {
 
 .footer-contact__icon {
 	color: var(--primary);
-	font-size: 18px;
+	font-size: 24px;
 	margin-top: 1px;
 	flex: 0 0 auto;
 }
