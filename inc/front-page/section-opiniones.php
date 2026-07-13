@@ -25,34 +25,29 @@ if (!defined('ABSPATH')) {
     }
 
     .home-opiniones-arrows-top .home-labs-stories__arrow {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        right: auto !important;
-        transform: none !important;
-        margin: 0 !important;
-        
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        border: 1px solid #d5dde4 !important;
+        background: #fff !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        color: #9ca3af !important;
+        cursor: pointer !important;
+        transition: border-color .2s, color .2s !important;
         padding: 0 !important;
         box-sizing: border-box !important;
     }
 
-    .home-opiniones-arrows-top .home-labs-stories__arrow .material-symbols-outlined {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        line-height: 1 !important;
-        width: 1em !important;
-        height: 1em !important;
-        text-align: center !important;
-        margin: 0 !important;
-        padding: 0 !important;
+    .home-opiniones-arrows-top .home-labs-stories__arrow:hover {
+        border-color: #52b2e1 !important;
+        color: #52b2e1 !important;
     }
 
-    .home-opiniones-arrows-top .home-labs-stories__arrow--next .material-symbols-outlined {
-        transform: translateX(1px); 
+    .home-opiniones-arrows-top .home-labs-stories__arrow .material-symbols-outlined {
+        font-size: 1.2rem !important;
+        line-height: 1 !important;
     }
 
     /* ==========================================================================
@@ -200,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (typeof Splide === 'undefined') return;
     var e = document.querySelector('[data-opiniones-carousel]');
     if (!e) return;
-    var s = new Splide(e, { type: 'slide', perPage: 4, perMove: 1, gap: '20px', arrows: false, pagination: false });
+    var s = new Splide(e, { type: 'slide', perPage: 4, perMove: 1, gap: '20px', arrows: false, pagination: false, breakpoints: { 1024: { perPage: 2 }, 768: { perPage: 1 } } });
     s.mount();
     var p = document.getElementById('fq-prev-opiniones'),
         n = document.getElementById('fq-next-opiniones');

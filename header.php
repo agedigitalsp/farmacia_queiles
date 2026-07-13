@@ -172,7 +172,7 @@ if (is_tax('product_cat')) {
 					<div class="site-header__utils">
 						<?php echo do_shortcode('[sp_mi_cuenta_icono]'); ?>
 
-						<a class="util-link" href="<?php echo esc_url($favorites_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($favorites_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						<a class="util-link<?php echo is_page_template('page-favoritos.php') ? ' is-current' : ''; ?>" href="<?php echo esc_url($favorites_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($favorites_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 																							?>>
 							<span class="material-symbols-outlined util-link__icon">favorite</span>
 							<span class="util-link__badge fq-fav-count-badge<?php echo $fq_fav_count < 1 ? ' is-empty' : ''; ?>" aria-live="polite">
