@@ -370,6 +370,10 @@ a {
 	color: var(--primary);
 }
 
+.util-link.is-current .util-link__icon {
+	color: var(--primary);
+}
+
 .util-link__badge {
 	position: absolute;
 	top: -4px;
@@ -1443,7 +1447,7 @@ body.site-mobile-panel-open {
 	}
 
 	.site-header__utils {
-		gap: 18px;
+		gap: 12px;
 	}
 
 	.util-link__label {
@@ -2620,8 +2624,10 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 /* ── Simetría de iconos en utils del header (≤1024px) ────────── */
 @media (max-width: 1024px) {
 	.site-header__utils {
-		gap: 20px;
+		gap: 12x;
 	}
+
+
 
 	.site-header__utils .mi-cuenta-icono-logueado .icono-mi-cuenta,
 	.site-header__utils .mi-cuenta-icono-no-logueado .icono-mi-cuenta {
