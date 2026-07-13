@@ -235,7 +235,7 @@
 }
 
 .fp-card__desc {
-    font-size: 10px;
+    font-size: 15px;
     color: #a3a3a3;
     font-weight: 300;
     line-height: 1.4;
@@ -245,7 +245,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-style: normal;
-    min-height: 14px
+    min-height: 47px
 }
 
 .fp-card__desc:empty {
