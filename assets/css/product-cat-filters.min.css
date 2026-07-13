@@ -333,7 +333,8 @@
     border-radius: 999px!important;
     background: var(--primary)!important;
     color: #fff!important;
-    font-size: 13px;
+    font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"!important;
+    font-size: 14px!important;
     font-weight: 700;
     letter-spacing: .14em;
     text-transform: uppercase;
@@ -385,6 +386,11 @@
     bottom: 90px;
     left: auto;
     right: 10px;
+    font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"!important;
+}
+
+.woocommerce  #sp_btn_filtrar_movil * {
+    font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"!important;
 }
 
 .woocommerce  #sp_btn_filtrar_movil:hover {
@@ -446,6 +452,15 @@
         padding: 4px 9px;
         font-size: 12px;
         font-weight: 600;
+        font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji" !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px;
+        line-height: 1 !important;
+    }
+
+    .sp-filter-sidebar-header .menu-close * {
+        font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji" !important;
     }
 
     .sp-filter-sidebar-header .menu-close span.txt_cerrar,
