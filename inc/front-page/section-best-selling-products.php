@@ -150,7 +150,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
 		<div class="home-best-sellers__footer">
 			<a class="home-best-sellers__all-link" href="<?php echo esc_url($shop_url); ?>">
-				<span class="home-best-sellers__all-link-text--full"><?php echo esc_html__('Ver todos los productos', 'farmacia-queiles'); ?></span>
+				<span class="home-best-sellers__all-link-text--full"><?php echo esc_html__('Ver más', 'farmacia-queiles'); ?></span>
 				<span class="home-best-sellers__all-link-text--short"><?php echo esc_html__('Ver más', 'farmacia-queiles'); ?></span>
 				<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
 			</a>

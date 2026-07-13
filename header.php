@@ -343,7 +343,7 @@ if (is_tax('product_cat')) {
 				<span class="material-symbols-outlined mobile-bottom-bar__icon">home</span>
 				<span class="mobile-bottom-bar__label"><?php echo esc_html__('Inicio', 'farmacia-queiles'); ?></span>
 			</a>
-			<button class="mobile-bottom-bar__item" type="button" data-open-mobile-search="true" aria-controls="site-mobile-search" aria-expanded="false">
+			<button class="mobile-bottom-bar__item trigger-search" type="button">
 				<span class="material-symbols-outlined mobile-bottom-bar__icon">search</span>
 				<span class="mobile-bottom-bar__label"><?php echo esc_html__('Buscar', 'farmacia-queiles'); ?></span>
 			</button>
