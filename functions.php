@@ -337,6 +337,12 @@ final class Farmacia_Queiles_Theme
 				['farmacia-queiles-style'],
 				$this->version
 			);
+			wp_enqueue_style(
+				'farmacia-queiles-home-opiniones',
+				get_template_directory_uri() . '/assets/css/home-opiniones.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-labs'],
+				$this->version
+			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-hero',
 				get_template_directory_uri() . '/assets/js/home-hero-promotions.min.js',
