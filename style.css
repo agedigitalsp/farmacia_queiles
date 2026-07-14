@@ -1395,7 +1395,7 @@ body.site-mobile-panel-open {
 	height: auto;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1140px) {
 	body {
 		padding-bottom: 65px;
 	}
