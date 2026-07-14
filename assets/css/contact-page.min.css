@@ -293,6 +293,34 @@ address {
     margin: 0
 }
 
+.contact-form-wrapper .form-fields {
+    display: flex;
+    flex-direction: column
+}
+
+.contact-form-wrapper .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 0 !important
+}
+
+.contact-form-wrapper .form-group {
+    flex: 1
+}
+
+.contact-form-wrapper .form-group p,
+.contact-form-wrapper .form-group .wpcf7-form-control-wrap {
+    display: block;
+    margin: 0
+}
+
+@media (max-width:768px) {
+    .contact-form-wrapper .form-row {
+        flex-direction: column;
+        gap: 20px
+    }
+}
+
 .wpcf7-form .wpcf7-acceptance {
     display: block;
     margin: 16px 0 0
