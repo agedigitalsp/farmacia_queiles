@@ -170,8 +170,7 @@
     }
 
     .lab-story:hover .lab-story__media,.lab-story:focus-visible .lab-story__media {
-        background: rgba(82,178,225,.22);
-        box-shadow: 0 10px 22px rgba(31,110,163,.14)
+        background: rgba(82,178,225,.22)
     }
 }
 
