@@ -2033,6 +2033,11 @@ body.site-mobile-panel-open {
 	color: var(--primary) !important;
 }
 
+.site-header__utils .header-cart-icon:hover .util-link__label,
+.site-header__utils .header-cart-icon:focus .util-link__label {
+	color: var(--primary) !important;
+}
+
 .site-header__utils .header-cart-icon .util-link__label {
 	font-size: 10px !important;
 	font-weight: 600 !important;
@@ -2681,4 +2686,13 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 	.home-content .sp-faq-title-main {
 		font-size: 1.5rem;
 	}
+}
+
+.site-header__utils .util-link:hover .util-link__label,
+.site-header__utils .util-link:focus .util-link__label,
+.site-header__utils .util-link:focus-visible .util-link__label,
+.site-header__utils .header-cart-icon:hover .util-link__label,
+.site-header__utils .header-cart-icon:focus .util-link__label,
+.site-header__utils .header-cart-icon:focus-visible .util-link__label {
+	color: var(--primary) !important;
 }
