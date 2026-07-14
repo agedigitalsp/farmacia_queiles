@@ -2509,29 +2509,48 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 
 .menu_movil .menu-close {
 	position: static;
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 40px;
 	height: 40px;
 	border: 0;
-	border-radius: 999px;
+	border-radius: 20px;
 	background: #f3f4f6;
 	color: var(--text-dark);
 	cursor: pointer;
-	padding: 0;
+	padding: 0 14px;
+}
+
+.menu_movil .menu-close:hover {
+	color: var(--primary);
 }
 
 .menu_movil .menu-close .txt_cerrar {
-	display: none;
+	display: inline;
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1;
+	color: inherit;
 }
 
-.menu_movil .menu-close .icono_cerrar {
-	font-size: 24px;
-	font-weight: 300;
+/* Igualar la X a la del menú Mi cuenta: usar el icono material `close`
+   en lugar del carácter × de texto. Se usa span.icono_cerrar para ganar en
+   especificidad a la regla del plugin sp_menu_movil que fija font-size:28px */
+.menu_movil .menu-close span.icono_cerrar {
+	font-size: 0 !important;
 	line-height: 0;
-	margin-bottom: 2px;
-	color: var(--text-dark);
+	color: inherit;
+	width: auto;
+}
+
+.menu_movil .menu-close span.icono_cerrar::before {
+	content: "close";
+	font-family: 'Material Symbols Outlined';
+	font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+	font-size: 24px;
+	line-height: 1;
+	font-weight: normal;
 }
 
 .menu_movil .menu-content {
