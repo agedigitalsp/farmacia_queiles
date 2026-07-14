@@ -68,15 +68,21 @@ $section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_que
 <section class="home-labs-stories">
 	<div class="container container--wide">
 		<header class="home-labs-stories__header">
-			<span class="home-labs-stories__kicker"><?php echo esc_html($section_kicker); ?></span>
-			<h2 class="home-labs-stories__title"><?php echo wp_kses($section_title_html, ['span' => ['class' => true], 'em' => [], 'strong' => [], 'b' => [], 'i' => [], 'br' => []]); ?></h2>
+			<div class="home-labs-stories__header-left">
+				<span class="home-labs-stories__kicker"><?php echo esc_html($section_kicker); ?></span>
+				<h2 class="home-labs-stories__title"><?php echo wp_kses($section_title_html, ['span' => ['class' => true], 'em' => [], 'strong' => [], 'b' => [], 'i' => [], 'br' => []]); ?></h2>
+			</div>
+			<div class="home-labs-stories__arrows">
+				<button class="home-labs-stories__arrow" type="button" data-labs-prev aria-label="<?php echo esc_attr__('Laboratorio anterior', 'farmacia-queiles'); ?>">
+					<span class="material-symbols-outlined">chevron_left</span>
+				</button>
+				<button class="home-labs-stories__arrow" type="button" data-labs-next aria-label="<?php echo esc_attr__('Siguiente laboratorio', 'farmacia-queiles'); ?>">
+					<span class="material-symbols-outlined">chevron_right</span>
+				</button>
+			</div>
 		</header>
 
 		<div class="home-labs-stories__carousel">
-			<button class="home-labs-stories__arrow home-labs-stories__arrow--prev" type="button" data-labs-prev aria-label="<?php echo esc_attr__('Laboratorio anterior', 'farmacia-queiles'); ?>">
-				<span class="material-symbols-outlined">chevron_left</span>
-			</button>
-
 			<div class="home-labs-stories__viewport splide" data-labs-carousel>
 				<div class="home-labs-stories__track splide__track">
 					<div class="splide__list">
@@ -91,10 +97,6 @@ $section_title_html = (string) Farmacia_Queiles_Theme::get_setting('farmacia_que
 					</div>
 				</div>
 			</div>
-
-			<button class="home-labs-stories__arrow home-labs-stories__arrow--next" type="button" data-labs-next aria-label="<?php echo esc_attr__('Siguiente laboratorio', 'farmacia-queiles'); ?>">
-				<span class="material-symbols-outlined">chevron_right</span>
-			</button>
 		</div>
 	</div>
 </section>

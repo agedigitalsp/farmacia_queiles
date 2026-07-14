@@ -25,8 +25,24 @@
 }
 
 .home-labs-stories__header {
-    text-align: center;
-    margin: 0 0 72px
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    text-align: left;
+    margin: 0 0 40px
+}
+
+.home-labs-stories__header-left {
+    min-width: 0
+}
+
+.home-labs-stories__arrows {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto
 }
 
 .home-labs-stories__kicker {
@@ -55,20 +71,16 @@
 }
 
 .home-labs-stories__carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px
+    display: block
 }
 
 .home-labs-stories__viewport {
     box-sizing: border-box;
-    flex: 1 1 auto;
-    width: auto;
-    max-width: calc(var(--labs-visible)*var(--labs-size) + (var(--labs-visible) - 1)*var(--labs-gap) + (var(--labs-edge-pad)*2));
+    width: 100%;
+    max-width: 100%;
     overflow: hidden;
-    margin: 0 auto;
-    padding: 12px var(--labs-edge-pad) 18px;
+    margin: 0;
+    padding: 12px 0 18px;
     touch-action: pan-y
 }
 
@@ -86,21 +98,25 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
-    border: 0;
-    border-radius: 999px;
-    background: var(--primary);
-    color: #fff;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d5dde4;
+    border-radius: 50%;
+    background: #fff;
+    color: #9ca3af;
     cursor: pointer;
     box-shadow: none;
-    transition: opacity .2s ease,transform .2s ease;
+    transition: border-color .2s,color .2s;
     flex: 0 0 auto
 }
 
 .home-labs-stories__arrow:hover,.home-labs-stories__arrow:focus {
-    opacity: .92;
-    transform: scale(1.04)
+    border-color: #52b2e1;
+    color: #52b2e1
+}
+
+.home-labs-stories__arrow .material-symbols-outlined {
+    font-size: 1.2rem
 }
 
 .lab-story {
@@ -120,10 +136,10 @@
     display: block;
     width: var(--labs-size);
     height: var(--labs-size);
-    padding: var(--labs-ring);
+    padding: 10px;
     border-radius: 999px;
-    background: linear-gradient(145deg,#9fdff7 0,#52b2e1 36%,#2a8dc5 68%,#1f6ea3 100%);
-    transition: box-shadow .22s ease
+    background: rgba(82,178,225,.14);
+    transition: box-shadow .22s ease,background .22s ease
 }
 
 .lab-story__image {
@@ -131,7 +147,6 @@
     width: 100%;
     height: 100%;
     border-radius: 999px;
-    border: var(--labs-inner-gap) solid var(--bg-ref);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat
@@ -155,7 +170,8 @@
     }
 
     .lab-story:hover .lab-story__media,.lab-story:focus-visible .lab-story__media {
-        box-shadow: 0 10px 22px rgba(31,110,163,.18)
+        background: rgba(82,178,225,.22);
+        box-shadow: 0 10px 22px rgba(31,110,163,.14)
     }
 }
 
@@ -197,33 +213,21 @@
         font-size: 1.5rem
     }
 
-    .home-labs-stories__carousel {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 8px;
-        
-    }
-
     .home-labs-stories__viewport {
-        order: 1;
-        flex: 0 0 100%;
-        width: 100%;
-        max-width: 100%;
-        padding: 10px var(--labs-edge-pad) 14px
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        padding: 10px 16px 14px
     }
 
     .home-labs-stories__arrow {
-        order: 2;
-        width: 24px;
-        height: 24px
-    }
-
-    .home-labs-stories__arrow--next {
-        order: 3
+        width: 30px;
+        height: 30px
     }
 
     .home-labs-stories__arrow .material-symbols-outlined {
-        font-size: 16px
+        font-size: 18px
     }
 
     .lab-story {
@@ -236,20 +240,8 @@
     }
 }
 
-.home-labs-stories .splide__track .splide{
-    display: block;
-    padding: 12px var(--labs-edge-pad) 100px;
-    transition: none
-}
-
-.home-labs-stories .splide__list {
-    align-items: stretch;
-    height: auto;
-    will-change: transform;
-    transition: transform .4s ease
-}
-
-.home-labs-stories .splide__slide {
-    width: auto;
-    min-width: 0
-}
+/* Cuando Splide toma el control, anular el layout flex manual del track
+   (mismo enfoque que home-featured-categories) */
+.home-labs-stories__track.splide__track{display:block;gap:0;padding:0;transition:none}
+.home-labs-stories .splide__list{align-items:flex-start;height:auto;will-change:transform}
+.home-labs-stories .lab-story.splide__slide{width:var(--labs-size);flex:0 0 auto;min-width:0}
