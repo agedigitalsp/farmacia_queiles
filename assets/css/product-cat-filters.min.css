@@ -679,7 +679,7 @@
 }
 
 /* Mostrar X para cerrar filtros dentro del buscador (el plugin la oculta) */
-.woocommerce .sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header {
+.sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header {
     position: absolute !important;
     top: 12px;
     right: 12px;
@@ -692,7 +692,7 @@
 .woocommerce .sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header .menu-title {
     display: none;
 }
-.woocommerce .sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header .menu-close {
+.sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header .menu-close {
     background: #e5e7eb;
     border: none;
     cursor: pointer;
@@ -706,7 +706,7 @@
     padding: 0;
     outline: none;
 }
-.woocommerce .sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header .menu-close:hover {
+.sp-filter-search-ajax .sp-filter-sidebar--fixed .sp-filter-sidebar-header .menu-close:hover {
     background: #d1d5db;
 }
 
