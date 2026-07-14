@@ -384,7 +384,7 @@ final class Farmacia_Queiles_Theme
 			);
 		}
 
-		if (class_exists('WooCommerce') && (is_front_page() || is_account_page() || is_tax('product_cat') || is_tax('product_brand') || is_shop())) {
+		if (class_exists('WooCommerce') && (is_front_page() || is_account_page() || is_tax('product_cat') || is_tax('product_brand') || is_shop() || is_search())) {
 			wp_enqueue_style(
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
@@ -414,6 +414,13 @@ final class Farmacia_Queiles_Theme
 				'farmacia-queiles-product-cat-filters',
 				get_template_directory_uri() . '/assets/js/product-cat-filters.min.js',
 				[],
+				$this->version,
+				true
+			);
+			wp_enqueue_script(
+				'farmacia-queiles-product-cat-order-dropdown',
+				get_template_directory_uri() . '/assets/js/product-cat-order-dropdown.js',
+				['farmacia-queiles-product-cat-filters'],
 				$this->version,
 				true
 			);

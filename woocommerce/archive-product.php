@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/* ── Página de tienda: mismo flujo que taxonomy-product-cat.php ─── */
+/* ── Tienda: mismo flujo que taxonomy-product-cat.php ──────────── */
 if ( is_shop() && shortcode_exists( 'filter_sp' ) ) {
 	get_header( 'shop' );
 
