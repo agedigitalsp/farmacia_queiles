@@ -5303,3 +5303,46 @@ add_filter('template_include', function($template){
 
     return $template;
 }, 99);
+
+/**
+ * Checkout: sustituir la lista de errores de "campo requerido" por un único
+ * mensaje genérico. Los campos siguen marcándose en rojo (validación de Woo).
+ * Otros errores (pago no válido, cupón, términos) se mantienen intactos.
+ */
+add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
+    if (!($errors instanceof WP_Error)) {
+        return;
+    }
+
+    $required_codes = ['required-field', 'validation'];
+    $had_required   = false;
+
+    foreach ($errors->get_error_codes() as $code) {
+        // Errores de campo requerido: los identificamos por su código o, como
+        // respaldo, por el texto que genera WooCommerce.
+        $messages = (array) $errors->get_error_messages($code);
+        $is_required_group = in_array($code, $required_codes, true);
+
+        foreach ($messages as $message) {
+            $is_required_msg = $is_required_group
+                || (bool) preg_match('/(es un campo requerido|is a required field)/iu', wp_strip_all_tags((string) $message));
+
+            if ($is_required_msg) {
+                $had_required = true;
+            } else {
+                // Conservar los errores que NO son de campo requerido.
+                $errors->add('sp_fq_kept_' . $code, $message, $errors->get_error_data($code));
+            }
+        }
+
+        // Eliminar el código original (se re-añadió lo que había que conservar).
+        $errors->remove($code);
+    }
+
+    if ($had_required) {
+        $errors->add(
+            'required-field',
+            __('Por favor, revisa y rellena los campos requeridos antes de continuar.', 'farmacia-queiles')
+        );
+    }
+}, 20, 2);
