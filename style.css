@@ -365,6 +365,15 @@ a {
 	color: var(--primary);
 }
 
+.util-link:hover .util-link__label,
+.util-link:focus .util-link__label {
+	color: var(--primary);
+}
+
+.util-link.is-current .util-link__label {
+	color: var(--primary);
+}
+
 .util-link:hover,
 .util-link:focus {
 	color: var(--primary);
