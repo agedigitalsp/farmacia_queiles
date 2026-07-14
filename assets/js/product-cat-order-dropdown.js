@@ -137,14 +137,16 @@
         select.setAttribute('data-fq-custom-dropdown', 'true');
     }
 
-    function init() {
-        var select = document.getElementById('sp-filter-order');
-        if (select) buildCustomDropdown(select);
+    function init(scope) {
+        var selects = (scope || document).querySelectorAll('#sp-filter-order');
+        Array.prototype.forEach.call(selects, function(select) {
+            buildCustomDropdown(select);
+        });
     }
 
     function tryInit() {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
+            document.addEventListener('DOMContentLoaded', function() { init(); });
         } else {
             init();
         }
@@ -153,25 +155,32 @@
     tryInit();
 
     document.addEventListener('sp_filter_loaded', function() {
-        setTimeout(init, 60);
+        setTimeout(function() {
+            var search = document.querySelector('.sp-filter-search-ajax');
+            if (search) init(search);
+        }, 60);
     });
 
     var pollTimer = setInterval(function() {
-        var select = document.getElementById('sp-filter-order');
-        if (select && select.getAttribute('data-fq-custom-dropdown') !== 'true') {
-            buildCustomDropdown(select);
-        }
-        if (select && select.getAttribute('data-fq-custom-dropdown') === 'true') {
-            clearInterval(pollTimer);
-        }
+        var selects = document.querySelectorAll('#sp-filter-order');
+        var allDone = true;
+        Array.prototype.forEach.call(selects, function(select) {
+            if (select.getAttribute('data-fq-custom-dropdown') !== 'true') {
+                buildCustomDropdown(select);
+                allDone = false;
+            }
+        });
+        if (allDone) clearInterval(pollTimer);
     }, 200);
     setTimeout(function() { clearInterval(pollTimer); }, 10000);
 
     var observer = new MutationObserver(function() {
-        var select = document.getElementById('sp-filter-order');
-        if (select && select.getAttribute('data-fq-custom-dropdown') !== 'true') {
-            buildCustomDropdown(select);
-        }
+        var selects = document.querySelectorAll('#sp-filter-order');
+        Array.prototype.forEach.call(selects, function(select) {
+            if (select.getAttribute('data-fq-custom-dropdown') !== 'true') {
+                buildCustomDropdown(select);
+            }
+        });
     });
     observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
