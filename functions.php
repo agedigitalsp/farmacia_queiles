@@ -337,6 +337,12 @@ final class Farmacia_Queiles_Theme
 				['farmacia-queiles-style'],
 				$this->version
 			);
+			wp_enqueue_style(
+				'farmacia-queiles-home-opiniones',
+				get_template_directory_uri() . '/assets/css/home-opiniones.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-labs'],
+				$this->version
+			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-hero',
 				get_template_directory_uri() . '/assets/js/home-hero-promotions.min.js',
@@ -344,32 +350,49 @@ final class Farmacia_Queiles_Theme
 				$this->version,
 				true
 			);
-			
+
+			// Splide: reutilizar la librería del plugin superplus (mismos handles
+			// 'splide-js'/'splide-css' para no cargarla dos veces). Los carruseles
+			// de la home dependen de ella.
+			if (defined('SP_WSV_PRO_URL')) {
+				if (!wp_style_is('splide-css', 'registered') && !wp_style_is('splide-css', 'enqueued')) {
+					wp_enqueue_style('splide-css', SP_WSV_PRO_URL . 'assets/css/splide.min.css', [], $this->version);
+				} else {
+					wp_enqueue_style('splide-css');
+				}
+				if (!wp_script_is('splide-js', 'registered') && !wp_script_is('splide-js', 'enqueued')) {
+					wp_enqueue_script('splide-js', SP_WSV_PRO_URL . 'assets/js/splide.min.js', [], $this->version, true);
+				} else {
+					wp_enqueue_script('splide-js');
+				}
+			}
+			$splide_dep = wp_script_is('splide-js', 'registered') || wp_script_is('splide-js', 'enqueued') ? ['splide-js'] : [];
+
 			wp_enqueue_script(
 				'farmacia-queiles-home-labs',
 				get_template_directory_uri() . '/assets/js/home-labs-stories.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/js/home-featured-products.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-best-sellers',
 				get_template_directory_uri() . '/assets/js/home-best-sellers.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-featured-cats',
 				get_template_directory_uri() . '/assets/js/home-featured-categories.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
