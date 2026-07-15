@@ -3006,9 +3006,9 @@ final class Farmacia_Queiles_Theme
 		$this->regenerate_home_promotions_json();
 	}
 
-	public function maybe_regenerate_home_promotions_json_on_delete(int $post_id, ?WP_Post $post = null): void
+	public function maybe_regenerate_home_promotions_json_on_delete(int $post_id, $post_or_status = null): void
 	{
-		$post = $post instanceof WP_Post ? $post : get_post($post_id);
+		$post = $post_or_status instanceof WP_Post ? $post_or_status : get_post($post_id);
 		if (!$post instanceof WP_Post) {
 			return;
 		}
@@ -3559,8 +3559,12 @@ final class Farmacia_Queiles_Theme
 		$this->regenerate_home_featured_products_json();
 	}
 
-	public function maybe_regenerate_home_featured_products_json_on_delete(int $post_id, WP_Post $post): void
+	public function maybe_regenerate_home_featured_products_json_on_delete(int $post_id, $post_or_status): void
 	{
+		$post = is_string($post_or_status) ? get_post($post_id) : $post_or_status;
+		if (!$post instanceof WP_Post) {
+			return;
+		}
 		if ('product' !== $post->post_type) {
 			return;
 		}
@@ -3826,8 +3830,12 @@ final class Farmacia_Queiles_Theme
 		$this->regenerate_home_best_sellers_json();
 	}
 
-	public function maybe_regenerate_home_best_sellers_json_on_delete(int $post_id, WP_Post $post): void
+	public function maybe_regenerate_home_best_sellers_json_on_delete(int $post_id, $post_or_status): void
 	{
+		$post = is_string($post_or_status) ? get_post($post_id) : $post_or_status;
+		if (!$post instanceof WP_Post) {
+			return;
+		}
 		if ('product' !== $post->post_type) {
 			return;
 		}
