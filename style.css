@@ -2748,3 +2748,21 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 .site-header__utils .header-cart-icon:focus-visible .util-link__label {
 	color: var(--primary) !important;
 }
+
+/* ── Página "Mi cuenta": evita el scroll horizontal de las tablas de WooCommerce ── */
+body {
+	overflow-x: hidden;
+}
+
+.woocommerce-MyAccount-content table.woocommerce-orders-table,
+.woocommerce-MyAccount-content table.shop_table {
+	display: block;
+	max-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.woocommerce-MyAccount-navigation ul,
+.woocommerce-MyAccount-content form .form-row {
+	max-width: 100%;
+}
