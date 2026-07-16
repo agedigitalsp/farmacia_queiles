@@ -122,6 +122,27 @@ $footer_legal_fallback = [
 					<?php if (!empty($brand_text)) : ?>
 						<p class="footer-brand__description"><?php echo esc_html($brand_text); ?></p>
 					<?php endif; ?>
+
+					<div class="footer-social">
+						<a class="footer-social__link" href="https://www.instagram.com/farmacia_queiles/" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr__('Instagram', 'farmacia-queiles'); ?>">
+							<svg class="footer-social__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.6"/>
+								<circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/>
+								<circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/>
+							</svg>
+						</a>
+						<a class="footer-social__link" href="https://www.tiktok.com/@farmacia_queiles?_r=1&_t=ZN-97rFqYup8aM" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr__('TikTok', 'farmacia-queiles'); ?>">
+							<svg class="footer-social__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<path d="M14.5 3v10.9a2.6 2.6 0 1 1-2.1-2.55" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M14.5 3.5c.4 2.2 2.1 3.9 4.5 4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</a>
+						<a class="footer-social__link" href="https://www.facebook.com/profile.php?id=61576813976751" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr__('Facebook', 'farmacia-queiles'); ?>">
+							<svg class="footer-social__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<path d="M14.5 8.5h2V5.6h-2.3c-2.1 0-3.4 1.4-3.4 3.6v1.8H9v3h1.8V21h3v-6.9h2.2l.4-3h-2.6V9.3c0-.6.3-.8.7-.8Z" fill="currentColor"/>
+							</svg>
+						</a>
+					</div>
 				</div>
 
 				<div class="footer-col">
