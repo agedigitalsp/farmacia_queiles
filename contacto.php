@@ -16,10 +16,23 @@ $address_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_te
 $address_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_address_url', '');
 $schedule_text = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_schedule_text', 'L-V 9:00-13:45 · 16:30-20:00');
 $whatsapp_url = Farmacia_Queiles_Theme::get_setting('farmacia_queiles_footer_whatsapp_url', '');
-$contact_title = __('Contacta con Farmacia Queiles', 'farmacia-queiles');
-$contact_description = __('Nuestro equipo de farmacéuticos está disponible para resolver tus dudas sobre dermocosmética, salud y bienestar.', 'farmacia-queiles');
+$contact_title = __('Contacto', 'farmacia-queiles');
 $site_name = get_bloginfo('name');
 $site_url = get_home_url();
+
+// Imagen de cabecera: campo propio (URL) → imagen destacada → default
+$page_id = (int) get_the_ID();
+$header_image_url = (string) get_post_meta($page_id, '_fq_page_header_image', true);
+if ('' === $header_image_url) {
+	$thumb_id = (int) get_post_thumbnail_id($page_id);
+	if ($thumb_id > 0) {
+		$header_image_url = (string) wp_get_attachment_image_url($thumb_id, 'full');
+	}
+}
+if ('' === $header_image_url) {
+	$header_image_url = get_template_directory_uri() . '/assets/img/category-default.webp';
+}
+$header_style = "background-image:linear-gradient(rgba(255,255,255,0.72),rgba(255,255,255,0.72)),url('" . esc_url($header_image_url) . "');";
 
 // Schema.org markup
 $schema_data = [
@@ -45,21 +58,39 @@ get_header();
 ?>
 
 <div class="content">
+	<!-- ══ MIGAS DE PAN ══════════════════════════════════════════ -->
+	<div class="fq-product-cat-header__top">
+		<div class="container container--wide">
+			<nav class="fq-product-cat-breadcrumb fq-sp-breadcrumb" aria-label="<?php echo esc_attr__('Migas de pan', 'farmacia-queiles'); ?>">
+				<ol class="fq-product-cat-breadcrumb__list">
+					<li class="fq-product-cat-breadcrumb__item">
+						<a href="<?php echo esc_url(home_url('/')); ?>"><?php echo esc_html__('Inicio', 'farmacia-queiles'); ?></a>
+					</li>
+					<li class="fq-product-cat-breadcrumb__sep" aria-hidden="true">
+						<span class="material-symbols-outlined">chevron_right</span>
+					</li>
+					<li class="fq-product-cat-breadcrumb__item is-current" aria-current="page">
+						<span><?php echo esc_html($contact_title); ?></span>
+					</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+
+	<!-- ══ HERO ══════════════════════════════════════════════════ -->
+	<header class="fq-secondary-page__hero" style="<?php echo esc_attr($header_style); ?>">
+		<div class="container container--wide fq-secondary-page__hero-inner">
+			<h1 class="fq-secondary-page__title"><?php echo esc_html($contact_title); ?></h1>
+		</div>
+	</header>
+
 	<div class="container container--wide">
 		<main id="primary" class="site-main">
 			<!-- Schema.org markup para LocalBusiness -->
 			<script type="application/ld+json">
-				<?php echo wp_json_encode($schema_data); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				<?php echo wp_json_encode($schema_data); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				?>
 			</script>
-
-			<!-- Hero Section -->
-			<section class="contact-hero" aria-label="<?php echo esc_attr__('Encabezado de contacto', 'farmacia-queiles'); ?>">
-				<div class="contact-hero__content">
-					<h1 class="contact-hero__title"><?php echo esc_html($contact_title); ?></h1>
-					<p class="contact-hero__subtitle"><?php echo esc_html($contact_description); ?></p>
-				</div>
-			</section>
 
 			<!-- Location and Info Cards -->
 			<section class="contact-info-grid" aria-label="<?php echo esc_attr__('Información de contacto', 'farmacia-queiles'); ?>">
@@ -92,7 +123,7 @@ get_header();
 						<div class="contact-info-card__icon-wrapper">
 							<span class="material-symbols-outlined contact-info-card__icon">call</span>
 						</div>
-						<h3 class="contact-info-card__title"><?php echo esc_html__('Llamanos', 'farmacia-queiles'); ?></h3>
+						<h3 class="contact-info-card__title"><?php echo esc_html__('Llámanos', 'farmacia-queiles'); ?></h3>
 						<?php if (!empty($phone_url)) : ?>
 							<a class="contact-info-card__link" href="<?php echo esc_url($phone_url); ?>" <?php echo Farmacia_Queiles_Theme::get_seo_link_attributes($phone_url); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 																											?>>
