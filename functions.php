@@ -407,6 +407,15 @@ final class Farmacia_Queiles_Theme
 			);
 		}
 
+		if (is_page_template('page-about.php')) {
+			wp_enqueue_style(
+				'farmacia-queiles-about',
+				get_template_directory_uri() . '/assets/css/about-page.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+		}
+
 		if (class_exists('WooCommerce') && (is_front_page() || is_account_page() || is_tax('product_cat') || is_tax('product_brand') || is_shop() || is_search())) {
 			wp_enqueue_style(
 				'farmacia-queiles-home-featured-products',
