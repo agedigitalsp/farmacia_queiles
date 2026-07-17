@@ -64,7 +64,7 @@ get_header();
 	<section class="fq-about-intro container container--wide" aria-label="<?php echo esc_attr__('Introducción', 'farmacia-queiles'); ?>">
 		<div class="fq-about-intro__row">
 			<div class="fq-about-intro__media">
-				<img class="fq-about-intro__image" src="http://localhost:10120/wp-content/uploads/2026/07/Group-farmacia-queiles.webp" alt="">
+				<img class="fq-about-intro__image" src="http://farmaciasqueiles.labagenciasp.es/wp-content/uploads/2026/07/Group-farmacia_queiles.webp" alt="">
 			</div>
 			<div class="fq-about-intro__content">
 				<h1 class="fq-about-intro__title"><?php echo esc_html__('Atención farmacéutica integral en Tarazona', 'farmacia-queiles'); ?></h1>
@@ -91,7 +91,7 @@ get_header();
 				</p>
 			</div>
 			<div class="fq-about-values__media">
-				<img class="fq-about-values__image" src="http://localhost:10120/wp-content/uploads/2026/07/Tarazona.webp" alt="Tarazona">
+				<img class="fq-about-values__image " src="http://farmaciasqueiles.labagenciasp.es/wp-content/uploads/2026/07/Tarazona.webp" alt="Tarazona">
 			</div>
 		</div>
 	</section>

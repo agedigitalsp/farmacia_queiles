@@ -14,11 +14,19 @@
     line-height: 1.15
 }
 
+.fq-about-intro__image {
+    width: 22vw;
+    height: auto;
+    align-items: center;
+}
+
 @media (max-width:768px) {
     .fq-about-hero {
         padding: 36px 0 32px
     }
 }
+
+
 
 .fq-about-intro {
     padding: clamp(56px, 8vw, 57px) 16px;
@@ -29,7 +37,7 @@
 .fq-about-intro__row {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     gap: 10%
 }
 
@@ -41,7 +49,7 @@
 }
 
 .fq-about-intro__content {
-    flex: 0 0 60%;
+    flex: 1 0 49%;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -69,19 +77,15 @@
     margin-bottom: 0
 }
 
-.fq-about-intro__image {
-    width: 24vw;
-    height: auto
-}
-
 @media (max-width:768px) {
-    .fq-about-intro__image {
+    .fq-about-intro__image{
         width: 100%;
+        align-items: center;
     }
 
     .fq-about-intro__row {
-        flex-direction: column;
-        text-align: center
+        flex-direction: column !important;
+        text-align: center !important;
     }
 
     .fq-about-intro__media {
@@ -95,7 +99,8 @@
 
     .fq-about-intro__content {
         flex: 0 0 auto;
-        align-items: center
+        align-items: center;
+        margin-top: 30px;
     }
 }
 
@@ -193,18 +198,14 @@
 }
 
 @media (max-width:768px) {
-        .fq-about-intro__image {
-        width: 100%;
-        text-align: center;
-    }
-
     .fq-about-values__row {
         grid-template-columns: 1fr;
         text-align: center
     }
 
     .fq-about-values__content {
-        align-items: center
+        align-items: center;
+        margin-top: 20px;
     }
 
     .fq-about-values__media {
@@ -213,7 +214,7 @@
     }
 
     .fq-about-values__image {
-        border-radius: 0 0 20px 20px;
+        margin-top: 20px;
     }
 }
 
@@ -262,7 +263,8 @@
 
     .fq-about-closing__inner {
         padding: 40px 24px;
-        border-radius: 24px
+        border-radius: 24px;
+        margin-top: 20px;
     }
 }
 
@@ -282,5 +284,26 @@
     .fq-about-closing__inner {
         padding: 32px 20px;
         border-radius: 20px
+    }
+
+     .fq-about-intro__image {
+        width: 100% !important;
+        text-align: center;
+    }
+}
+
+
+/* Rango específico para Tablets en formato fila */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .fq-about-intro__image {
+        width: 35vw;
+    }
+
+    .fq-about-intro__media {
+        flex: 0 0 38%; 
+    }
+
+    .fq-about-intro__content {
+        flex: 1 0 52%; /* Ajustamos el espacio restante para el texto */
     }
 }
