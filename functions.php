@@ -3067,37 +3067,11 @@ final class Farmacia_Queiles_Theme
 	 * todavía no existe. La regeneración normal (on save/delete) la hace ahora el plugin
 	 * sp-fq-promociones (sp_promo_hero_cpt), dueño del CPT 'promociones'.
 	 */
-	public function maybe_regenerate_home_promotions_json(int $post_id, WP_Post $post, bool $update): void
-	{
-		if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
-			return;
-		}
-
-		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-			return;
-		}
-
-		if (!current_user_can('edit_post', $post_id)) {
-			return;
-		}
-
-		$this->regenerate_home_promotions_json();
-	}
-
-	public function maybe_regenerate_home_promotions_json_on_delete(int $post_id, $post_or_status = null): void
-	{
-		$post = $post_or_status instanceof WP_Post ? $post_or_status : get_post($post_id);
-		if (!$post instanceof WP_Post) {
-			return;
-		}
-
-		if ('promociones' !== $post->post_type) {
-			return;
-		}
-
-		$this->regenerate_home_promotions_json();
-	}
-
+	/**
+	 * Fallback usado únicamente por bootstrap_missing_home_json_files() cuando el JSON
+	 * todavía no existe. La regeneración normal (on save/delete) la hace ahora el plugin
+	 * sp-fq-promociones (sp_promo_hero_cpt), dueño del CPT 'promociones'.
+	 */
 	public function maybe_bootstrap_home_promotions_json(): void
 	{
 		if (!current_user_can('manage_options')) {
@@ -3646,13 +3620,6 @@ final class Farmacia_Queiles_Theme
 	{
 		$post = get_post($post_id);
 		if (!$post instanceof WP_Post || 'product' !== $post->post_type) {
-	public function maybe_regenerate_home_featured_products_json_on_delete(int $post_id, $post_or_status): void
-	{
-		$post = is_string($post_or_status) ? get_post($post_id) : $post_or_status;
-		if (!$post instanceof WP_Post) {
-			return;
-		}
-		if ('product' !== $post->post_type) {
 			return;
 		}
 		$this->regenerate_home_featured_products_json();
@@ -3926,13 +3893,6 @@ final class Farmacia_Queiles_Theme
 	{
 		$post = get_post($post_id);
 		if (!$post instanceof WP_Post || 'product' !== $post->post_type) {
-	public function maybe_regenerate_home_best_sellers_json_on_delete(int $post_id, $post_or_status): void
-	{
-		$post = is_string($post_or_status) ? get_post($post_id) : $post_or_status;
-		if (!$post instanceof WP_Post) {
-			return;
-		}
-		if ('product' !== $post->post_type) {
 			return;
 		}
 		$this->regenerate_home_best_sellers_json();
