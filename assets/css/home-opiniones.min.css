@@ -1,0 +1,100 @@
+.home-opiniones-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    /* Alinea las flechas con la base del título h2 */
+    margin-bottom: 35px;
+    width: 100%;
+}
+
+.home-opiniones-stories__header {
+    text-align: left !important;
+    margin-bottom: 0 !important;
+    width: 100vw
+}
+
+.home-opiniones-arrows-top {
+    display: flex;
+    gap: 12px;
+}
+
+.home-opiniones-arrows-top .home-labs-stories__arrow {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    border: 1px solid #d5dde4 !important;
+    background: #fff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #9ca3af !important;
+    cursor: pointer !important;
+    transition: border-color .2s, color .2s !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.home-opiniones-arrows-top .home-labs-stories__arrow:hover {
+    border-color: #52b2e1 !important;
+    color: #52b2e1 !important;
+}
+
+.home-opiniones-arrows-top .home-labs-stories__arrow .material-symbols-outlined {
+    font-size: 1.2rem !important;
+    line-height: 1 !important;
+}
+
+/* ==========================================================================
+   ESTRUCTURA INTERNA DEL CARRUSEL DE OPINIONES
+   ========================================================================== */
+.home-opiniones-carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.home-opiniones-viewport {
+    overflow: hidden;
+    width: 100%;
+    padding: 10px 5px;
+}
+
+.home-opiniones-viewport .splide__track {
+    padding: 0;
+    transition: none;
+}
+
+.home-opiniones-viewport .splide__list {
+    align-items: stretch;
+    will-change: transform;
+    transition: transform .4s ease;
+}
+
+.tarjeta-test.splide__slide {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    width: auto;
+}
+
+/* RECUADROS DE OPINIÓN (4 columnas fijas) */
+.tarjeta-test {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 calc(25% - 15px) !important;
+    min-width: 250px;
+    box-sizing: border-box;
+}
+
+.estrellas-test {
+    color: #ffc107;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}

@@ -80,12 +80,6 @@ $fq_header_style = "background-image:linear-gradient(rgba(255,255,255,0.72),rgba
 					<div id="fq-fav-grid-controls">
 						<span><?php echo esc_html__( 'Visualización:', 'farmacia-queiles' ); ?></span>
 						<div class="fq-fav-grid-btns">
-							<button class="fq-fav-grid-btn" type="button" data-fav-grid="2" aria-label="<?php echo esc_attr__( '2 columnas', 'farmacia-queiles' ); ?>">
-								<svg viewBox="0 0 100 100" width="28" height="28"><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m45 10v80h-37v-80z"/><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m92 10v80h-37v-80z"/></svg>
-							</button>
-							<button class="fq-fav-grid-btn" type="button" data-fav-grid="3" aria-label="<?php echo esc_attr__( '3 columnas', 'farmacia-queiles' ); ?>">
-								<svg viewBox="0 0 100 100" width="28" height="28"><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m62 10v80h-23v-80z"/><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m92 10v80h-23v-80z"/><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m32 10v80h-23v-80z"/></svg>
-							</button>
 							<button class="fq-fav-grid-btn" type="button" data-fav-grid="4" aria-label="<?php echo esc_attr__( '4 columnas', 'farmacia-queiles' ); ?>">
 								<svg viewBox="0 0 100 100" width="28" height="28"><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m94 10v80h-18v-80z"/><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m71 10v80h-18v-80z"/><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m48 10v80h-18v-80z"/><path fill-rule="evenodd" fill="none" stroke="currentColor" stroke-width="6" d="m25 10v80h-18v-80z"/></svg>
 							</button>

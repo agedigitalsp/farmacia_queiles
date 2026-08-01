@@ -111,3 +111,10 @@ $add_to_cart_classes = implode(
 		</div>
 	</article>
 </li>
+
+
+
+
+
+
+

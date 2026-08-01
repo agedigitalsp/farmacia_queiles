@@ -325,6 +325,12 @@ final class Farmacia_Queiles_Theme
 				['farmacia-queiles-style'],
 				$this->version
 			);
+			wp_enqueue_style(
+				'farmacia-queiles-home-opiniones',
+				get_template_directory_uri() . '/assets/css/home-opiniones.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-labs'],
+				$this->version
+			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-hero',
 				get_template_directory_uri() . '/assets/js/home-hero-promotions.min.js',
@@ -332,32 +338,49 @@ final class Farmacia_Queiles_Theme
 				$this->version,
 				true
 			);
-			
+
+			// Splide: reutilizar la librería del plugin superplus (mismos handles
+			// 'splide-js'/'splide-css' para no cargarla dos veces). Los carruseles
+			// de la home dependen de ella.
+			if (defined('SP_WSV_PRO_URL')) {
+				if (!wp_style_is('splide-css', 'registered') && !wp_style_is('splide-css', 'enqueued')) {
+					wp_enqueue_style('splide-css', SP_WSV_PRO_URL . 'assets/css/splide.min.css', [], $this->version);
+				} else {
+					wp_enqueue_style('splide-css');
+				}
+				if (!wp_script_is('splide-js', 'registered') && !wp_script_is('splide-js', 'enqueued')) {
+					wp_enqueue_script('splide-js', SP_WSV_PRO_URL . 'assets/js/splide.min.js', [], $this->version, true);
+				} else {
+					wp_enqueue_script('splide-js');
+				}
+			}
+			$splide_dep = wp_script_is('splide-js', 'registered') || wp_script_is('splide-js', 'enqueued') ? ['splide-js'] : [];
+
 			wp_enqueue_script(
 				'farmacia-queiles-home-labs',
 				get_template_directory_uri() . '/assets/js/home-labs-stories.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/js/home-featured-products.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-best-sellers',
 				get_template_directory_uri() . '/assets/js/home-best-sellers.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
 			wp_enqueue_script(
 				'farmacia-queiles-home-featured-cats',
 				get_template_directory_uri() . '/assets/js/home-featured-categories.min.js',
-				[],
+				$splide_dep,
 				$this->version,
 				true
 			);
@@ -372,7 +395,16 @@ final class Farmacia_Queiles_Theme
 			);
 		}
 
-		if (class_exists('WooCommerce') && (is_tax('product_cat') || is_tax('product_brand') || is_shop())) {
+		if (is_page_template('page-about.php')) {
+			wp_enqueue_style(
+				'farmacia-queiles-about',
+				get_template_directory_uri() . '/assets/css/about-page.min.css',
+				['farmacia-queiles-style'],
+				$this->version
+			);
+		}
+
+		if (class_exists('WooCommerce') && (is_front_page() || is_account_page() || is_tax('product_cat') || is_tax('product_brand') || is_shop() || is_search())) {
 			wp_enqueue_style(
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
@@ -405,6 +437,13 @@ final class Farmacia_Queiles_Theme
 				$this->version,
 				true
 			);
+			wp_enqueue_script(
+				'farmacia-queiles-product-cat-order-dropdown',
+				get_template_directory_uri() . '/assets/js/product-cat-order-dropdown.js',
+				['farmacia-queiles-product-cat-filters'],
+				$this->version,
+				true
+			);
 
 			if (is_shop()) {
 				wp_enqueue_style(
@@ -429,6 +468,18 @@ final class Farmacia_Queiles_Theme
 				'farmacia-queiles-home-featured-products',
 				get_template_directory_uri() . '/assets/css/home-featured-products.min.css',
 				['farmacia-queiles-style'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-product-cat-header',
+				get_template_directory_uri() . '/assets/css/product-cat-header.min.css',
+				['farmacia-queiles-style', 'farmacia-queiles-home-featured-products'],
+				$this->version
+			);
+			wp_enqueue_style(
+				'farmacia-queiles-product-cat-filters',
+				get_template_directory_uri() . '/assets/css/product-cat-filters.min.css',
+				['farmacia-queiles-product-cat-header'],
 				$this->version
 			);
 			wp_enqueue_style(
@@ -489,8 +540,8 @@ final class Farmacia_Queiles_Theme
 			'logged' => is_user_logged_in() ? '1' : '0',
 		]);
 
-		// Favoritos: CSS y estilos solo donde hay cards/ficha/página
-		if (class_exists('WooCommerce') && (is_front_page() || is_singular('product') || is_tax('product_cat') || is_tax('product_brand') || is_shop() || is_page_template('page-favoritos.php'))) {
+		// Favoritos: CSS global (el popup de búsqueda aparece en cualquier página)
+		if (class_exists('WooCommerce')) {
 			wp_enqueue_style(
 				'farmacia-queiles-fq-favorites',
 				get_template_directory_uri() . '/assets/css/fq-favorites.min.css',
@@ -502,6 +553,12 @@ final class Farmacia_Queiles_Theme
 					'farmacia-queiles-product-cat-header',
 					get_template_directory_uri() . '/assets/css/product-cat-header.min.css',
 					['farmacia-queiles-style'],
+					$this->version
+				);
+				wp_enqueue_style(
+					'farmacia-queiles-product-cat-filters',
+					get_template_directory_uri() . '/assets/css/product-cat-filters.min.css',
+					['farmacia-queiles-product-cat-header'],
 					$this->version
 				);
 				wp_enqueue_style(
@@ -2848,9 +2905,27 @@ final class Farmacia_Queiles_Theme
 			)
 		);
 
+		// Adjuntamos las subcategorías (hijos directos) a cada categoría padre,
+		// para poder mostrar un mega-desplegable en el menú.
+		$attach_children = static function (array $parents): array {
+			foreach ($parents as $parent) {
+				$children = get_terms(
+					[
+						'taxonomy'   => 'product_cat',
+						'hide_empty' => false,
+						'parent'     => (int) $parent->term_id,
+						'orderby'    => 'name',
+						'order'      => 'ASC',
+					]
+				);
+				$parent->fq_children = (is_wp_error($children) || empty($children)) ? [] : $children;
+			}
+			return $parents;
+		};
+
 		return [
-			'featured' => $featured_terms,
-			'more' => $remaining_terms,
+			'featured' => $attach_children($featured_terms),
+			'more'     => $attach_children($remaining_terms),
 		];
 	}
 
@@ -2992,6 +3067,37 @@ final class Farmacia_Queiles_Theme
 	 * todavía no existe. La regeneración normal (on save/delete) la hace ahora el plugin
 	 * sp-fq-promociones (sp_promo_hero_cpt), dueño del CPT 'promociones'.
 	 */
+	public function maybe_regenerate_home_promotions_json(int $post_id, WP_Post $post, bool $update): void
+	{
+		if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+			return;
+		}
+
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return;
+		}
+
+		if (!current_user_can('edit_post', $post_id)) {
+			return;
+		}
+
+		$this->regenerate_home_promotions_json();
+	}
+
+	public function maybe_regenerate_home_promotions_json_on_delete(int $post_id, $post_or_status = null): void
+	{
+		$post = $post_or_status instanceof WP_Post ? $post_or_status : get_post($post_id);
+		if (!$post instanceof WP_Post) {
+			return;
+		}
+
+		if ('promociones' !== $post->post_type) {
+			return;
+		}
+
+		$this->regenerate_home_promotions_json();
+	}
+
 	public function maybe_bootstrap_home_promotions_json(): void
 	{
 		if (!current_user_can('manage_options')) {
@@ -3540,6 +3646,13 @@ final class Farmacia_Queiles_Theme
 	{
 		$post = get_post($post_id);
 		if (!$post instanceof WP_Post || 'product' !== $post->post_type) {
+	public function maybe_regenerate_home_featured_products_json_on_delete(int $post_id, $post_or_status): void
+	{
+		$post = is_string($post_or_status) ? get_post($post_id) : $post_or_status;
+		if (!$post instanceof WP_Post) {
+			return;
+		}
+		if ('product' !== $post->post_type) {
 			return;
 		}
 		$this->regenerate_home_featured_products_json();
@@ -3813,6 +3926,13 @@ final class Farmacia_Queiles_Theme
 	{
 		$post = get_post($post_id);
 		if (!$post instanceof WP_Post || 'product' !== $post->post_type) {
+	public function maybe_regenerate_home_best_sellers_json_on_delete(int $post_id, $post_or_status): void
+	{
+		$post = is_string($post_or_status) ? get_post($post_id) : $post_or_status;
+		if (!$post instanceof WP_Post) {
+			return;
+		}
+		if ('product' !== $post->post_type) {
 			return;
 		}
 		$this->regenerate_home_best_sellers_json();
@@ -4745,3 +4865,46 @@ add_filter('template_include', function($template){
 
     return $template;
 }, 99);
+
+/**
+ * Checkout: sustituir la lista de errores de "campo requerido" por un único
+ * mensaje genérico. Los campos siguen marcándose en rojo (validación de Woo).
+ * Otros errores (pago no válido, cupón, términos) se mantienen intactos.
+ */
+add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
+    if (!($errors instanceof WP_Error)) {
+        return;
+    }
+
+    $required_codes = ['required-field', 'validation'];
+    $had_required   = false;
+
+    foreach ($errors->get_error_codes() as $code) {
+        // Errores de campo requerido: los identificamos por su código o, como
+        // respaldo, por el texto que genera WooCommerce.
+        $messages = (array) $errors->get_error_messages($code);
+        $is_required_group = in_array($code, $required_codes, true);
+
+        foreach ($messages as $message) {
+            $is_required_msg = $is_required_group
+                || (bool) preg_match('/(es un campo requerido|is a required field)/iu', wp_strip_all_tags((string) $message));
+
+            if ($is_required_msg) {
+                $had_required = true;
+            } else {
+                // Conservar los errores que NO son de campo requerido.
+                $errors->add('sp_fq_kept_' . $code, $message, $errors->get_error_data($code));
+            }
+        }
+
+        // Eliminar el código original (se re-añadió lo que había que conservar).
+        $errors->remove($code);
+    }
+
+    if ($had_required) {
+        $errors->add(
+            'required-field',
+            __('Por favor, revisa y rellena los campos requeridos antes de continuar.', 'farmacia-queiles')
+        );
+    }
+}, 20, 2);

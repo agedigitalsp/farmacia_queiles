@@ -4,7 +4,7 @@ Theme URI: https://agenciasp.com/
 Author: AgenciaSP
 Author URI: https://agenciasp.com/
 Description: Tema para Farmacias Queiles
-Version: 1.0.0
+Version: 1.0.6
 Requires at least: 7.0
 Requires PHP: 8.2
 Text Domain: farmacia-queiles
@@ -43,7 +43,7 @@ a {
 	border-bottom: 0;
 }
 
-.content.home-content{
+.content.home-content {
 	overflow: hidden;
 }
 
@@ -195,6 +195,18 @@ a {
 	opacity: 0.85;
 }
 
+.preheader-cta__icon {
+	font-size: 18px;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.preheader-cta-mobile-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .site-header--luxury {
 	background: #fff;
 	position: sticky;
@@ -209,21 +221,21 @@ a {
 }
 
 .sp-filter-sidebar-header {
-    display: none !important;
+	display: none !important;
 }
 
-.woocommerce  .sp-filter-main {
-    max-width: 1450px;
-    margin: 0 auto;
+.woocommerce .sp-filter-main {
+	max-width: 1450px;
+	margin: 0 auto;
 }
 
-.woocommerce  .fq-filter-card--filters .slider-tooltip {
-    top: 30px;
-    background-color: #52b2e1;
+.woocommerce .fq-filter-card--filters .slider-tooltip {
+	top: 30px;
+	background-color: #52b2e1;
 }
 
-.woocommerce  .fq-filter-card--filters #sp-price-slider {
-    margin-bottom: 60px;
+.woocommerce .fq-filter-card--filters #sp-price-slider {
+	margin-bottom: 60px;
 }
 
 @media (min-width: 1025px) {
@@ -264,10 +276,20 @@ a {
 	text-decoration: none;
 }
 
-.custom-logo {
+.custom-logo,
+.woocommerce img.custom-logo,
+.woocommerce-page img.custom-logo {
 	display: block;
 	height: 35px;
 	max-height: 56px;
+	width: auto;
+}
+
+.sp-filter-search-ajax .sp-filter-search-ajax__header .custom-logo-link img {
+	display: block;
+	height: 35px;
+	max-height: 56px;
+	max-width: none !important;
 	width: auto;
 }
 
@@ -343,8 +365,21 @@ a {
 	color: var(--primary);
 }
 
+.util-link:hover .util-link__label,
+.util-link:focus .util-link__label {
+	color: var(--primary);
+}
+
+.util-link.is-current .util-link__label {
+	color: var(--primary);
+}
+
 .util-link:hover,
 .util-link:focus {
+	color: var(--primary);
+}
+
+.util-link.is-current .util-link__icon {
 	color: var(--primary);
 }
 
@@ -436,6 +471,95 @@ a {
 	width: 100%;
 }
 
+/* ── Mega-menú de subcategorías (categorías con hijos) ── */
+.header-categories__item--has-children {
+	position: relative;
+}
+
+.header-categories__link-arrow {
+	font-size: 18px;
+	transition: transform 0.2s ease;
+}
+
+.header-categories__megamenu {
+	position: absolute;
+	top: calc(100% + 32px);
+	left: 0;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 16px;
+	box-shadow: 0 20px 50px rgba(17, 24, 39, 0.12);
+	padding: 12px 24px;
+	z-index: 40;
+	min-width: 260px;
+	max-width: 94vw;
+	width: max-content;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(8px);
+	transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+/* Puente invisible para que el ratón no "caiga" al bajar del enlace al panel */
+.header-categories__megamenu::before {
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: 0;
+	width: 100%;
+	height: 12px;
+}
+
+.header-categories__item--has-children:hover .header-categories__megamenu,
+.header-categories__item--has-children:focus-within .header-categories__megamenu {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.header-categories__item--has-children:hover .header-categories__link-arrow,
+.header-categories__item--has-children:focus-within .header-categories__link-arrow {
+	transform: rotate(180deg);
+}
+
+.header-categories__megamenu-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	/* Máximo 4 items por columna; al llegar a 4 se crea una columna nueva.
+	   Ancho de columna fijo para que el texto largo quepa y el hover ocupe
+	   toda la columna sin pegarse al borde. */
+	grid-template-rows: repeat(4, auto);
+	grid-auto-flow: column;
+	grid-auto-columns: 240px;
+	gap: 0.5px 16px;
+}
+
+.header-categories__megamenu-item {
+	margin: 0;
+}
+
+.header-categories__megamenu-link {
+	display: block;
+	padding: 8px 14px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 14px;
+	color: var(--text-dark);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.header-categories__megamenu-link:hover,
+.header-categories__megamenu-link:focus,
+.header-categories__megamenu-item.is-current .header-categories__megamenu-link {
+	background: var(--bg-ref);
+	color: var(--primary);
+}
+
 .header-categories__item--dropdown {
 	position: relative;
 }
@@ -482,17 +606,36 @@ a {
 
 .header-categories__menu {
 	position: absolute;
-	top: calc(100% + 12px);
+	top: calc(100% + 22px);
 	left: 0;
 	min-width: 260px;
 	background: #fff;
 	border: 1px solid #e5e7eb;
 	border-radius: 16px;
 	box-shadow: 0 20px 50px rgba(17, 24, 39, 0.12);
-	padding: 12px 0;
+	padding: 12px 24px;
 	margin: 0;
 	list-style: none;
 	z-index: 30;
+	opacity: 0;
+	transform: translateY(8px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	pointer-events: none;
+}
+
+.header-categories__dropdown[open] .header-categories__menu {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+.header-categories__menu::before {
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: 0;
+	width: 100%;
+	height: 12px;
 }
 
 .header-categories__menu-item {
@@ -501,10 +644,12 @@ a {
 
 .header-categories__menu-link {
 	display: block;
-	padding: 10px 18px;
+	padding: 8px 14px;
+	border-radius: 8px;
 	text-decoration: none;
 	font-size: 14px;
 	color: var(--text-dark);
+	transition: background 0.15s ease, color 0.15s ease;
 }
 
 .header-categories__menu-link:hover,
@@ -556,8 +701,8 @@ a {
 
 .primary-menu--luxury a:hover::after,
 .primary-menu--luxury a:focus::after,
-.primary-menu--luxury .current-menu-item > a::after,
-.primary-menu--luxury .current_page_item > a::after {
+.primary-menu--luxury .current-menu-item>a::after,
+.primary-menu--luxury .current_page_item>a::after {
 	width: 100%;
 }
 
@@ -945,7 +1090,7 @@ body.site-mobile-panel-open {
 	padding: 20px 16px 120px;
 }
 
-.site-mobile-menu__block + .site-mobile-menu__block {
+.site-mobile-menu__block+.site-mobile-menu__block {
 	margin-top: 28px;
 }
 
@@ -955,7 +1100,7 @@ body.site-mobile-panel-open {
 	padding: 0;
 }
 
-.site-mobile-menu__list li + li {
+.site-mobile-menu__list li+li {
 	margin-top: 8px;
 }
 
@@ -973,7 +1118,7 @@ body.site-mobile-panel-open {
 }
 
 .site-mobile-menu__link.is-current,
-.site-mobile-menu__list .current-menu-item > a,
+.site-mobile-menu__list .current-menu-item>a,
 .site-mobile-menu__list a:hover,
 .site-mobile-menu__list a:focus {
 	background: rgba(82, 178, 225, 0.1);
@@ -1061,6 +1206,7 @@ body.site-mobile-panel-open {
 .mobile-bottom-bar__badge.is-empty {
 	display: none;
 }
+
 /* 
 .content {
 	padding: 24px 0;
@@ -1070,11 +1216,11 @@ body.site-mobile-panel-open {
 	margin: 0 0 10px;
 }
 
-.entry-content > :first-child {
+.entry-content> :first-child {
 	margin-top: 0;
 }
 
-.entry-content > :last-child {
+.entry-content> :last-child {
 	margin-bottom: 0;
 }
 
@@ -1128,9 +1274,17 @@ body.site-mobile-panel-open {
 
 .footer-newsletter__form {
 	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: flex-end;
+	width: min(520px, 100%);
+}
+
+.footer-newsletter__row {
+	display: flex;
 	gap: 12px;
 	align-items: center;
-	width: min(520px, 100%);
+	width: 100%;
 	justify-content: flex-end;
 }
 
@@ -1176,6 +1330,46 @@ body.site-mobile-panel-open {
 	border-color: #3da0d1;
 }
 
+.footer-newsletter__consent {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+}
+
+.footer-newsletter__checkbox-label {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	font-size: 12px;
+	font-weight: 300;
+	color: rgba(255, 255, 255, 0.65);
+	cursor: pointer;
+	text-align: right;
+}
+
+.footer-newsletter__checkbox-label a {
+	color: rgba(255, 255, 255, 0.9);
+	text-decoration: underline;
+}
+
+.footer-newsletter__checkbox {
+	margin-top: 2px;
+	flex: 0 0 auto;
+	width: 14px;
+	height: 14px;
+	accent-color: var(--primary);
+	cursor: pointer;
+}
+
+.footer-newsletter__error {
+	margin: 0;
+	color: #ff4d4f;
+	font-size: 11px;
+	font-family: 'Poppins', sans-serif;
+}
+
 .footer-main {
 	padding: 64px 0;
 	display: grid;
@@ -1201,7 +1395,7 @@ body.site-mobile-panel-open {
 	height: auto;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1140px) {
 	body {
 		padding-bottom: 65px;
 	}
@@ -1258,12 +1452,11 @@ body.site-mobile-panel-open {
 	}
 
 	.site-header__brand .custom-logo {
-		height: 38px;
-		max-width: 180px;
+		height: 35px;
 	}
 
 	.site-header__utils {
-		gap: 18px;
+		gap: 12px;
 	}
 
 	.util-link__label {
@@ -1287,28 +1480,43 @@ body.site-mobile-panel-open {
 	.site-header__utils .util-link--cart.header-cart-icon {
 		display: none !important;
 	}
+
+	.util-link:hover .util-link__icon,
+	.util-link:focus .util-link__icon {
+		transition: none;
+	}
+
+	
+	.util-link:hover .util-link__icon,
+	.util-link:focus .util-link__icon {
+		transform: none;
+		color: var(--primary);
+	}
+
+
+
 }
 
 /* Hide footer dropdown behavior and icon on desktop and tablet */
 @media (min-width: 768px) {
-    .footer-toggle__icon {
-        display: none !important;
-    }
+	.footer-toggle__icon {
+		display: none !important;
+	}
 
-    .footer-toggle__summary {
-        pointer-events: none !important;
+	.footer-toggle__summary {
+		pointer-events: none !important;
 	}
 }
 
 /* Ocultar el dropdown de desktop y tablet */
 @media (min-width: 768px) {
-    .footer-toggle__icon {
-        display: none;
-    }
+	.footer-toggle__icon {
+		display: none;
+	}
 
-    .footer-toggle__summary {
-        pointer-events: none;
-    }
+	.footer-toggle__summary {
+		pointer-events: none;
+	}
 }
 
 
@@ -1405,7 +1613,7 @@ body.site-mobile-panel-open {
 	width: 100%;
 }
 
-#sp-filter-products-list > p.woocommerce-info,
+#sp-filter-products-list>p.woocommerce-info,
 .sp-filter-products-container p.woocommerce-info {
 	width: calc(100% - 30px);
 	margin-left: 16px;
@@ -1487,6 +1695,39 @@ body.site-mobile-panel-open {
 	max-width: 340px;
 }
 
+.footer-social {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 20px;
+}
+
+.footer-social__link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	color: rgba(255, 255, 255, 0.75);
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-social__link:hover,
+.footer-social__link:focus {
+	background-color: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.5);
+	color: #fff;
+}
+
+.footer-social__icon {
+	width: 24px;
+	height: 24px;
+	display: block;
+	margin: auto;
+}
+
 .footer-heading {
 	margin: 0 0 18px;
 	font-size: 13px;
@@ -1496,7 +1737,9 @@ body.site-mobile-panel-open {
 }
 
 .footer-toggle {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .footer-toggle__summary {
@@ -1550,12 +1793,12 @@ body.site-mobile-panel-open {
 .footer-contact__item {
 	display: flex;
 	gap: 10px;
-	align-items: flex-start;
+	align-items: center;
 }
 
 .footer-contact__icon {
 	color: var(--primary);
-	font-size: 18px;
+	font-size: 24px;
 	margin-top: 1px;
 	flex: 0 0 auto;
 }
@@ -1565,8 +1808,8 @@ body.site-mobile-panel-open {
 }
 
 .footer-contact__icon--image {
-	width: 18px;
-	height: 18px;
+	width: 24px;
+	height: 20px;
 	object-fit: contain;
 }
 
@@ -1592,8 +1835,10 @@ body.site-mobile-panel-open {
 
 .footer-contact__schedule-title {
 	margin: 0 0 6px;
-	font-size: 12px;
-	font-weight: 600;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
 	color: rgba(255, 255, 255, 0.85);
 }
 
@@ -1667,7 +1912,7 @@ body.site-mobile-panel-open {
 }
 
 .footer-payment__logo,
-.woocommerce-page .footer-payment__logo{
+.woocommerce-page .footer-payment__logo {
 	display: block;
 	width: auto;
 	height: 22px;
@@ -1694,6 +1939,11 @@ body.site-mobile-panel-open {
 }
 
 @media (max-width: 640px) {
+	.site-header__brand .custom-logo {
+		height: 38px;
+		max-width: 200px;
+	}
+
 	.footer-newsletter {
 		flex-direction: column;
 		align-items: flex-start;
@@ -1703,6 +1953,10 @@ body.site-mobile-panel-open {
 
 	.footer-newsletter__form {
 		width: 100%;
+		align-items: stretch;
+	}
+
+	.footer-newsletter__row {
 		justify-content: flex-start;
 		flex-direction: column;
 		align-items: stretch;
@@ -1710,6 +1964,14 @@ body.site-mobile-panel-open {
 
 	.footer-newsletter__input {
 		min-width: 0;
+	}
+
+	.footer-newsletter__consent {
+		align-items: flex-start;
+	}
+
+	.footer-newsletter__checkbox-label {
+		text-align: left;
 	}
 
 	.footer-main {
@@ -1734,6 +1996,7 @@ body.site-mobile-panel-open {
 	.footer-toggle {
 		border-top: 1px solid rgba(255, 255, 255, 0.08);
 		padding-top: 18px;
+		gap: 0px;
 	}
 
 	.footer-toggle__summary {
@@ -1760,7 +2023,7 @@ body.site-mobile-panel-open {
 	}
 
 	.footer-toggle__content {
-		padding-top: 24px;
+		padding-top: 10px;
 	}
 
 	.footer-toggle:not([open]) .footer-toggle__content {
@@ -1800,6 +2063,11 @@ body.site-mobile-panel-open {
 .site-header__utils .header-cart-icon:hover .material-symbols-outlined,
 .site-header__utils .header-cart-icon:focus .material-symbols-outlined {
 	transform: translateY(-6px) !important;
+	color: var(--primary) !important;
+}
+
+.site-header__utils .header-cart-icon:hover .util-link__label,
+.site-header__utils .header-cart-icon:focus .util-link__label {
 	color: var(--primary) !important;
 }
 
@@ -1868,14 +2136,21 @@ body.site-mobile-panel-open {
 /* ===== INICIO: Superplus Custom Login - Colores del Tema =====  */
 /* Sobrescribimos las variables CSS de Superplus Light theme para usar los colores del tema */
 .sp-wsv-theme-light {
-	--sp-black: var(--text-dark);           /* #383e42 */
-	--sp-white: var(--surface);              /* #ffffff */
-	--sp-bg-main: var(--surface);            /* #ffffff */
-	--sp-bg-input: var(--bg-ref);            /* #f4f6f8 */
-	--sp-text-primary: var(--text-dark);    /* #383e42 */
-	--sp-text-secondary: var(--text-muted); /* #6b7280 */
+	--sp-black: var(--text-dark);
+	/* #383e42 */
+	--sp-white: var(--surface);
+	/* #ffffff */
+	--sp-bg-main: var(--surface);
+	/* #ffffff */
+	--sp-bg-input: var(--bg-ref);
+	/* #f4f6f8 */
+	--sp-text-primary: var(--text-dark);
+	/* #383e42 */
+	--sp-text-secondary: var(--text-muted);
+	/* #6b7280 */
 	--sp-border-color: #e4e4e7;
-	--sp-border-focus: var(--primary);      /* #52b2e1 */
+	--sp-border-focus: var(--primary);
+	/* #52b2e1 */
 	--sp-error-bg: #fef2f2;
 	--sp-error-text: #b91c1c;
 	--sp-error-border: #fecaca;
@@ -1983,11 +2258,16 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 /* ===== INICIO: SP Menu Movil - Colores del Tema ===== */
 /* Definimos las variables CSS del plugin sp_menu_movil usando los colores del tema */
 :root {
-	--sp_color_negro: var(--surface);       /* #ffffff - fondo del panel */
-	--sp_color_blanco: var(--text-dark);    /* #383e42 - texto */
-	--sp_color_naranja: var(--primary);     /* #52b2e1 - hover botones atrás/cerrar */
-	--sp_color_gris_medio: #e5e7eb;         /* borde del header */
+	--sp_color_negro: var(--surface);
+	/* #ffffff - fondo del panel */
+	--sp_color_blanco: var(--text-dark);
+	/* #383e42 - texto */
+	--sp_color_naranja: var(--primary);
+	/* #52b2e1 - hover botones atrás/cerrar */
+	--sp_color_gris_medio: #e5e7eb;
+	/* borde del header */
 }
+
 /* ===== FIN: SP Menu Movil - Colores del Tema ===== */
 
 /* ==========================================================================
@@ -1996,25 +2276,25 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 
 /* Banner */
 .secondary-page-banner {
-    background-color: #383e42;
-    padding: 60px 20px;
-    text-align: center;        
-    width: 100%;
+	background-color: #383e42;
+	padding: 60px 20px;
+	text-align: center;
+	width: 100%;
 }
 
 /* TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­tulo dentro del banner */
 .title-secondary-page-banner h1 {
-    color: #ffffff !important;
-    font-size: 2.5rem;
-    margin: 0;
-    font-weight: 700;
+	color: #ffffff !important;
+	font-size: 2.5rem;
+	margin: 0;
+	font-weight: 700;
 }
 
 /* Texto de la pÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡gina */
 .content-secondary-page {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+	max-width: 1200px;
+	margin: 40px auto;
+	padding: 0 20px;
 	line-height: 1.8em;
 }
 
@@ -2023,32 +2303,36 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
    ========================================================================== */
 
 .breadcrumbs-secondary-page {
-    background-color: #f8f9fa; /* Fondo gris muy limpio */
-    padding: 12px 0;
-    border-bottom: 1px solid #e9ecef;
-    font-size: 0.85rem;
+	background-color: #f8f9fa;
+	/* Fondo gris muy limpio */
+	padding: 12px 0;
+	border-bottom: 1px solid #e9ecef;
+	font-size: 0.85rem;
 }
 
 .breadcrumbs-container {
-    max-width: 1200px; /* Alineado exactamente al ancho de tu contenido de abajo */
-    margin: 0 auto;
-    padding: 0 20px;
-    color: #6c757d;
+	max-width: 1200px;
+	/* Alineado exactamente al ancho de tu contenido de abajo */
+	margin: 0 auto;
+	padding: 0 20px;
+	color: #6c757d;
 }
 
 .breadcrumbs-container a {
-    color: #007bff; /* Color del enlace */
-    text-decoration: none;
+	color: #007bff;
+	/* Color del enlace */
+	text-decoration: none;
 }
 
 .breadcrumbs-container a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .breadcrumbs-container .current-crumb {
-    font-weight: 500;
-    color: #495057;
+	font-weight: 500;
+	color: #495057;
 }
+
 /* ==========================================================================
    BREADCRUMBS PARA PÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂGINAS SECUNDARIAS - FIN
    ========================================================================== */
@@ -2059,64 +2343,65 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
    ========================================================================== */
 
 .fq-product-cat-breadcrumb {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 0 0 18px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin: 0 0 18px;
 }
 
 .fq-product-cat-breadcrumb__list {
-    display: inline-flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--text-muted, #6b7280);
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 11px;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: var(--text-muted, #6b7280);
 }
 
 .fq-product-cat-breadcrumb__item a {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.2s ease;
+	color: inherit;
+	text-decoration: none;
+	transition: color 0.2s ease;
 }
 
 .fq-product-cat-breadcrumb__item a:hover {
-    color: var(--primary, #52b2e1);
+	color: var(--primary, #52b2e1);
 }
 
 .fq-product-cat-breadcrumb__item.is-current span {
-    color: var(--text-muted, #6b7280);
+	color: var(--text-muted, #6b7280);
 }
 
 .fq-product-cat-breadcrumb__sep {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-muted, #6b7280);
-    opacity: 0.9;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-muted, #6b7280);
+	opacity: 0.9;
 }
 
 .fq-product-cat-breadcrumb__sep .material-symbols-outlined {
-    font-size: 16px;
+	font-size: 16px;
 }
 
 .fq-sp-breadcrumb {
-    margin: 20px 0 24px;
+	margin: 20px 0 24px;
 }
 
 @media (max-width: 768px) {
-    .fq-product-cat-breadcrumb__list {
-        font-size: 10px;
-        letter-spacing: 0.2em;
-    }
+	.fq-product-cat-breadcrumb__list {
+		font-size: 10px;
+		letter-spacing: 0.2em;
+	}
+
 	.hamburger-toggle span {
-        display: none !important;
+		display: none !important;
 	}
 }
 
@@ -2126,55 +2411,57 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
    ========================================================================== */
 
 .fq-secondary-page__hero {
-    padding: 56px 0 48px;
-    background-size: cover;
-    background-position: center;
-    text-align: center;
-    margin: 0 0 14px;
+	padding: 56px 0 48px;
+	background-size: cover;
+	background-position: center;
+	text-align: center;
+	margin: 0 0 14px;
 }
 
 .fq-secondary-page__title {
-    margin: 0;
-    font-size: clamp(28px, 3.5vw, 48px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--primary, #52b2e1);
-    line-height: 1.15;
+	margin: 0;
+	font-size: clamp(28px, 3.5vw, 48px);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: var(--primary, #52b2e1);
+	line-height: 1.15;
 }
 
 .fq-secondary-page__content {
-    padding-top: 40px;
-    padding-bottom: 60px;
-    line-height: 1.8;
-    color: var(--text-dark, #383e42);
-    font-size: 15px;
+	padding-top: 40px;
+	padding-bottom: 60px;
+	line-height: 1.8;
+	color: var(--text-dark, #383e42);
+	font-size: 15px;
 }
 
 .fq-secondary-page__content h2 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin: 32px 0 12px;
-    color: var(--text-dark, #383e42);
+	font-size: 1.4rem;
+	font-weight: 600;
+	margin: 32px 0 12px;
+	color: var(--text-dark, #383e42);
 }
 
 .fq-secondary-page__content h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 24px 0 8px;
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin: 24px 0 8px;
 }
 
 .fq-secondary-page__content p {
-    margin: 0 0 16px;
+	margin: 0 0 16px;
 }
 
 @media (max-width: 768px) {
-    .fq-secondary-page__hero {
-        padding: 36px 0 32px;
-    }
-    .fq-secondary-page__content {
-        padding-top: 28px;
-        padding-bottom: 40px;
-    }
+	.fq-secondary-page__hero {
+		padding: 36px 0 32px;
+	}
+
+	.fq-secondary-page__content {
+		padding-top: 28px;
+		padding-bottom: 40px;
+	}
+
 	.contenedor_filtros_superior {
 		margin-bottom: -10px !important;
 	}
@@ -2255,29 +2542,48 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 
 .menu_movil .menu-close {
 	position: static;
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 40px;
 	height: 40px;
 	border: 0;
-	border-radius: 999px;
+	border-radius: 20px;
 	background: #f3f4f6;
 	color: var(--text-dark);
 	cursor: pointer;
-	padding: 0;
+	padding: 0 14px;
+}
+
+.menu_movil .menu-close:hover {
+	color: var(--primary);
 }
 
 .menu_movil .menu-close .txt_cerrar {
-	display: none;
+	display: inline;
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1;
+	color: inherit;
 }
 
-.menu_movil .menu-close .icono_cerrar {
-	font-size: 24px;
-	font-weight: 300;
+/* Igualar la X a la del menú Mi cuenta: usar el icono material `close`
+   en lugar del carácter × de texto. Se usa span.icono_cerrar para ganar en
+   especificidad a la regla del plugin sp_menu_movil que fija font-size:28px */
+.menu_movil .menu-close span.icono_cerrar {
+	font-size: 0 !important;
 	line-height: 0;
-	margin-bottom: 2px;
-	color: var(--text-dark);
+	color: inherit;
+	width: auto;
+}
+
+.menu_movil .menu-close span.icono_cerrar::before {
+	content: "close";
+	font-family: 'Material Symbols Outlined';
+	font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+	font-size: 24px;
+	line-height: 1;
+	font-weight: normal;
 }
 
 .menu_movil .menu-content {
@@ -2304,7 +2610,7 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 	padding: 0;
 }
 
-.menu_movil .menu-categories__list li + li {
+.menu_movil .menu-categories__list li+li {
 	margin-top: 8px;
 }
 
@@ -2339,7 +2645,7 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 	margin: 0;
 }
 
-.menu_movil .sp-hamburger-menu li + li {
+.menu_movil .sp-hamburger-menu li+li {
 	margin-top: 8px;
 }
 
@@ -2374,6 +2680,7 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 }
 
 @media (min-width: 1025px) {
+
 	.hamburger-toggle,
 	.menu_movil {
 		display: none;
@@ -2383,8 +2690,10 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 /* ── Simetría de iconos en utils del header (≤1024px) ────────── */
 @media (max-width: 1024px) {
 	.site-header__utils {
-		gap: 20px;
+		gap: 12x;
 	}
+
+
 
 	.site-header__utils .mi-cuenta-icono-logueado .icono-mi-cuenta,
 	.site-header__utils .mi-cuenta-icono-no-logueado .icono-mi-cuenta {
@@ -2397,11 +2706,63 @@ body.sp-wsv-simple.sp-wsv-theme-light :where(.woocommerce, .woocommerce-page) .l
 		background-size: contain !important;
 	}
 
-	.site-header__utils .site-navigation-woo > ul > li > a,
+	.site-header__utils .site-navigation-woo>ul>li>a,
 	.site-header__utils .hamburger-toggle {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 	}
+}
+
+/* Reduce espaciado vertical de la sección de FAQs en la home (50% del plugin superplus) */
+.home-content .sp-faq-wrapper {
+	padding-top: 48px;
+	padding-bottom: 48px;
+}
+
+.home-content .sp-faq-heading {
+	margin-top: 0 !important;
+}
+
+.home-content .sp-faq-title-main {
+	font-size: 2rem;
+}
+
+@media (max-width: 767px) {
+	.home-content .sp-faq-wrapper {
+		padding-top: 36px;
+		padding-bottom: 36px;
+	}
+
+	.home-content .sp-faq-title-main {
+		font-size: 1.5rem;
+	}
+}
+
+.site-header__utils .util-link:hover .util-link__label,
+.site-header__utils .util-link:focus .util-link__label,
+.site-header__utils .util-link:focus-visible .util-link__label,
+.site-header__utils .header-cart-icon:hover .util-link__label,
+.site-header__utils .header-cart-icon:focus .util-link__label,
+.site-header__utils .header-cart-icon:focus-visible .util-link__label {
+	color: var(--primary) !important;
+}
+
+/* ── Página "Mi cuenta": evita el scroll horizontal de las tablas de WooCommerce ── */
+body {
+	overflow-x: hidden;
+}
+
+.woocommerce-MyAccount-content table.woocommerce-orders-table,
+.woocommerce-MyAccount-content table.shop_table {
+	display: block;
+	max-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.woocommerce-MyAccount-navigation ul,
+.woocommerce-MyAccount-content form .form-row {
+	max-width: 100%;
 }

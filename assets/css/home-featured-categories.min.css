@@ -1,5 +1,5 @@
 ﻿.home-featured-cats {
-    padding: 150px 0 90px;
+    padding: 75px 0 45px;
     position: relative;
     z-index: 0;
 }
@@ -15,22 +15,16 @@
     width: 100vw;
     background: #f4f6f8;
     z-index: -1;
-    margin-top: 80px;
+    margin-top: 40px;
 }
 
 .home-featured-cats__header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 16px;
     margin-bottom: 40px
-}
-
-@media(min-width:768px) {
-    .home-featured-cats__header {
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: space-between
-    }
 }
 
 .home-featured-cats__title {
@@ -50,14 +44,8 @@
 
 .home-featured-cats__header-right {
     display: flex;
-    align-items: flex-end
-}
-
-.home-featured-cats__controls {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 12px
+    gap: 16px
 }
 
 .home-featured-cats__arrows {
@@ -107,6 +95,16 @@
 
 .home-featured-cats__all-link .material-symbols-outlined {
     font-size: 19px
+}
+
+.home-featured-cats__all-link-text--short {
+    display: none
+}
+
+.home-featured-cats__footer {
+    display: none;
+    justify-content: flex-end;
+    margin-top: 24px
 }
 
 .home-featured-cats__grid {
@@ -199,50 +197,8 @@
 }
 
 @media(max-width:1100px) {
-    .home-featured-cats__grid {
-        grid-template-columns: repeat(3, 1fr)
-    }
-
-    .home-featured-cats__grid .home-featured-cats__card:nth-child(n+4) {
-        display: none
-    }
-}
-
-@media(max-width:767px) {
-    .home-featured-cats {
-        padding: 120px 0 64px
-    }
-
-    .home-featured-cats__header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 16px
-    }
-
-    .home-featured-cats__header-right {
-        width: 100%
-    }
-
-    .home-featured-cats__controls {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        width: 100%
-    }
-
-    .home-featured-cats__all-link {
-        order: 1
-    }
-
-    .home-featured-cats__title {
-        font-size: 24px
-    }
-
-    .home-featured-cats__arrows {
-        display: flex;
-        order: 2
+    .home-featured-cats::before {
+        margin-bottom: 28px
     }
 
     .home-featured-cats__grid {
@@ -256,6 +212,15 @@
 
     .home-featured-cats__arrows {
         display: flex
+    }
+
+    .home-featured-cats__all-link--header {
+        display: none
+    }
+
+    .home-featured-cats__footer {
+        display: flex;
+        margin-top: 32px
     }
 
     .home-featured-cats__track {
@@ -277,8 +242,8 @@
         background: #e5eaed;
         text-decoration: none;
         border: 1px solid rgba(0, 0, 0, .05);
-        width: calc(50vw - 28px);
-        min-width: calc(50vw - 28px);
+        width: calc(33.33vw - 28px);
+        min-width: calc(33.33vw - 28px);
         flex-shrink: 0;
         transition: box-shadow .4s ease, transform .4s ease
     }
@@ -342,4 +307,66 @@
     .fc-card__cta .material-symbols-outlined {
         font-size: 18px
     }
-}.home-featured-cats__kicker{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
+}
+
+@media(max-width:767px) {
+    .home-featured-cats {
+        padding: 60px 0 32px
+    }
+
+    .home-featured-cats::before {
+        margin-bottom: 20px
+    }
+
+    .home-featured-cats__header {
+        align-items: flex-end;
+        gap: 8px;
+        margin-bottom: 16px
+    }
+
+    .home-featured-cats__kicker {
+        font-size: .625rem
+    }
+
+    .home-featured-cats__header-right {
+        width: auto
+    }
+
+    .home-featured-cats__title {
+        font-size: 24px
+    }
+
+    .home-featured-cats__arrows {
+        display: flex
+    }
+
+    .home-featured-cats__all-link {
+        font-size: .75rem
+    }
+
+    .home-featured-cats__all-link .material-symbols-outlined {
+        font-size: 16px
+    }
+
+    .home-featured-cats__all-link-text--full {
+        display: none
+    }
+
+    .home-featured-cats__all-link-text--short {
+        display: inline
+    }
+
+    .home-featured-cats__footer {
+        margin-top: 28px
+    }
+
+    .fc-card {
+        width: calc(50vw - 28px);
+        min-width: calc(50vw - 28px);
+    }
+}.home-featured-cats__kicker{display:block;margin-bottom:8px;font-family:Poppins,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#52b2e1}
+.home-featured-cats__track.splide__track{display:block;gap:0;padding:0;transition:none}
+.home-featured-cats .container{padding:0}
+.home-featured-cats .splide{padding:0}
+.home-featured-cats .splide__list{align-items:stretch;height:auto;will-change:transform;transition:transform .4s ease}
+.fc-card.splide__slide{width:auto;min-width:0}

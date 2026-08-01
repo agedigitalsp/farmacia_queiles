@@ -1,5 +1,5 @@
 .home-health-commitment {
-    padding: 128px 0 90px 0;
+    padding: 64px 0 45px 0;
     background: #fff;
     border-top: 1px solid #f1f5f9
 }
@@ -13,15 +13,16 @@
     display: block;
     margin: 0 0 16px;
     color: var(--primary);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .3em;
+    font-family: Poppins, sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .18em;
     text-transform: uppercase
 }
 
 .home-health-commitment__title {
     margin: 0;
-    font-size: 40px;
+    font-size: 2rem;
     line-height: 1.2;
     font-weight: 300;
     letter-spacing: -.02em;
@@ -104,7 +105,7 @@
 
 @media (max-width:1024px) {
     .home-health-commitment {
-        padding: 96px 0
+        padding: 48px 0
     }
 
     .home-health-commitment__grid {
@@ -122,7 +123,7 @@
 
 @media (max-width:640px) {
     .home-health-commitment {
-        padding: 72px 0
+        padding: 36px 0
     }
 
     .home-health-commitment__header {
@@ -130,8 +131,12 @@
     }
 
     .home-health-commitment__title {
-        font-size: 32px;
+        font-size: 1.5rem;
         line-height: 1.2
+    }
+
+    .home-health-commitment__kicker {
+        font-size: .625rem
     }
 
     .home-health-commitment__grid {

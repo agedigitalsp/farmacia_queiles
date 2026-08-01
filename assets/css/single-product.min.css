@@ -697,7 +697,9 @@
     gap: 20px;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    padding-bottom: 8px
+    padding-bottom: 8px;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
 }
 
 .fq-sp-related__viewport::-webkit-scrollbar {

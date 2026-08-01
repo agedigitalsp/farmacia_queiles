@@ -252,7 +252,7 @@ form.cart {
 }
 
 /* ── Mobile: siempre visible ─────────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .fq-fav-btn {
         opacity: 1;
         pointer-events: auto;

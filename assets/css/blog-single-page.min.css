@@ -382,12 +382,13 @@ body.single .container {
   display: block;
   height: 100%;
   text-decoration: none;
-  color: inherit
+  color: inherit;
+  margin-top: 20px;
 }
 
 @media (max-width: 768px) {
   .content {
-    padding: 32px 0 56px;
+    padding: 0px 0 56px;
   }
 
   .entry-header {

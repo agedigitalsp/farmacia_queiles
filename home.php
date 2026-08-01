@@ -7,6 +7,19 @@ Template posts: post
 if (!defined('ABSPATH')) {
     exit;
 }
+
+$blog_page_id  = (int) get_option('page_for_posts');
+$header_image_url = (string) get_post_meta($blog_page_id, '_fq_page_header_image', true);
+if ('' === $header_image_url) {
+    $thumb_id = (int) get_post_thumbnail_id($blog_page_id);
+    if ($thumb_id > 0) {
+        $header_image_url = (string) wp_get_attachment_image_url($thumb_id, 'full');
+    }
+}
+$header_style = '' !== $header_image_url
+    ? "background-image:linear-gradient(rgba(255,255,255,0.72),rgba(255,255,255,0.72)),url('" . esc_url($header_image_url) . "');"
+    : '';
+
 get_header();
 ?>
 
@@ -14,7 +27,7 @@ get_header();
     <?php if (function_exists('yoast_breadcrumb')) yoast_breadcrumb('<nav class="yoast-breadcrumb">', '</nav>'); ?>
 </div>
 
-<section class="blog-hero">
+<section class="blog-hero"<?php echo '' !== $header_style ? ' style="' . esc_attr($header_style) . '"' : ''; ?>>
     <div class="container container--wide">
         <div class="blog-hero__card entry-header">
             <div class="blog-hero__content">
@@ -45,13 +58,13 @@ get_header();
                                 <?php if (has_post_thumbnail()): ?>
                                     <?php the_post_thumbnail('medium'); ?>
                                 <?php else: ?>
-                                    <img class="blog-card__default-img" src="<?php echo content_url('/uploads/2026/06/cropped-favicon-farmacia-queiles-300x300.png'); ?>" alt="" loading="lazy">
+<img class="blog-card__default-img" src="<?php echo content_url('/uploads/2026/07/ChatGPT-Image-8-jul-2026-01_08_23-600x400.png'); ?>" alt="" loading="lazy">
                                 <?php endif; ?>
                             </span>
 
                              <div class="blog-card__body">
                                  <h2 class="blog-card__title"><?php the_title(); ?></h2>
-                                 <p class="blog-card__excerpt"><?php the_excerpt(); ?></p>
+                                 <p class="blog-card__excerpt"><?php echo esc_html( get_the_excerpt() ); ?></p>
                                  <span class="blog-card__link">
                                      Leer más
                                      <span class="material-symbols-outlined">arrow_forward</span>
