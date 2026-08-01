@@ -42,24 +42,9 @@ if ( is_tax( 'product_brand' ) && $queried_object instanceof WP_Term && 'product
 		: null;
 	if ( is_array( $fq_cached ) && ! empty( $fq_cached['hero_slides'] ) ) {
 		$fq_shop_slides = $fq_cached['hero_slides'];
-	} else {
-		$fq_raw = get_posts( [
-			'post_type'      => 'promociones',
-			'post_status'    => 'publish',
-			'posts_per_page' => 8,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-			'no_found_rows'  => true,
-		] );
-		foreach ( $fq_raw as $fq_p ) {
-			$fq_shop_slides[] = [
-				'title'       => wp_strip_all_tags( get_the_title( $fq_p ) ),
-				'subtitle'    => (string) get_post_meta( $fq_p->ID, '_fq_promo_subtitle', true ),
-				'description' => (string) get_post_meta( $fq_p->ID, '_fq_promo_description', true ),
-				'url'         => (string) get_permalink( $fq_p ),
-				'image'       => (string) get_the_post_thumbnail_url( $fq_p, 'full' ),
-			];
-		}
+	} elseif ( class_exists( 'sp_promo_hero_cpt' ) ) {
+		$fq_payload      = sp_promo_hero_cpt::build_home_payload();
+		$fq_shop_slides  = $fq_payload['hero_slides'];
 	}
 	$fq_shop_img = get_template_directory_uri() . '/assets/img/category-default.webp';
 	$fq_shop_header_style = "background-image:linear-gradient(rgba(255,255,255,0.72),rgba(255,255,255,0.72)),url('" . esc_url( $fq_shop_img ) . "');";

@@ -9,80 +9,47 @@ $cached_payload = class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Them
 if (is_array($cached_payload)) {
 	$hero_slides = is_array($cached_payload['hero_slides'] ?? null) ? $cached_payload['hero_slides'] : [];
 	$side_promotions = is_array($cached_payload['side_promotions'] ?? null) ? $cached_payload['side_promotions'] : [null, null];
+} elseif (class_exists('sp_promo_hero_cpt')) {
+	$payload = sp_promo_hero_cpt::build_home_payload();
+	$hero_slides = $payload['hero_slides'];
+	$side_promotions = $payload['side_promotions'];
 } else {
-	$featured_promo_1 = get_posts(
-		[
-			'post_type' => 'promociones',
-			'post_status' => 'publish',
-			'posts_per_page' => 1,
-			'meta_key' => '_fq_promo_featured_1',
-			'meta_value' => '1',
-			'no_found_rows' => true,
-			'ignore_sticky_posts' => true,
-		]
-	);
-	$featured_promo_2 = get_posts(
-		[
-			'post_type' => 'promociones',
-			'post_status' => 'publish',
-			'posts_per_page' => 1,
-			'meta_key' => '_fq_promo_featured_2',
-			'meta_value' => '1',
-			'no_found_rows' => true,
-			'ignore_sticky_posts' => true,
-		]
-	);
-
-	$excluded_ids = array_filter(
-		[
-			isset($featured_promo_1[0]) ? (int) $featured_promo_1[0]->ID : 0,
-			isset($featured_promo_2[0]) ? (int) $featured_promo_2[0]->ID : 0,
-		]
-	);
-
-	$hero_promotions = get_posts(
-		[
-			'post_type' => 'promociones',
-			'post_status' => 'publish',
-			'posts_per_page' => 8,
-			'post__not_in' => $excluded_ids,
-			'no_found_rows' => true,
-			'ignore_sticky_posts' => true,
-		]
-	);
-
 	$hero_slides = [];
-	foreach ($hero_promotions as $promotion) {
-		$hero_slides[] = [
-			'id' => (int) $promotion->ID,
-			'title' => get_the_title($promotion),
-			'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
-			'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
-			'url' => get_permalink($promotion),
-			'image' => get_the_post_thumbnail_url($promotion, 'full'),
-		];
-	}
-
-	$side_promotions = [];
-	foreach ([$featured_promo_1[0] ?? null, $featured_promo_2[0] ?? null] as $promotion) {
-		if (!$promotion instanceof WP_Post) {
-			$side_promotions[] = null;
-			continue;
-		}
-
-		$side_promotions[] = [
-			'id' => (int) $promotion->ID,
-			'title' => get_the_title($promotion),
-			'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
-			'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
-			'url' => get_permalink($promotion),
-			'image' => get_the_post_thumbnail_url($promotion, 'full'),
-		];
-	}
+	$side_promotions = [null, null];
 }
 
+// Sin ninguna promoción (ni slider ni destacadas): se inyecta un slide por defecto
+// con el mismo formato exacto que una promoción real, configurable en Ajustes Home.
 if (empty($hero_slides) && empty(array_filter($side_promotions))) {
-	return;
+	$shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/');
+	$get_setting = static function (string $key, string $default) {
+		return class_exists('Farmacia_Queiles_Theme') ? Farmacia_Queiles_Theme::get_setting($key, $default) : $default;
+	};
+
+	// La imagen puede venir de Ajustes Home (CMB2, URL directa) o del Customizer
+	// (id de adjunto); se prueban en ese orden antes de caer a la imagen por defecto.
+	$empty_image = (string) $get_setting('farmacia_queiles_home_hero_empty_image', '');
+	if ('' === $empty_image) {
+		$empty_image_id = (int) $get_setting('farmacia_queiles_home_hero_empty_image_id', '0');
+		if ($empty_image_id > 0) {
+			$empty_image = (string) wp_get_attachment_image_url($empty_image_id, 'full');
+		}
+	}
+	if ('' === $empty_image) {
+		$empty_image = get_template_directory_uri() . '/assets/img/category-default.webp';
+	}
+
+	$hero_slides = [
+		[
+			'id' => 0,
+			'title' => $get_setting('farmacia_queiles_home_hero_empty_title', __('Descubre nuestros productos', 'farmacia-queiles')),
+			'subtitle' => $get_setting('farmacia_queiles_home_hero_empty_subtitle', ''),
+			'description' => $get_setting('farmacia_queiles_home_hero_empty_text', __('Explora nuestro catálogo completo de farmacia y parafarmacia.', 'farmacia-queiles')),
+			'url' => $shop_url,
+			'image' => $empty_image,
+			'cta_text' => $get_setting('farmacia_queiles_home_hero_empty_cta_text', __('Ir a la tienda', 'farmacia-queiles')),
+		],
+	];
 }
 ?>
 <?php
@@ -113,7 +80,7 @@ $mobile_total = count( $mobile_slides );
 					<div class="home-hero-promotions__content">
 						<h2 class="home-hero-promotions__title"><?php echo esc_html( $slide['title'] ); ?></h2>
 						<a class="home-hero-promotions__button" href="<?php echo esc_url( $slide['url'] ); ?>">
-							<?php esc_html_e( 'Ver promoción', 'farmacia-queiles' ); ?>
+							<?php echo esc_html( $slide['cta_text'] ?? __( 'Ver promoción', 'farmacia-queiles' ) ); ?>
 						</a>
 					</div>
 				</div>
@@ -137,8 +104,9 @@ $mobile_total = count( $mobile_slides );
 	</div>
 	<?php endif; ?>
 
+	<?php $has_side_promotions = !empty(array_filter($side_promotions)); ?>
 	<!-- ── GRID ESCRITORIO (oculto en ≤767px) ──────────────────── -->
-	<div class="home-hero-promotions__grid">
+	<div class="home-hero-promotions__grid<?php echo $has_side_promotions ? '' : ' home-hero-promotions__grid--full'; ?>">
 		<div class="home-hero-promotions__main">
 			<?php if (!empty($hero_slides)) : ?>
 				<div class="home-hero-promotions__slider" data-hero-slider>
@@ -157,7 +125,7 @@ $mobile_total = count( $mobile_slides );
 										<p class="home-hero-promotions__description"><?php echo esc_html($slide['description']); ?></p>
 									<?php endif; ?>
 									<a class="home-hero-promotions__button" href="<?php echo esc_url($slide['url']); ?>">
-										<?php echo esc_html__('Ver promoción', 'farmacia-queiles'); ?>
+										<?php echo esc_html($slide['cta_text'] ?? __('Ver promoción', 'farmacia-queiles')); ?>
 									</a>
 								</div>
 							</div>
@@ -176,25 +144,27 @@ $mobile_total = count( $mobile_slides );
 				</div>
 			<?php endif; ?>
 		</div>
-		<div class="home-hero-promotions__side">
-			<?php foreach ($side_promotions as $index => $promotion) : ?>
-				<?php if (!$promotion) : continue; endif; ?>
-				<article class="home-hero-promotions__card home-hero-promotions__card--<?php echo 0 === $index ? 'featured-1' : 'featured-2'; ?>">
-					<?php if (!empty($promotion['image'])) : ?>
-						<img class="home-hero-promotions__card-image" src="<?php echo esc_url($promotion['image']); ?>" alt="<?php echo esc_attr($promotion['title']); ?>">
-					<?php endif; ?>
-					<div class="home-hero-promotions__card-overlay"></div>
-					<div class="home-hero-promotions__card-content">
-						<?php if (!empty($promotion['subtitle'])) : ?>
-							<span class="home-hero-promotions__card-eyebrow"><?php echo esc_html($promotion['subtitle']); ?></span>
+		<?php if ($has_side_promotions) : ?>
+			<div class="home-hero-promotions__side">
+				<?php foreach ($side_promotions as $index => $promotion) : ?>
+					<?php if (!$promotion) : continue; endif; ?>
+					<article class="home-hero-promotions__card home-hero-promotions__card--<?php echo 0 === $index ? 'featured-1' : 'featured-2'; ?>">
+						<?php if (!empty($promotion['image'])) : ?>
+							<img class="home-hero-promotions__card-image" src="<?php echo esc_url($promotion['image']); ?>" alt="<?php echo esc_attr($promotion['title']); ?>">
 						<?php endif; ?>
-						<h3 class="home-hero-promotions__card-title"><?php echo esc_html($promotion['title']); ?></h3>
-						<a class="home-hero-promotions__card-button" href="<?php echo esc_url($promotion['url']); ?>">
-							<?php echo esc_html__('Ver promoción', 'farmacia-queiles'); ?>
-						</a>
-					</div>
-				</article>
-			<?php endforeach; ?>
-		</div>
+						<div class="home-hero-promotions__card-overlay"></div>
+						<div class="home-hero-promotions__card-content">
+							<?php if (!empty($promotion['subtitle'])) : ?>
+								<span class="home-hero-promotions__card-eyebrow"><?php echo esc_html($promotion['subtitle']); ?></span>
+							<?php endif; ?>
+							<h3 class="home-hero-promotions__card-title"><?php echo esc_html($promotion['title']); ?></h3>
+							<a class="home-hero-promotions__card-button" href="<?php echo esc_url($promotion['url']); ?>">
+								<?php echo esc_html__('Ver promoción', 'farmacia-queiles'); ?>
+							</a>
+						</div>
+					</article>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </section>
