@@ -247,7 +247,7 @@
 
 .bs-card__desc:empty {
     visibility: hidden;
-    min-height: 2px
+    min-height: 45px
 }
 
 .bs-card__price-wrap {
@@ -429,6 +429,10 @@
     .bs-card__desc {
         font-size: .6rem;
         line-height: 1.3;
+        min-height: .75rem
+    }
+
+    .bs-card__desc:empty {
         min-height: .75rem
     }
 

@@ -250,7 +250,7 @@
 
 .fp-card__desc:empty {
     visibility: hidden;
-    min-height: 2px
+    min-height: 47px
 }
 
 .fp-card__price-wrap {
@@ -432,6 +432,10 @@
     .fp-card__desc {
         font-size: .6rem;
         line-height: 1.3;
+        min-height: .75rem
+    }
+
+    .fp-card__desc:empty {
         min-height: .75rem
     }
 
