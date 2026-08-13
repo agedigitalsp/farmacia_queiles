@@ -217,20 +217,6 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 						] );
 						?>
 					</div>
-					<?php if ( $stock_qty !== null ) : ?>
-						<span class="fq-sp-qty__stock is-in-stock">
-							<span class="fq-sp-qty__stock-dot"></span>
-							<?php
-							/* translators: %d: stock quantity */
-							printf( esc_html__( 'Stock: %d uds.', 'farmacia-queiles' ), (int) $stock_qty );
-							?>
-						</span>
-					<?php else : ?>
-						<span class="fq-sp-qty__stock is-in-stock">
-							<span class="fq-sp-qty__stock-dot"></span>
-							<?php echo esc_html__( 'En stock', 'farmacia-queiles' ); ?>
-						</span>
-					<?php endif; ?>
 				</div>
 				<?php endif; ?>
 
