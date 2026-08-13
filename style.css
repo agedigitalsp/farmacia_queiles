@@ -2766,3 +2766,7 @@ body {
 .woocommerce-MyAccount-content form .form-row {
 	max-width: 100%;
 }
+
+a.added_to_cart.wc-forward {
+    display: none !important;
+}
