@@ -79,6 +79,9 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 			if ( is_array( $rp_cat_terms ) && ! empty( $rp_cat_terms ) ) {
 				$rp_category = (string) $rp_cat_terms[0]->name;
 			}
+
+			/* Descripción corta */
+			$rp_description = wp_strip_all_tags( $related_product->get_short_description() );
 		?>
 		<article class="fp-card fq-sp-related__item">
 			<div class="fp-card__image-wrap">
@@ -90,14 +93,13 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 				</a>
 			</div>
 			<div class="fp-card__body">
-				<?php if ( '' !== $rp_brand ) : ?>
-					<div class="fp-card__brand-wrap">
-						<span class="fp-card__brand"><?php echo esc_html( $rp_brand ); ?></span>
-					</div>
-				<?php endif; ?>
+				<div class="fp-card__brand-wrap">
+					<span class="fp-card__brand"><?php echo esc_html( $rp_brand ); ?></span>
+				</div>
 				<h3 class="fp-card__name">
 					<a href="<?php echo esc_url( $rp_url ); ?>"><?php echo esc_html( $rp_name ); ?></a>
 				</h3>
+				<p class="fp-card__desc"><?php echo esc_html( $rp_description ); ?></p>
 				<div class="fp-card__price-wrap">
 					<div class="fp-card__price-row">
 						<?php if ( $rp_on_sale && '' !== $rp_sale ) : ?>
