@@ -280,8 +280,7 @@ a {
 .woocommerce img.custom-logo,
 .woocommerce-page img.custom-logo {
 	display: block;
-	height: 35px;
-	max-height: 56px;
+	max-height: 52px;
 	width: auto;
 }
 
