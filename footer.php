@@ -109,8 +109,8 @@ $footer_legal_fallback = [
 			<div class="footer-main">
 				<div class="footer-col footer-col--brand">
 					<a class="footer-brand" href="<?php echo esc_url(home_url('/')); ?>">
-						<?php if (file_exists(get_template_directory() . '/assets/img/logo.svg')) : ?>
-							<img class="footer-brand__image" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+						<?php if (file_exists(get_template_directory() . '/assets/img/logo.png')) : ?>
+							<img class="footer-brand__image" src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/logo.png'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
 						<?php elseif ($footer_logo_id > 0) : ?>
 							<?php echo wp_get_attachment_image($footer_logo_id, 'full', false, ['class' => 'footer-brand__image']); ?>
 						<?php elseif ($custom_logo_id > 0) : ?>
