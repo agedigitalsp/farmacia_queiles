@@ -1939,8 +1939,8 @@ body.site-mobile-panel-open {
 
 @media (max-width: 640px) {
 	.site-header__brand .custom-logo {
-		height: 38px;
-		max-width: 200px;
+		height: 40px;
+		width: auto;
 	}
 
 	.footer-newsletter {
