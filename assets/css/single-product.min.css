@@ -44,7 +44,7 @@
 
 .fq-sp-gallery__main {
     position: relative;
-    background: var(--bg-ref,#f4f6f8);
+    background: #ffffff;
     border-radius: 4px;
     border: 1px solid #d5dde4;
     overflow: hidden;

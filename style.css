@@ -354,7 +354,7 @@ a {
 .util-link__label {
 	font-size: 10px;
 	font-weight: 600;
-	text-transform: uppercase;
+	text-transform: capitalize;
 	letter-spacing: 0.18em;
 }
 
@@ -2073,7 +2073,7 @@ body.site-mobile-panel-open {
 .site-header__utils .header-cart-icon .util-link__label {
 	font-size: 10px !important;
 	font-weight: 600 !important;
-	text-transform: uppercase !important;
+	text-transform: capitalize !important;
 	letter-spacing: 0.18em !important;
 	display: block !important;
 }
