@@ -140,8 +140,8 @@ final class Farmacia_Queiles_Theme
 			add_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 10);
 		});
 		add_filter('woocommerce_related_products', [$this, 'maybe_use_manual_related_products'], 10, 3);
-		add_action('rest_api_init', [$this, 'register_promociones_rest_routes']);
-		add_action('admin_enqueue_scripts', [$this, 'enqueue_promociones_admin_assets']);
+		// REST route 'products-search', meta boxes, columnas admin y hooks de guardado/JSON de 'promociones'
+		add_action('rest_api_init', [$this, 'register_products_search_route']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_term_featured_admin_assets']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_product_tabs_admin_assets']);
 		add_filter('manage_promociones_posts_columns', [$this, 'add_promociones_admin_columns']);
@@ -188,6 +188,82 @@ final class Farmacia_Queiles_Theme
 		// add_filter('pre_option_woocommerce_coming_soon', '__return_zero');
 		// add_filter('pre_option_woocommerce_store_pages_only', '__return_zero');
 		// ===== FIN: Deshabilitar Coming Soon de WooCommerce =====
+	}
+
+	public function register_products_search_route(): void
+	{
+		register_rest_route(
+			'farmacia-queiles/v1',
+			'/products-search',
+			[
+				'methods' => WP_REST_Server::READABLE,
+				'callback' => [$this, 'rest_search_products'],
+				'permission_callback' => static function (): bool {
+					return current_user_can('edit_posts');
+				},
+				'args' => [
+					'search' => [
+						'type' => 'string',
+						'required' => false,
+					],
+					'include' => [
+						'type' => 'array',
+						'required' => false,
+					],
+					'page' => [
+						'type' => 'integer',
+						'required' => false,
+						'default' => 1,
+					],
+				],
+			]
+		);
+	}
+
+	public function rest_search_products(WP_REST_Request $request): WP_REST_Response
+	{
+		$search = sanitize_text_field((string) $request->get_param('search'));
+		$page = max(1, (int) $request->get_param('page'));
+		$include = $request->get_param('include');
+		$include = is_array($include) ? array_values(array_filter(array_map('intval', $include))) : [];
+
+		$args = [
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'posts_per_page' => 20,
+			'paged' => $page,
+			'orderby' => 'title',
+			'order' => 'ASC',
+			'fields' => 'ids',
+		];
+
+		if ('' !== $search) {
+			$args['s'] = $search;
+		}
+
+		if (!empty($include) && '' === $search) {
+			$args['post__in'] = $include;
+			$args['orderby'] = 'post__in';
+		}
+
+		$query = new WP_Query($args);
+		$results = [];
+
+		foreach ($query->posts as $product_id) {
+			$results[] = [
+				'id' => (int) $product_id,
+				'text' => get_the_title((int) $product_id),
+			];
+		}
+
+		return new WP_REST_Response(
+			[
+				'results' => $results,
+				'pagination' => [
+					'more' => $query->max_num_pages > $page,
+				],
+			]
+		);
 	}
 
 	public static function get_setting(string $key, $default = '')
@@ -3075,7 +3151,7 @@ final class Farmacia_Queiles_Theme
 			'title' => $title,
 			'subtitle' => (string) get_post_meta($promotion->ID, '_fq_promo_subtitle', true),
 			'description' => (string) get_post_meta($promotion->ID, '_fq_promo_description', true),
-			'url' => get_permalink($promotion),
+			'url' => class_exists('sp_promo_hero_cpt') ? sp_promo_hero_cpt::get_shop_url($promotion->ID) : '',
 			'image' => (string) get_the_post_thumbnail_url($promotion, 'full'),
 		];
 	}
@@ -4327,52 +4403,6 @@ final class Farmacia_Queiles_Theme
 		}
 
 		echo esc_html__('General', 'farmacia-queiles');
-	}
-
-	public function rest_search_products(WP_REST_Request $request): WP_REST_Response
-	{
-		$search = sanitize_text_field((string) $request->get_param('search'));
-		$page = max(1, (int) $request->get_param('page'));
-		$include = $request->get_param('include');
-		$include = is_array($include) ? array_values(array_filter(array_map('intval', $include))) : [];
-
-		$args = [
-			'post_type' => 'product',
-			'post_status' => 'publish',
-			'posts_per_page' => 20,
-			'paged' => $page,
-			'orderby' => 'title',
-			'order' => 'ASC',
-			'fields' => 'ids',
-		];
-
-		if ('' !== $search) {
-			$args['s'] = $search;
-		}
-
-		if (!empty($include) && '' === $search) {
-			$args['post__in'] = $include;
-			$args['orderby'] = 'post__in';
-		}
-
-		$query = new WP_Query($args);
-		$results = [];
-
-		foreach ($query->posts as $product_id) {
-			$results[] = [
-				'id' => (int) $product_id,
-				'text' => get_the_title((int) $product_id),
-			];
-		}
-
-		return new WP_REST_Response(
-			[
-				'results' => $results,
-				'pagination' => [
-					'more' => $query->max_num_pages > $page,
-				],
-			]
-		);
 	}
 
 	private function get_cart_count_markup(): string

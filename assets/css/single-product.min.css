@@ -217,6 +217,16 @@
     color: #9ca3af
 }
 
+.sp-promo-notice {
+    margin: 8px 0 0;
+    padding: 6px 10px;
+    background: #eaf6fd;
+    color: #0f6fa8;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px
+}
+
 /* ── Acciones: cantidad + CTA (hijos directos de .fq-sp-buybox) ── */
 .fq-sp-qty {
     display: flex;

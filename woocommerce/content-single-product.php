@@ -197,6 +197,9 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 						<span class="fq-sp-price__current"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
 					<?php endif; ?>
 					<span class="fq-sp-price__tax"><?php echo esc_html__( 'IVA incluido', 'farmacia-queiles' ); ?></span>
+					<?php if ( class_exists( 'sp_promo_badges' ) ) : ?>
+						<?php echo sp_promo_badges::single_product_notice_html( $product_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php endif; ?>
 				</div>
 
 				<!-- Cantidad -->

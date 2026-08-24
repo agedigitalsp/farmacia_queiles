@@ -67,7 +67,9 @@ $add_to_cart_classes = implode(
 				$discount_pct = round( ( 1 - (float) $sale_price / (float) $regular_price ) * 100 );
 			?>
 				<span class="fp-card__badge fp-card__badge--discount">-<?php echo $discount_pct; ?>%</span>
-			<?php endif; ?>
+			<?php elseif ( class_exists( 'sp_promo_badges' ) ) :
+				echo sp_promo_badges::loop_badge_html( $product_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			endif; ?>
 			<a href="<?php echo esc_url( $product_url ); ?>" aria-label="<?php echo esc_attr( $product_name ); ?>">
 				<img class="fp-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $product_name ); ?>" loading="lazy">
 			</a>
