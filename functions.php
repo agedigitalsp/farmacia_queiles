@@ -3795,7 +3795,7 @@ final class Farmacia_Queiles_Theme
 				$brand_terms = get_the_terms($post->ID, 'product_brand');
 				if (is_array($brand_terms)) {
 					foreach ($brand_terms as $bt) {
-						$brands[] = wp_strip_all_tags($bt->name);
+						$brands[] = fq_capitalize_term_name(wp_strip_all_tags($bt->name));
 					}
 				}
 			}
@@ -3805,7 +3805,7 @@ final class Farmacia_Queiles_Theme
 			$cat_name = '';
 			$cat_terms = get_the_terms($post->ID, 'product_cat');
 			if (is_array($cat_terms) && !empty($cat_terms)) {
-				$cat_name = wp_strip_all_tags($cat_terms[0]->name);
+				$cat_name = fq_capitalize_term_name(wp_strip_all_tags($cat_terms[0]->name));
 			}
 
 			$products[] = [
@@ -3911,7 +3911,7 @@ final class Farmacia_Queiles_Theme
 				$brand_terms = get_the_terms($product->get_id(), 'product_brand');
 				if (is_array($brand_terms)) {
 					foreach ($brand_terms as $bt) {
-						$brands[] = wp_strip_all_tags($bt->name);
+						$brands[] = fq_capitalize_term_name(wp_strip_all_tags($bt->name));
 					}
 				}
 			}

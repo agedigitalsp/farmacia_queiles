@@ -32,7 +32,7 @@ declare( strict_types = 1);
 ?>
 <a href="<?php echo esc_url( get_term_link( $term, 'product_brand' ) ); ?>">
 	<img src="<?php echo esc_url( $thumbnail ); ?>"
-	     alt="<?php echo esc_attr( $term->name ); ?>"
+	     alt="<?php echo esc_attr( fq_capitalize_term_name( $term->name ) ); ?>"
 	     class="<?php echo esc_attr( $class ); ?>"
 	     style="width: <?php echo esc_attr( $width ); ?>; height: <?php echo esc_attr( $height ); ?>;"/>
 </a>
