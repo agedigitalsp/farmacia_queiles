@@ -145,7 +145,7 @@ if ( is_tax( 'product_brand' ) && $queried_object instanceof WP_Term && 'product
 						<span class="material-symbols-outlined">chevron_right</span>
 					</li>
 					<li class="fq-product-cat-breadcrumb__item is-current" aria-current="page">
-						<span><?php echo esc_html( $product_brand_term->name ); ?></span>
+						<span><?php echo esc_html( fq_capitalize_term_name( $product_brand_term->name ) ); ?></span>
 					</li>
 				</ol>
 			</nav>
@@ -154,7 +154,7 @@ if ( is_tax( 'product_brand' ) && $queried_object instanceof WP_Term && 'product
 
 	<header class="woocommerce-products-header fq-product-cat-header" style="<?php echo esc_attr( $fq_brand_header_style ); ?>">
 		<div class="container container--wide fq-product-cat-header__inner">
-			<h1 class="fq-product-cat-header__title"><?php echo esc_html( $product_brand_term->name ); ?></h1>
+			<h1 class="fq-product-cat-header__title"><?php echo esc_html( fq_capitalize_term_name( $product_brand_term->name ) ); ?></h1>
 			<?php if ( '' !== trim( wp_strip_all_tags( $fq_brand_description ) ) ) : ?>
 				<div class="fq-product-cat-header__description-wrap" data-fq-desc>
 					<div class="fq-product-cat-header__description is-collapsed" data-fq-desc-content><?php echo wp_kses_post( $fq_brand_description ); ?></div>
@@ -227,7 +227,7 @@ if ( is_tax( 'product_brand' ) && $queried_object instanceof WP_Term && 'product
 	<header class="woocommerce-products-header fq-product-cat-header"<?php echo '' !== $header_style ? ' style="' . esc_attr( $header_style ) . '"' : ''; ?>>
 		<div class="container container--wide fq-product-cat-header__inner">
 			<?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
-				<h1 class="fq-product-cat-header__title"><?php echo esc_html( $product_cat_term->name ); ?></h1>
+				<h1 class="fq-product-cat-header__title"><?php echo esc_html( fq_capitalize_term_name( $product_cat_term->name ) ); ?></h1>
 			<?php endif; ?>
 
 			<?php if ( '' !== trim( wp_strip_all_tags( $term_description ) ) ) : ?>
@@ -266,7 +266,7 @@ if ( is_tax( 'product_brand' ) && $queried_object instanceof WP_Term && 'product
 									<?php endif; ?>
 								</span>
 							</span>
-							<span class="fq-product-cat-subcats__label"><?php echo esc_html( $subcategory->name ); ?></span>
+							<span class="fq-product-cat-subcats__label"><?php echo esc_html( fq_capitalize_term_name( $subcategory->name ) ); ?></span>
 						</a>
 					<?php endforeach; ?>
 					</div>

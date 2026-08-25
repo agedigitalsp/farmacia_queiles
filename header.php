@@ -212,7 +212,7 @@ if (is_tax('product_cat')) {
 								?>
 									<li class="header-categories__item<?php echo $fq_has_children ? ' header-categories__item--has-children' : ''; ?><?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>">
 										<a class="header-categories__link" href="<?php echo esc_url(get_term_link($category)); ?>"<?php echo $fq_has_children ? ' aria-haspopup="true"' : ''; ?>>
-											<?php echo esc_html($category->name); ?>
+											<?php echo esc_html(fq_capitalize_term_name($category->name)); ?>
 											<?php if ($fq_has_children) : ?>
 												<span class="material-symbols-outlined header-categories__link-arrow" aria-hidden="true">expand_more</span>
 											<?php endif; ?>
@@ -223,7 +223,7 @@ if (is_tax('product_cat')) {
 													<?php foreach ($fq_children as $child) : ?>
 														<li class="header-categories__megamenu-item<?php echo (int) $child->term_id === $current_category_id ? ' is-current' : ''; ?>">
 															<a class="header-categories__megamenu-link" href="<?php echo esc_url(get_term_link($child)); ?>">
-																<?php echo esc_html($child->name); ?>
+																<?php echo esc_html(fq_capitalize_term_name($child->name)); ?>
 															</a>
 														</li>
 													<?php endforeach; ?>
@@ -246,7 +246,7 @@ if (is_tax('product_cat')) {
 												<?php foreach ($header_categories['more'] as $category) : ?>
 													<li class="header-categories__menu-item<?php echo (int) $category->term_id === $current_category_id ? ' is-current' : ''; ?>">
 														<a class="header-categories__menu-link" href="<?php echo esc_url(get_term_link($category)); ?>">
-															<?php echo esc_html($category->name); ?>
+															<?php echo esc_html(fq_capitalize_term_name($category->name)); ?>
 														</a>
 													</li>
 												<?php endforeach; ?>

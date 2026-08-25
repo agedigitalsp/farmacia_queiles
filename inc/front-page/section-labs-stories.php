@@ -51,7 +51,7 @@ if (empty($labs)) {
 
 		$labs[] = [
 			'id' => (int) $term->term_id,
-			'name' => $term->name,
+			'name' => fq_capitalize_term_name($term->name),
 			'url' => $url,
 			'home_image' => $home_image,
 		];

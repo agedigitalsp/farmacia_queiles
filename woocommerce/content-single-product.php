@@ -45,7 +45,7 @@ $brand = '';
 if ( taxonomy_exists( 'product_brand' ) ) {
 	$brand_terms = get_the_terms( $product_id, 'product_brand' );
 	if ( is_array( $brand_terms ) && ! empty( $brand_terms ) ) {
-		$brand = (string) $brand_terms[0]->name;
+		$brand = fq_capitalize_term_name( (string) $brand_terms[0]->name );
 	}
 }
 
@@ -88,13 +88,13 @@ $add_to_cart_classes = implode( ' ', array_filter( [
 			$ancestor_term = get_term( $ancestor_id, 'product_cat' );
 			if ( $ancestor_term instanceof WP_Term ) {
 				$fq_sp_crumbs[] = [
-					'name' => $ancestor_term->name,
+					'name' => fq_capitalize_term_name( $ancestor_term->name ),
 					'url'  => (string) get_term_link( $ancestor_term ),
 				];
 			}
 		}
 		$fq_sp_crumbs[] = [
-			'name' => $fq_sp_cat->name,
+			'name' => fq_capitalize_term_name( $fq_sp_cat->name ),
 			'url'  => (string) get_term_link( $fq_sp_cat ),
 		];
 	}

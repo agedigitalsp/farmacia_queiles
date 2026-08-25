@@ -40,7 +40,7 @@ if (empty($cats)) {
 
 		$cats[] = [
 			'id'        => (int) $term->term_id,
-			'name'      => wp_strip_all_tags($term->name),
+			'name'      => fq_capitalize_term_name(wp_strip_all_tags($term->name)),
 			'url'       => $url,
 			'image'     => $image_url,
 			'bg_color'  => (string) get_term_meta($term->term_id, '_fq_cat_bg_color', true) ?: '#dbeeff',

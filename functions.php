@@ -9,6 +9,12 @@ if (!defined('CMB2_LOADED') && file_exists($farmacia_queiles_cmb2_init)) {
 	require_once $farmacia_queiles_cmb2_init;
 }
 
+if (!function_exists('fq_capitalize_term_name')) {
+	function fq_capitalize_term_name(string $text): string {
+		return mb_strtoupper(mb_substr($text, 0, 1)) . mb_strtolower(mb_substr($text, 1));
+	}
+}
+
 if (class_exists('WP_Customize_Control') && !class_exists('Farmacia_Queiles_Material_Icon_Control')) {
 	final class Farmacia_Queiles_Material_Icon_Control extends WP_Customize_Control
 	{
@@ -2907,7 +2913,7 @@ final class Farmacia_Queiles_Theme
 			}
 
 			$items[] = [
-				'name' => $ancestor->name,
+				'name' => fq_capitalize_term_name($ancestor->name),
 				'url' => (string) $ancestor_url,
 			];
 		}
@@ -2916,7 +2922,7 @@ final class Farmacia_Queiles_Theme
 
 		if (!is_wp_error($term_url)) {
 			$items[] = [
-				'name' => $term->name,
+				'name' => fq_capitalize_term_name($term->name),
 				'url' => (string) $term_url,
 			];
 		}
@@ -3438,7 +3444,7 @@ final class Farmacia_Queiles_Theme
 
 		return [
 			'id' => (int) $term->term_id,
-			'name' => wp_strip_all_tags($term->name),
+			'name' => fq_capitalize_term_name(wp_strip_all_tags($term->name)),
 			'url' => $url,
 			'home_image' => $home_image,
 			'hero_image' => $hero_image,
@@ -3630,7 +3636,7 @@ final class Farmacia_Queiles_Theme
 
 		return [
 			'id'        => (int) $term->term_id,
-			'name'      => wp_strip_all_tags($term->name),
+			'name'      => fq_capitalize_term_name(wp_strip_all_tags($term->name)),
 			'url'       => $url,
 			'image'     => $image_url,
 			'bg_color'  => $bg_color,
