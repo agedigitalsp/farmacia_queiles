@@ -4813,6 +4813,17 @@ JS;
 
 new Farmacia_Queiles_Theme();
 
+add_action( 'plugins_loaded', function() {
+	add_filter( 'wc_stripe_is_verbose_debug_mode_enabled', '__return_true' );
+	// Debug: log is_express_checkout_enabled result
+	add_action( 'init', function() {
+		if ( class_exists( 'WC_Stripe_Express_Checkout_Helper' ) ) {
+			$helper = new WC_Stripe_Express_Checkout_Helper();
+			error_log( 'DEBUG ECE: is_express_checkout_enabled = ' . ( $helper->is_express_checkout_enabled() ? 'true' : 'false' ) );
+		}
+	}, 15 );
+} );
+
 add_filter('template_include', function($template){
 
     if (is_woocommerce()) {
