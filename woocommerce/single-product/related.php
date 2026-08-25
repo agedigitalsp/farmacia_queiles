@@ -50,7 +50,7 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 
 			/** @var WC_Product $related_product */
 			$rp_id           = (int) $related_product->get_id();
-			$rp_name         = (string) $related_product->get_name();
+			$rp_name         = fq_capitalize_term_name( (string) $related_product->get_name() );
 			$rp_url          = (string) get_permalink( $rp_id );
 			$rp_image_id     = (int) $related_product->get_image_id();
 			$rp_image_url    = $rp_image_id > 0

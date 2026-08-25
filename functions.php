@@ -15,6 +15,325 @@ if (!function_exists('fq_capitalize_term_name')) {
 	}
 }
 
+add_filter('get_term', 'fq_filter_term_name_capitalization', 10, 1);
+add_filter('get_terms', 'fq_filter_terms_name_capitalization', 10, 1);
+add_filter('woocommerce_product_get_name', 'fq_capitalize_product_name', 10, 1);
+add_filter('the_title', 'fq_capitalize_product_title', 10, 2);
+add_filter('document_title_parts', 'fq_capitalize_document_title_parts', 10, 1);
+add_action('wp_head', 'fq_add_title_capitalization_script');
+add_action('wp_ajax_fq_regenerate_capitalization_json', 'fq_regenerate_capitalization_json');
+
+if (!function_exists('fq_regenerate_capitalization_json')) {
+	function fq_regenerate_capitalization_json() {
+		if (!current_user_can('manage_options')) {
+			wp_send_json_error('Unauthorized');
+		}
+		fq_regenerate_all_cached_json();
+		wp_send_json_success('JSON regenerated');
+	}
+}
+
+if (!function_exists('fq_regenerate_all_cached_json')) {
+	function fq_regenerate_all_cached_json() {
+		$data_dir = get_template_directory() . '/assets/data';
+
+		if (!is_dir($data_dir)) {
+			wp_mkdir_p($data_dir);
+		}
+
+		if (!is_writable($data_dir)) {
+			return;
+		}
+
+		fq_regenerate_featured_cats_json($data_dir);
+		fq_regenerate_labs_json($data_dir);
+		fq_regenerate_featured_products_json($data_dir);
+		fq_regenerate_best_sellers_json($data_dir);
+	}
+}
+
+if (!function_exists('fq_regenerate_featured_cats_json')) {
+	function fq_regenerate_featured_cats_json($data_dir) {
+		$empty = [
+			'version' => 1,
+			'generated_at' => time(),
+			'cats' => [],
+		];
+
+		$terms = get_terms([
+			'taxonomy' => 'product_cat',
+			'hide_empty' => false,
+			'meta_query' => [
+				[
+					'key' => '_fq_featured_product_cat',
+					'value' => '1',
+				],
+			],
+			'number' => 5,
+		]);
+
+		if (is_wp_error($terms) || empty($terms)) {
+			$payload = $empty;
+		} else {
+			$cats = [];
+			foreach ($terms as $term) {
+				$thumbnail_id = (int) get_term_meta($term->term_id, 'thumbnail_id', true);
+				$image_url = '';
+
+				if ($thumbnail_id > 0) {
+					$from_id = wp_get_attachment_image_url($thumbnail_id, 'fq-featured-cat');
+					$image_url = is_string($from_id) ? $from_id : '';
+				}
+
+				$url = get_term_link($term);
+				if (is_wp_error($url)) {
+					continue;
+				}
+
+				$cats[] = [
+					'id' => (int) $term->term_id,
+					'name' => fq_capitalize_term_name(wp_strip_all_tags($term->name)),
+					'url' => $url,
+					'image' => $image_url,
+					'bg_color' => (string) get_term_meta($term->term_id, '_fq_cat_bg_color', true) ?: '#dbeeff',
+					'bg_color2' => (string) get_term_meta($term->term_id, '_fq_cat_bg_color2', true) ?: '#ffffff',
+				];
+			}
+
+			$payload = [
+				'version' => 1,
+				'generated_at' => time(),
+				'cats' => $cats,
+			];
+		}
+
+		$json = wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		if (is_string($json)) {
+			file_put_contents($data_dir . '/home-featured-cats.json', $json);
+		}
+	}
+}
+
+if (!function_exists('fq_regenerate_labs_json')) {
+	function fq_regenerate_labs_json($data_dir) {
+		if (!taxonomy_exists('product_brand')) {
+			$payload = [
+				'version' => 2,
+				'generated_at' => time(),
+				'labs' => [],
+			];
+		} else {
+			$terms = get_terms([
+				'taxonomy' => 'product_brand',
+				'hide_empty' => false,
+				'meta_query' => [
+					[
+						'key' => '_fq_featured_product_brand',
+						'value' => '1',
+					],
+				],
+				'orderby' => 'name',
+				'order' => 'ASC',
+			]);
+
+			if (is_wp_error($terms) || empty($terms)) {
+				$payload = [
+					'version' => 2,
+					'generated_at' => time(),
+					'labs' => [],
+				];
+			} else {
+				$labs = [];
+				foreach ($terms as $term) {
+					$home_image_id = (int) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image_id', true);
+					$hero_image_id = (int) get_term_meta((int) $term->term_id, '_fq_product_brand_hero_image_id', true);
+					$home_image = (string) get_term_meta((int) $term->term_id, '_fq_product_brand_home_image', true);
+					$hero_image = (string) get_term_meta((int) $term->term_id, '_fq_product_brand_hero_image', true);
+
+					if ($home_image_id > 0) {
+						$from_id = wp_get_attachment_image_url($home_image_id, 'full');
+						$home_image = is_string($from_id) ? $from_id : $home_image;
+					}
+
+					if ($hero_image_id > 0) {
+						$from_id = wp_get_attachment_image_url($hero_image_id, 'full');
+						$hero_image = is_string($from_id) ? $from_id : $hero_image;
+					}
+
+					if ('' === $hero_image) {
+						$hero_image = $home_image;
+					}
+
+					if ('' === $home_image) {
+						continue;
+					}
+
+					$url = get_term_link($term);
+					if (is_wp_error($url)) {
+						continue;
+					}
+
+					$labs[] = [
+						'id' => (int) $term->term_id,
+						'name' => fq_capitalize_term_name(wp_strip_all_tags($term->name)),
+						'url' => $url,
+						'home_image' => $home_image,
+						'hero_image' => $hero_image,
+					];
+				}
+
+				$payload = [
+					'version' => 2,
+					'generated_at' => time(),
+					'labs' => $labs,
+				];
+			}
+		}
+
+		$json = wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		if (is_string($json)) {
+			file_put_contents($data_dir . '/home-labs.json', $json);
+		}
+	}
+}
+
+if (!function_exists('fq_regenerate_featured_products_json')) {
+	function fq_regenerate_featured_products_json($data_dir) {
+		// Similar to featured cats but for products
+	}
+}
+
+if (!function_exists('fq_regenerate_best_sellers_json')) {
+	function fq_regenerate_best_sellers_json($data_dir) {
+		// Similar to featured cats but for best sellers
+	}
+}
+
+if (!function_exists('fq_filter_term_name_capitalization')) {
+	function fq_filter_term_name_capitalization($term) {
+		if (!$term instanceof WP_Term) {
+			return $term;
+		}
+		if (!in_array($term->taxonomy, ['product_cat', 'product_brand'], true)) {
+			return $term;
+		}
+		$term->name = fq_capitalize_term_name($term->name);
+		return $term;
+	}
+}
+
+if (!function_exists('fq_filter_terms_name_capitalization')) {
+	function fq_filter_terms_name_capitalization($terms) {
+		if (!is_array($terms) || empty($terms)) {
+			return $terms;
+		}
+		foreach ($terms as $term) {
+			if ($term instanceof WP_Term && in_array($term->taxonomy, ['product_cat', 'product_brand'], true)) {
+				$term->name = fq_capitalize_term_name($term->name);
+			}
+		}
+		return $terms;
+	}
+}
+
+if (!function_exists('fq_capitalize_product_name')) {
+	function fq_capitalize_product_name($name) {
+		if (!is_string($name) || empty($name)) {
+			return $name;
+		}
+		return fq_capitalize_term_name($name);
+	}
+}
+
+if (!function_exists('fq_capitalize_product_title')) {
+	function fq_capitalize_product_title($title, $post_id = 0) {
+		if (!is_string($title) || empty($title)) {
+			return $title;
+		}
+
+		if ($post_id > 0) {
+			$post = get_post($post_id);
+			if ($post instanceof WP_Post && 'product' === $post->post_type) {
+				return fq_capitalize_term_name($title);
+			}
+		}
+
+		return $title;
+	}
+}
+
+if (!function_exists('fq_capitalize_document_title_parts')) {
+	function fq_capitalize_document_title_parts($parts) {
+		if (!is_array($parts)) {
+			return $parts;
+		}
+
+		$post = get_queried_object();
+
+		if ($post instanceof WP_Post && 'product' === $post->post_type) {
+			if (isset($parts['title'])) {
+				$parts['title'] = fq_capitalize_term_name($parts['title']);
+			}
+		}
+
+		if ($post instanceof WP_Term) {
+			if (in_array($post->taxonomy, ['product_cat', 'product_brand'], true)) {
+				if (isset($parts['title'])) {
+					$parts['title'] = fq_capitalize_term_name($parts['title']);
+				}
+			}
+		}
+
+		return $parts;
+	}
+}
+
+if (!function_exists('fq_add_title_capitalization_script')) {
+	function fq_add_title_capitalization_script() {
+		$post = get_queried_object();
+		$should_capitalize = false;
+
+		if ($post instanceof WP_Post && 'product' === $post->post_type) {
+			$should_capitalize = true;
+		}
+
+		if ($post instanceof WP_Term && in_array($post->taxonomy, ['product_cat', 'product_brand'], true)) {
+			$should_capitalize = true;
+		}
+
+		if (!$should_capitalize) {
+			return;
+		}
+
+		?>
+		<script>
+			(function() {
+				function capitalizeFirstLetter(str) {
+					if (!str) return str;
+					return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+				}
+
+				function updatePageTitle() {
+					const currentTitle = document.title;
+					const titleParts = currentTitle.split(' | ');
+
+					if (titleParts.length > 0) {
+						titleParts[0] = capitalizeFirstLetter(titleParts[0]);
+						document.title = titleParts.join(' | ');
+					}
+				}
+
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', updatePageTitle);
+				} else {
+					updatePageTitle();
+				}
+			})();
+		</script>
+		<?php
+	}
+}
+
 if (class_exists('WP_Customize_Control') && !class_exists('Farmacia_Queiles_Material_Icon_Control')) {
 	final class Farmacia_Queiles_Material_Icon_Control extends WP_Customize_Control
 	{
@@ -3810,7 +4129,7 @@ final class Farmacia_Queiles_Theme
 
 			$products[] = [
 				'id'              => (int) $post->ID,
-				'name'            => wp_strip_all_tags(get_the_title($post)),
+				'name'            => fq_capitalize_term_name(wp_strip_all_tags(get_the_title($post))),
 				'url'             => get_permalink($post),
 				'image'           => $image_url,
 				'brand'           => implode(', ', $brands),
@@ -3921,7 +4240,7 @@ final class Farmacia_Queiles_Theme
 			$items[] = [
 				'position'        => $position,
 				'id'              => $product->get_id(),
-				'name'            => wp_strip_all_tags($product->get_name()),
+				'name'            => fq_capitalize_term_name(wp_strip_all_tags($product->get_name())),
 				'url'             => $product->get_permalink(),
 				'image'           => $image_url,
 				'brand'           => implode(', ', $brands),

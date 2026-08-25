@@ -22,7 +22,7 @@ if ( post_password_required() ) {
 
 /* ── Datos del producto ─────────────────────────────────────────── */
 $product_id      = (int) $product->get_id();
-$product_name    = (string) $product->get_name();
+$product_name    = fq_capitalize_term_name( (string) $product->get_name() );
 $product_url     = (string) get_permalink( $product_id );
 $short_desc      = (string) $product->get_short_description();
 $regular_price   = (string) $product->get_regular_price();

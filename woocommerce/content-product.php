@@ -26,7 +26,7 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 
 $product_id = $product->get_id();
 $product_url = get_permalink( $product_id );
-$product_name = $product->get_name();
+$product_name = fq_capitalize_term_name( $product->get_name() );
 $image_id = (int) $product->get_image_id();
 $image_url = $image_id > 0 ? wp_get_attachment_image_url( $image_id, 'woocommerce_single' ) : '';
 $image_url = is_string( $image_url ) && '' !== $image_url ? $image_url : wc_placeholder_img_src( 'woocommerce_single' );

@@ -443,9 +443,9 @@ a {
 	border: 0;
 	border-radius: 0;
 	background: transparent;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
-	text-transform: uppercase;
+	text-transform: none;
 	letter-spacing: 0.1em;
 	color: var(--text-dark);
 	text-decoration: none;

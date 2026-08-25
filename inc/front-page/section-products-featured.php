@@ -52,7 +52,7 @@ if (empty($products)) {
 
 			$products[] = [
 				'id'              => (int) $post->ID,
-				'name'            => wp_strip_all_tags(get_the_title($post)),
+				'name'            => fq_capitalize_term_name(wp_strip_all_tags(get_the_title($post))),
 				'url'             => get_permalink($post),
 				'image'           => $image_url,
 				'brand'           => implode(', ', $brands),

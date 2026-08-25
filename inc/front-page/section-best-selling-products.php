@@ -50,7 +50,7 @@ if (empty($products)) {
 		$products[] = [
 			'position'        => $position,
 			'id'              => $product->get_id(),
-			'name'            => wp_strip_all_tags($product->get_name()),
+			'name'            => fq_capitalize_term_name(wp_strip_all_tags($product->get_name())),
 			'url'             => $product->get_permalink(),
 			'image'           => $image_url,
 			'brand'           => implode(', ', $brands),
