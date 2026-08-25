@@ -37,7 +37,7 @@ if ( taxonomy_exists( 'product_brand' ) ) {
 	$brand_terms = get_the_terms( $product_id, 'product_brand' );
 	if ( is_array( $brand_terms ) && ! empty( $brand_terms ) ) {
 		$brand_names = array_map(
-			static fn( $term ) => wp_strip_all_tags( $term->name ),
+			static fn( $term ) => fq_capitalize_term_name( wp_strip_all_tags( $term->name ) ),
 			$brand_terms
 		);
 		$brand = implode( ', ', $brand_names );

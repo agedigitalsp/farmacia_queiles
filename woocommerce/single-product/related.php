@@ -69,7 +69,7 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 			if ( taxonomy_exists( 'product_brand' ) ) {
 				$rp_brand_terms = get_the_terms( $rp_id, 'product_brand' );
 				if ( is_array( $rp_brand_terms ) && ! empty( $rp_brand_terms ) ) {
-					$rp_brand = (string) $rp_brand_terms[0]->name;
+					$rp_brand = fq_capitalize_term_name( (string) $rp_brand_terms[0]->name );
 				}
 			}
 
@@ -77,7 +77,7 @@ if ( function_exists( 'wp_increase_content_media_count' ) ) {
 			$rp_category = '';
 			$rp_cat_terms = get_the_terms( $rp_id, 'product_cat' );
 			if ( is_array( $rp_cat_terms ) && ! empty( $rp_cat_terms ) ) {
-				$rp_category = (string) $rp_cat_terms[0]->name;
+				$rp_category = fq_capitalize_term_name( (string) $rp_cat_terms[0]->name );
 			}
 
 			/* Descripción corta */

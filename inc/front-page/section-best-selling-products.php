@@ -42,7 +42,7 @@ if (empty($products)) {
 			$brand_terms = get_the_terms($product->get_id(), 'product_brand');
 			if (is_array($brand_terms)) {
 				foreach ($brand_terms as $bt) {
-					$brands[] = wp_strip_all_tags($bt->name);
+					$brands[] = fq_capitalize_term_name(wp_strip_all_tags($bt->name));
 				}
 			}
 		}
